@@ -16,7 +16,7 @@ Que una marca solo sea válida si el empleado está físicamente en el local en 
 - Se acepta si `distancia(haversine) <= radio_m` y `accuracy_m <= 100`. Si la precisión es peor, se rechaza y se pide reintentar.
 
 ## Validación (servidor)
-1. Usuario autenticado y empleado activo asignado a ese local.
+1. Usuario autenticado y empleado activo, con ese local asignado o con una `habilitacion_local` vigente que el administrador le haya dado.
 2. Firma y ventana del QR válidas.
 3. Geocerca válida.
 4. Alterna ingreso/egreso según la última marca abierta; evita duplicados dentro de 60 s.

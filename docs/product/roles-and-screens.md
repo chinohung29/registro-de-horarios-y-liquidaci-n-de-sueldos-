@@ -2,7 +2,7 @@
 
 ## Administrador (dueño de la empresa)
 - **Locales**: listado de todas las sucursales, crear/editar (nombre, dirección, coordenadas y radio de geocerca), activar/desactivar.
-- **Empleados**: alta con legajo, asignación y reasignación a sucursal, baja.
+- **Empleados**: alta con legajo y monto por jornada, asignación y reasignación a sucursal, baja. Habilitar a un empleado a fichar en otro local (con fecha desde/hasta y motivo).
 - **Fichajes**: vista por local/día/empleado; corrección manual con motivo (queda auditada).
 - **Liquidación**: elegir período, ver cálculo por empleado, revisar y aprobar cupones, confirmar y cerrar.
 - **Cupones**: bandeja de consumos cargados por empleados (pendientes de aprobación).

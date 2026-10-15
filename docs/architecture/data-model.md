@@ -10,6 +10,7 @@ Multi-tenant por `empresa_id` en todas las tablas, aislado con Row Level Securit
 | `empleados` | id, empresa_id, perfil_id, legajo, documento, fecha_ingreso, horas_jornada (override opcional), activo |
 | `montos_jornada` | id, empleado_id, monto, vigente_desde (historial; el vigente es el último con `vigente_desde <= fecha`) |
 | `asignaciones` | id, empleado_id, local_id, desde, hasta |
+| `habilitaciones_local` | id, empleado_id, local_id, desde, hasta, motivo, habilitada_por (permite fichar en un local distinto del asignado) |
 | `turnos_previstos` | id, empleado_id, local_id, fecha, hora_desde, hora_hasta |
 | `marcas` | id, empleado_id, local_id, tipo (`ingreso`/`egreso`), ts, lat, lng, accuracy_m, slot, valida, motivo_rechazo, corregida_por |
 | `jornadas` | id, empleado_id, local_id, fecha, ingreso_ts, egreso_ts, horas, fraccion (1 / 0.5 / null=revisar), horas_extra, extra_especial, estado_extra (`pendiente`/`aprobado`/`rechazado`), ajustada_por, motivo_ajuste |

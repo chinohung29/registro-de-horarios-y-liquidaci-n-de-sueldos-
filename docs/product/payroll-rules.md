@@ -32,7 +32,7 @@ Cada empleado puede tener un override de `horas_jornada` en su ficha (p. ej. coc
 - **Horas extra**: horas fichadas por encima de `horas_jornada` (solo si la fracción es 1). Se redondean a bloques de 15 min.
 - **Ajuste manual**: el administrador puede forzar la fracción de una jornada o las horas extra de un día, con motivo; queda auditado.
 - **Jornada incompleta**: ingreso sin egreso. No se paga hasta que el administrador la resuelva (corrige la marca o la descarta) antes de confirmar.
-- **Ausencia**: día con turno previsto y sin jornada trabajada. Justificada o injustificada; no se paga en ningún caso y se muestra en el recibo como dato informativo.
+- **Ausencia**: día con turno previsto y sin jornada trabajada. Justificada o injustificada; no se paga en ningún caso y se muestra en el recibo como dato informativo. No hay penalización adicional: el descuento es la jornada no trabajada.
 
 ## Cálculo
 ```

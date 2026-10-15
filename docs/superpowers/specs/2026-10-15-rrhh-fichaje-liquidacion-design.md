@@ -1,6 +1,6 @@
 # ERP Gastronómico — Módulo RRHH: diseño
 
-Fecha: 2026-10-15 · Estado: **borrador pendiente de aprobación**
+Fecha: 2026-10-15 · Estado: **listo para revisión**
 
 ## 1. Objetivo
 PWA SaaS multi-local donde el personal registra ingreso y egreso de su jornada mediante un QR que cambia cada 2 minutos y validación de ubicación, con legajos de empleado y liquidación mensual automática de sueldos (descuentos por ausencias y por consumos/cupones de empleados). Estilo y funcionalidad de referencia: Naaloo.
@@ -17,7 +17,9 @@ PWA SaaS multi-local donde el personal registra ingreso y egreso de su jornada m
 - Mercado Argentina, moneda ARS, español rioplatense.
 - Naaloo se usa como referencia pública de estilo (no hay acceso a su interfaz): navegación lateral por módulos, panel de resumen, tablas con filtros.
 - Una jornada es un ingreso más su egreso. Según las horas fichadas cuenta como 1 jornada, media jornada o jornada corta a resolver por el administrador, y las horas sobre `horas_jornada` son horas extra con recargo que el administrador aprueba al liquidar (ver `docs/product/payroll-rules.md`). Las ausencias no se pagan y no generan un descuento aparte.
-- Valores iniciales propuestos: jornada 8 h, media jornada desde 4 h, recargo extra 1,5 (2,0 domingos/feriados). Son configurables por empresa.
+- Valores iniciales confirmados: jornada 8 h, media jornada desde 4 h, recargo extra 1,5 (2,0 domingos/feriados). Son configurables por empresa.
+- **Ausencias:** solo se descuenta la jornada no trabajada (no se paga); no hay penalización adicional.
+- **Local de fichaje:** el empleado ficha solo en su local asignado. El administrador puede habilitarlo temporalmente en otros locales (ver `habilitaciones_local` en el modelo de datos).
 - Las reglas necesitan validación contable.
 
 ## 4. Arquitectura propuesta
@@ -63,8 +65,7 @@ Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architectur
 POS, stock, compras, facturación, aportes y retenciones legales, app nativa, reconocimiento facial, catálogo de productos y descuentos.
 
 ## 10. Preguntas abiertas
-1. ¿Validamos las reglas de liquidación con un contador antes de la fase 4?
-2. ¿Son correctos los valores iniciales (8 h, 4 h, recargos 1,5 y 2,0, tolerancia 10 min)? ¿Los feriados se cargan en un calendario por empresa?
-3. ¿Debe haber además un descuento explícito por ausencia injustificada, o alcanza con no pagar la jornada?
-4. ¿El empleado puede fichar en cualquier local de la empresa o solo en el asignado? (propuesta: solo el asignado).
-5. ¿Hace falta el rol encargado en la primera versión? (propuesta: no).
+1. ¿Validamos las reglas de liquidación con un contador antes de la fase 4? (recomendado)
+2. ¿Los feriados se cargan en un calendario por empresa? (propuesta: sí, lo carga el administrador)
+3. ¿Hace falta el rol encargado en la primera versión? (propuesta: no; hoy "administrador del local" se resuelve con el rol administrador)
+4. Capturas o referencias de Naaloo para ajustar el estilo, si están disponibles.
