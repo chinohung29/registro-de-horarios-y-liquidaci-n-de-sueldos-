@@ -16,7 +16,8 @@ PWA SaaS multi-local donde el personal registra ingreso y egreso de su jornada m
 ## 3. Supuestos a confirmar
 - Mercado Argentina, moneda ARS, español rioplatense.
 - Naaloo se usa como referencia pública de estilo (no hay acceso a su interfaz): navegación lateral por módulos, panel de resumen, tablas con filtros.
-- Una jornada trabajada es un ingreso más su egreso, y vale 1 jornada sin importar las horas (ver `docs/product/payroll-rules.md`). Las ausencias no se pagan y no generan un descuento aparte.
+- Una jornada es un ingreso más su egreso. Según las horas fichadas cuenta como 1 jornada, media jornada o jornada corta a resolver por el administrador, y las horas sobre `horas_jornada` son horas extra con recargo que el administrador aprueba al liquidar (ver `docs/product/payroll-rules.md`). Las ausencias no se pagan y no generan un descuento aparte.
+- Valores iniciales propuestos: jornada 8 h, media jornada desde 4 h, recargo extra 1,5 (2,0 domingos/feriados). Son configurables por empresa.
 - Las reglas necesitan validación contable.
 
 ## 4. Arquitectura propuesta
@@ -63,7 +64,7 @@ POS, stock, compras, facturación, aportes y retenciones legales, app nativa, re
 
 ## 10. Preguntas abiertas
 1. ¿Validamos las reglas de liquidación con un contador antes de la fase 4?
-2. ¿Hace falta soportar media jornada o jornadas de distinta duración, o siempre es 1 jornada por día fichado?
+2. ¿Son correctos los valores iniciales (8 h, 4 h, recargos 1,5 y 2,0, tolerancia 10 min)? ¿Los feriados se cargan en un calendario por empresa?
 3. ¿Debe haber además un descuento explícito por ausencia injustificada, o alcanza con no pagar la jornada?
 4. ¿El empleado puede fichar en cualquier local de la empresa o solo en el asignado? (propuesta: solo el asignado).
 5. ¿Hace falta el rol encargado en la primera versión? (propuesta: no).
