@@ -1,26 +1,27 @@
 <title>ERP Gastronómico RRHH</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&family=Lora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: selector de vista arriba; admin = menú lateral + contenido; empleado = celular; local = pantalla del QR */
+/* Layout: selector de vista arriba; admin = menú lateral + contenido; empleado = celular; local = pantalla del QR.
+   Paleta: grises suaves; el acento y la tipografía los define la marca (panel "Marca"). */
 :root{
-  --bg:#f3f4f6; --surface:#ffffff; --surface2:#eceef2; --line:#d9dce3;
-  --fg:#1c2230; --muted:#5d6577; --accent:#c4432a; --accent-fg:#ffffff; --accent-soft:#f8e3de;
-  --ok:#1f7a4d; --ok-soft:#dcf1e5; --warn:#a4660a; --warn-soft:#fbecd0; --bad:#b3261e; --bad-soft:#f9dcd9;
-  --side:#1c2230; --side-fg:#d6dae4; --side-active:#2c3447;
-  --display:'Bricolage Grotesque','IBM Plex Sans',system-ui,sans-serif;
-  --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --bg:#f1f1f2; --surface:#fafafa; --surface2:#e9e9eb; --line:#d9d9dd;
+  --fg:#2c2c31; --muted:#6c6c74; --accent:#4b4b53; --accent-fg:#ffffff; --accent-soft:#e3e3e7;
+  --ok:#3f7a5b; --ok-soft:#e1eee7; --warn:#8d6a2d; --warn-soft:#f1e9d6; --bad:#a8473f; --bad-soft:#f3deda;
+  --side:#3a3a40; --side-fg:#d0d0d5; --side-active:#4a4a52;
+  --display:'Manrope',system-ui,sans-serif;
+  --body:'Manrope',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#12151c; --surface:#1a1f2a; --surface2:#242a37; --line:#303748;
-  --fg:#e8ebf2; --muted:#9aa3b6; --accent:#e5694f; --accent-fg:#1a0d09; --accent-soft:#3a1f19;
-  --ok:#5cc58f; --ok-soft:#173826; --warn:#e5ad4f; --warn-soft:#3a2c12; --bad:#f0857c; --bad-soft:#3d1c19;
-  --side:#0d1017; --side-fg:#b3bacb; --side-active:#232a3a; color-scheme:dark}}
+  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40;
+  --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
+  --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
+  --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#12151c; --surface:#1a1f2a; --surface2:#242a37; --line:#303748;
-  --fg:#e8ebf2; --muted:#9aa3b6; --accent:#e5694f; --accent-fg:#1a0d09; --accent-soft:#3a1f19;
-  --ok:#5cc58f; --ok-soft:#173826; --warn:#e5ad4f; --warn-soft:#3a2c12; --bad:#f0857c; --bad-soft:#3d1c19;
-  --side:#0d1017; --side-fg:#b3bacb; --side-active:#232a3a; color-scheme:dark}
+  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40;
+  --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
+  --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
+  --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45;
   padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -84,9 +85,9 @@ input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
 .gps.out{background:var(--bad-soft);color:var(--bad)}
 .big{border:0;border-radius:14px;padding:16px;font-family:var(--display);font-weight:700;font-size:18px;background:var(--accent);color:var(--accent-fg)}
 .big:disabled{opacity:.45;cursor:not-allowed}
-.scan{height:150px;border-radius:12px;background:#0d1017;position:relative;display:grid;place-items:center;color:#cfd5e3;font-size:12.5px;overflow:hidden}
-.scan:before{content:"";position:absolute;inset:26px 60px;border:2px solid #e5694f;border-radius:10px}
-.scan:after{content:"";position:absolute;left:62px;right:62px;height:2px;background:#e5694f;top:30px;animation:ln 2.2s ease-in-out infinite alternate}
+.scan{height:150px;border-radius:12px;background:#161618;position:relative;display:grid;place-items:center;color:#cfd5e3;font-size:12.5px;overflow:hidden}
+.scan:before{content:"";position:absolute;inset:26px 60px;border:2px solid #cfcfd6;border-radius:10px}
+.scan:after{content:"";position:absolute;left:62px;right:62px;height:2px;background:#cfcfd6;top:30px;animation:ln 2.2s ease-in-out infinite alternate}
 @keyframes ln{to{top:116px}}
 @media (prefers-reduced-motion:reduce){.scan:after{animation:none}}
 .list{display:flex;flex-direction:column}
@@ -97,14 +98,21 @@ input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
 .tabs button[aria-selected="true"]{color:var(--fg);border-color:var(--accent);font-weight:600}
 
 /* pantalla del local */
-.kiosk{background:#10131a;color:#eef1f7;border-radius:16px;padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.kiosk{background:#161618;color:#eef1f7;border-radius:16px;padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
 .kiosk h2{font-size:26px}
 .kiosk canvas{background:#fff;border-radius:12px;padding:12px;width:min(300px,100%);height:auto;aspect-ratio:1}
-.bar{width:min(300px,100%);height:6px;border-radius:9px;background:#2a3040;overflow:hidden}
-.bar i{display:block;height:100%;background:#e5694f;transition:width 1s linear}
+.bar{width:min(300px,100%);height:6px;border-radius:9px;background:#34343a;overflow:hidden}
+.bar i{display:block;height:100%;background:#cfcfd6;transition:width 1s linear}
 .kiosk .mono{font-size:28px}
 .kiosk p{margin:0;color:#aab2c6;max-width:46ch}
 .hide{display:none}
+details.brandbox{position:relative}
+details.brandbox summary{list-style:none;cursor:pointer;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 12px;font-weight:500}
+details.brandbox summary::-webkit-details-marker{display:none}
+.brandpanel{position:absolute;right:0;top:calc(100% + 6px);z-index:5;width:260px;max-width:calc(100vw - 32px);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+.brandpanel label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
+.brandpanel input[type=color]{width:100%;height:34px;border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:2px}
+
 .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .hd{display:flex;gap:12px;align-items:center}
 .logo{display:grid;place-items:center;width:112px;height:44px;border:1.5px dashed var(--line);border-radius:8px;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;overflow:hidden;background:var(--surface)}
@@ -128,7 +136,7 @@ button.kpi b{color:var(--bad)}
 <div class="wrap">
   <div class="top">
     <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos.</p></div></div>
-    <div class="tools"><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
+    <div class="tools"><details class="brandbox"><summary>Marca</summary><div class="brandpanel"><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#4b4b53"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div></details><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
       <button role="tab" aria-selected="true" data-v="admin">Administrador</button>
       <button role="tab" aria-selected="false" data-v="emp">Empleado (celular)</button>
       <button role="tab" aria-selected="false" data-v="kiosk">Pantalla del local</button>
@@ -361,6 +369,13 @@ button.kpi b{color:var(--bad)}
   function lbl(){$('#theme').textContent=isDark()?'☀ Modo día':'☾ Modo oscuro'}
   lbl();
   $('#theme').onclick=function(){root.setAttribute('data-theme',isDark()?'light':'dark');lbl()};
+
+
+  // marca: tipografía y color
+  function lum(h){var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return (0.299*r+0.587*g+0.114*b)/255}
+  $('#fontSel').onchange=function(){var f="'"+this.value+"',system-ui,sans-serif";root.style.setProperty('--display',f);root.style.setProperty('--body',f)};
+  $('#colSel').oninput=function(){var c=this.value;root.style.setProperty('--accent',c);root.style.setProperty('--accent-fg',lum(c)>0.6?'#1b1b1e':'#ffffff');root.style.setProperty('--accent-soft','color-mix(in srgb, '+c+' 16%, var(--surface))')};
+  $('#brandReset').onclick=function(){['--display','--body','--accent','--accent-fg','--accent-soft'].forEach(function(k){root.style.removeProperty(k)});$('#fontSel').value='Manrope';$('#colSel').value='#4b4b53'};
 
   // QR de ejemplo que se regenera cada 120 s
   var seed=7;
