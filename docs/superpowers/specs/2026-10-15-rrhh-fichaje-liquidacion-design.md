@@ -16,9 +16,9 @@ PWA SaaS multi-local donde el personal registra ingreso y egreso de su jornada m
 ## 3. Supuestos a confirmar
 - Mercado Argentina, moneda ARS, español rioplatense.
 - Naaloo se usa como referencia pública de estilo (no hay acceso a su interfaz): navegación lateral por módulos, panel de resumen, tablas con filtros.
-- Una jornada es un ingreso más su egreso. Según las horas fichadas cuenta como 1 jornada, media jornada o jornada corta a resolver por el administrador, y las horas sobre `horas_jornada` son horas extra con recargo que el administrador aprueba al liquidar (ver `docs/product/payroll-rules.md`). Las ausencias no se pagan y no generan un descuento aparte.
+- Una jornada es un ingreso más su egreso. Según las horas fichadas cuenta como 1 jornada, media jornada o jornada corta a resolver por el administrador, y las horas sobre `horas_jornada` son horas extra con recargo que el administrador aprueba al liquidar (ver `docs/product/payroll-rules.md`). La ausencia injustificada no se paga y no genera un descuento aparte; la autorizada se paga.
 - Valores iniciales confirmados: jornada 8 h, media jornada desde 4 h, recargo extra 1,5 (2,0 domingos/feriados). Son configurables por empresa.
-- **Ausencias:** solo se descuenta la jornada no trabajada (no se paga); no hay penalización adicional.
+- **Ausencias:** tres situaciones. Autorizada (se paga la jornada), injustificada (se descuenta la jornada) y franco o día libre (no es ausencia). No hay penalización adicional.
 - **Local de fichaje:** el empleado ficha solo en su local asignado. El administrador puede habilitarlo temporalmente en otros locales (ver `habilitaciones_local` en el modelo de datos).
 - Las reglas necesitan validación contable.
 
@@ -64,8 +64,12 @@ Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architectur
 ## 9. Fuera de alcance
 POS, stock, compras, facturación, aportes y retenciones legales, app nativa, reconocimiento facial, catálogo de productos y descuentos.
 
+- **Marca y tema:** logo personalizable de la empresa y modo día/oscuro.
+- **Fichajes:** el panel marca en rojo el retraso o ingreso fuera de la tolerancia (10 min) y en verde el ingreso en horario.
+
 ## 10. Preguntas abiertas
 1. ¿Validamos las reglas de liquidación con un contador antes de la fase 4? (recomendado)
 2. ¿Los feriados se cargan en un calendario por empresa? (propuesta: sí, lo carga el administrador)
 3. ¿Hace falta el rol encargado en la primera versión? (propuesta: no; hoy "administrador del local" se resuelve con el rol administrador)
 4. Capturas o referencias de Naaloo para ajustar el estilo, si están disponibles.
+5. ¿El franco o día libre se paga? Hoy el modelo no lo paga ni lo descuenta (se paga solo lo trabajado y lo autorizado).

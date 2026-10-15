@@ -8,7 +8,7 @@ No hay sueldo mensual ni divisor de días fijo. Al crear la ficha del empleado s
 ## Entradas (automáticas desde el perfil del empleado)
 - `monto_jornada` de la ficha.
 - Marcas válidas de ingreso/egreso del período (las horas fichadas definen jornada, media jornada y extras).
-- Turnos previstos (para detectar ausencias).
+- Turnos previstos (para detectar ausencias y medir el retraso del ingreso).
 - Consumos aprobados.
 
 ## Parámetros de la empresa (configurables)
@@ -32,11 +32,15 @@ Cada empleado puede tener un override de `horas_jornada` en su ficha (p. ej. coc
 - **Horas extra**: horas fichadas por encima de `horas_jornada` (solo si la fracción es 1). Se redondean a bloques de 15 min.
 - **Ajuste manual**: el administrador puede forzar la fracción de una jornada o las horas extra de un día, con motivo; queda auditado.
 - **Jornada incompleta**: ingreso sin egreso. No se paga hasta que el administrador la resuelva (corrige la marca o la descarta) antes de confirmar.
-- **Ausencia**: día con turno previsto y sin jornada trabajada. Justificada o injustificada; no se paga en ningún caso y se muestra en el recibo como dato informativo. No hay penalización adicional: el descuento es la jornada no trabajada.
+- **Ausencia**: día con turno previsto y sin jornada trabajada. Tiene un tipo:
+  - **Autorizada**: el administrador la autoriza. **Se paga la jornada** (no se descuenta).
+  - **Injustificada**: **no se paga la jornada** (se descuenta). Es el tipo por defecto cuando no hay marca ni autorización.
+  - **Franco / día libre**: no es una ausencia. No se descuenta ni cuenta como ausente.
+  No hay penalización adicional en ningún caso. El recibo muestra cada tipo por separado.
 
 ## Cálculo
 ```
-jornadas_pagas = suma de fracciones de jornada del período
+jornadas_pagas = suma de fracciones de jornada trabajadas + ausencias autorizadas
 valor_hora_extra = monto_jornada / horas_jornada x recargo
 bruto_jornadas = jornadas_pagas x monto_jornada
 bruto_extras   = suma(horas_extra_aprobadas x valor_hora_extra)
