@@ -1,7 +1,7 @@
 # Roles y pantallas
 
 ## Administrador (dueño de la empresa)
-- **Marca propia**: espacio "Tu logo" arriba a la izquierda para subir el logo de la empresa. Modo día y modo oscuro seleccionable. Panel **Marca** para elegir la tipografía y el color de acento de la empresa; la interfaz base usa grises suaves para que el branding se adapte sin chocar.
+- **Marca propia**: espacio "Tu logo" arriba a la izquierda para subir el logo de la empresa. En PC la interfaz usa un fondo gris claro fijo; el modo oscuro existe solo en celulares (sigue al sistema o se elige a mano). Las secciones del administrador se abren desde un menú sándwich (☰). Panel **Marca** para elegir la tipografía y el color de acento de la empresa; la interfaz base usa grises suaves para que el branding se adapte sin chocar.
 - **Locales**: listado de todas las sucursales, crear/editar (nombre, dirección, coordenadas y radio de geocerca), activar/desactivar. Incluye el cuadro **Ausentes hoy**: al abrirlo lista los empleados ausentes con su situación: ausencia autorizada (no descuenta la jornada), ausencia injustificada (descuenta la jornada) y franco o día libre.
 - **Empleados**: alta con legajo y monto por jornada, asignación y reasignación a sucursal, baja. Habilitar a un empleado a fichar en otro local (con fecha desde/hasta y motivo).
 - **Fichajes**: vista por local/día/empleado con turno, hora de ingreso y diferencia. Retraso o fuera de la tolerancia (10 min) en rojo; en horario en verde. Corrección manual con motivo (queda auditada).

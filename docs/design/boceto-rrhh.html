@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&family=Lora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: selector de vista arriba; admin = menú lateral + contenido; empleado = celular; local = pantalla del QR.
+/* Layout: selector de vista arriba; admin = menú sándwich + contenido; PC gris claro fijo, modo oscuro solo en móvil; empleado = celular; local = pantalla del QR.
    Paleta: grises suaves; el acento y la tipografía los define la marca (panel "Marca"). */
 :root{
   --bg:#e1e2e6; --surface:#ffffff; --surface2:#f2f2f4; --line:#dcdce1; --shadow:rgba(30,30,40,.08); --shadow-h:rgba(30,30,40,.16);
@@ -12,16 +12,16 @@
   --display:'Manrope',system-ui,sans-serif;
   --body:'Manrope',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+@media (max-width:760px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
   --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
   --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
   --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}}
-:root[data-theme="dark"]{
+@media (max-width:760px){:root[data-theme="dark"]{
   --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
   --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
   --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
-  --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}
+  --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45;
   padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -130,7 +130,7 @@ button.kpi b{color:var(--bad)}
 .pill.info{background:var(--surface2);color:var(--muted)}
 .t-ok{color:var(--ok);font-weight:600}
 .t-bad{color:var(--bad);font-weight:600}
-@media (max-width:760px){.admin{grid-template-columns:1fr}.side{flex-direction:row;overflow-x:auto;padding:10px}.side .grp,.brand{display:none}.side button{white-space:nowrap}}
+@media (max-width:760px){.main{padding:14px}}
 
 /* Botones y transiciones */
 :root{--ease:cubic-bezier(.2,.7,.2,1);--t:180ms}
@@ -162,11 +162,36 @@ select:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line))}
 .brandbox[open] .brandpanel{animation:aparece 200ms var(--ease)}
 @keyframes aparece{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* Menú sándwich */
+.admin{display:block}
+#theme{display:none}
+@media (max-width:760px){#theme{display:inline-block}}
+.side{position:fixed;top:0;bottom:0;left:0;z-index:20;width:min(280px,85vw);overflow-y:auto;
+  padding:calc(14px + env(safe-area-inset-top,0px)) 12px calc(16px + env(safe-area-inset-bottom,0px)) calc(12px + env(safe-area-inset-left,0px));
+  transform:translateX(-105%);transition:transform 280ms var(--ease);box-shadow:10px 0 30px rgba(0,0,0,.22);visibility:hidden}
+.side.open{transform:none;visibility:visible}
+.side:not(.open){transition:transform 280ms var(--ease),visibility 0s 280ms}
+.scrim{position:fixed;inset:0;z-index:15;background:rgba(25,25,30,.35);opacity:0;pointer-events:none;transition:opacity 280ms var(--ease)}
+.scrim.open{opacity:1;pointer-events:auto}
+.stop{display:flex;justify-content:flex-end;margin-bottom:6px}
+.sclose{width:34px;height:34px;border-radius:999px;border:1px solid #55555d;background:transparent;color:var(--side-fg);transition:background-color var(--t) var(--ease),transform var(--t) var(--ease)}
+.sclose:hover{background:var(--side-active);transform:rotate(90deg)}
+.abar{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.burger{width:44px;height:44px;flex:none;border-radius:999px;border:1px solid var(--line);background:var(--surface);display:grid;place-content:center;gap:4px;box-shadow:0 1px 2px var(--shadow);transition:box-shadow var(--t) var(--ease),transform var(--t) var(--ease),border-color var(--t) var(--ease)}
+.burger:hover{box-shadow:0 4px 12px var(--shadow-h);transform:translateY(-1px)}
+.burger:active{transform:scale(.95)}
+.burger span{display:block;width:18px;height:2px;border-radius:2px;background:var(--fg);transition:transform 240ms var(--ease),opacity 200ms var(--ease)}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.crumb{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.crumb b{font-family:var(--display);font-size:17px}
 </style>
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 5</span></p></div></div>
+    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 6</span></p></div></div>
     <div class="tools"><details class="brandbox"><summary>Marca</summary><div class="brandpanel"><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#4b4b53"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div></details><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
       <button role="tab" aria-selected="true" data-v="admin">Administrador</button>
       <button role="tab" aria-selected="false" data-v="emp">Empleado (celular)</button>
@@ -176,7 +201,9 @@ select:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line))}
 
   <!-- ADMIN -->
   <section id="v-admin" class="admin">
-    <nav class="side" id="nav">
+    <div class="scrim" id="scrim"></div>
+    <nav class="side" id="nav" aria-label="Menú principal">
+      <div class="stop"><button class="sclose" id="sclose" type="button" aria-label="Cerrar menú">✕</button></div>
       <label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label>
       <div class="brand">Casa Fuego<small>Administrador</small></div>
       <div class="grp">Personal</div>
@@ -187,6 +214,7 @@ select:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line))}
       <button data-s="liq">Liquidación</button>
     </nav>
     <div class="main">
+      <div class="abar"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><div class="crumb"><span class="meta">Casa Fuego · Administrador</span><b id="crumb">Locales</b></div></div>
       <!-- locales -->
       <div id="s-locales" class="sec">
         <div class="head"><h2>Locales</h2><button class="btn primary" id="newLocal">+ Nuevo local</button></div>
@@ -305,8 +333,13 @@ select:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line))}
     ['admin','emp','kiosk'].forEach(function(v){$('#v-'+v).classList.toggle('hide',v!==b.dataset.v)});
   }});
   // secciones admin
-  $$('#nav button').forEach(function(b){b.onclick=function(){
-    $$('#nav button').forEach(function(x){x.removeAttribute('aria-current')});
+  function menu(open){$('#nav').classList.toggle('open',open);$('#scrim').classList.toggle('open',open);$('#burger').setAttribute('aria-expanded',open);if(open)$('#sclose').focus()}
+  $('#burger').onclick=function(){menu(!$('#nav').classList.contains('open'))};
+  $('#sclose').onclick=$('#scrim').onclick=function(){menu(false);$('#burger').focus()};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('#nav').classList.contains('open')){menu(false);$('#burger').focus()}});
+  $$('#nav button[data-s]').forEach(function(b){b.onclick=function(){
+    $$('#nav button[data-s]').forEach(function(x){x.removeAttribute('aria-current')});
+    $('#crumb').textContent=b.textContent;menu(false);
     b.setAttribute('aria-current','page');
     $$('.sec').forEach(function(s){s.classList.add('hide')});
     $('#s-'+b.dataset.s).classList.remove('hide');
