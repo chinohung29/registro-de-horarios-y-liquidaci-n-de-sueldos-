@@ -28,7 +28,21 @@ El resto no tiene sitio propio accesible (solo redes) o usa plantillas que no ex
 - **Marrón carne** y **carbón** como tono oscuro. Como el producto no usa negro, el tono oscuro es marrón carne.
 - **Azul** aparece como contrapunto en marcas de leña o mariscos.
 
-## Paleta adoptada (por defecto: "Mostaza y ketchup")
+## Paleta en prueba: Frank's Grill (por defecto desde la versión 11 del boceto)
+Colores tomados de franksgrill.com.ar: azules `#3462A6`, `#2B5AA3`, `#22487E`, `#18355C`; crema `#F8F3E8`; rosa `#FCAEC7`; celeste `#D0E1FD`; rojo `#C62828`.
+
+| Rol | Color |
+|---|---|
+| Fondo de página | azul `#22487E` |
+| Paneles | crema `#FFFDF8` / `#F8F3E8` |
+| Texto | azul marino `#18355C` |
+| Botón de acción | rosa `#FCAEC7` con texto azul marino |
+| Selección | azul medio `#3462A6` |
+| Alertas (retraso, injustificada) | rojo `#C62828` |
+| Menú | azul marino translúcido `rgba(24,53,92,.92)` |
+| Modo oscuro (móvil) | azul noche `#0F1F36` |
+
+## Paleta "Mostaza y ketchup" (preset)
 | Rol | Color |
 |---|---|
 | Fondo de página | mostaza `#F2B517` |
@@ -38,9 +52,8 @@ El resto no tiene sitio propio accesible (solo redes) o usa plantillas que no ex
 | Selección | pepino `#7A9A2B` |
 | Menú y pantalla del local | carne `#6E2E12` |
 
-Presets alternativos en el panel **Marca**:
+Otros presets en el panel **Marca**:
 - **Smash**: ciruela `#3B2045`, rosa `#E2527F`, amarillo `#FFC654` (inspirado en Burger Couple).
-- **Leña**: azul `#22487E`, coral `#D9534B`, mostaza `#DCA039` (inspirado en Frank's Grill y B'Moodie).
 
 ## Fuentes
 - https://www.timeout.com/es/buenos-aires/hamburguesas-restaurantes-gourmet-donde-comer
