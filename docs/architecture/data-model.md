@@ -4,7 +4,7 @@ Multi-tenant por `empresa_id` en todas las tablas, aislado con Row Level Securit
 
 | Tabla | Campos principales |
 |---|---|
-| `empresas` | id, nombre, moneda, parametros_liquidacion (jsonb: horas_jornada, horas_media_jornada, tolerancia_min, recargos) |
+| `empresas` | id, nombre, moneda, parametros_liquidacion (jsonb: horas_jornada, horas_media_jornada, tolerancia_min, recargos, cupones_familiares_mes = 2, porcentaje_cupon) |
 | `locales` | id, empresa_id, nombre, direccion, lat, lng, radio_m, qr_secret, activo |
 | `perfiles` | id (= auth.users), empresa_id, rol (`admin`/`encargado`/`empleado`), nombre |
 | `empleados` | id, empresa_id, perfil_id, legajo, nombre, apellido, documento (único por empresa), telefono, email (único; será el usuario de acceso), puesto, fecha_ingreso, horas_jornada (override opcional), activo |
@@ -15,9 +15,10 @@ Multi-tenant por `empresa_id` en todas las tablas, aislado con Row Level Securit
 | `marcas` | id, empleado_id, local_id, tipo (`ingreso`/`egreso`), ts, lat, lng, accuracy_m, slot, valida, motivo_rechazo, corregida_por |
 | `jornadas` | id, empleado_id, local_id, fecha, ingreso_ts, egreso_ts, horas, fraccion (1 / 0.5 / null=revisar), horas_extra, extra_especial, estado_extra (`pendiente`/`aprobado`/`rechazado`), ajustada_por, motivo_ajuste |
 | `ausencias` | id, empleado_id, fecha, tipo (`autorizada`/`injustificada`/`franco`), motivo, cargada_por |
-| `consumos` | id, empleado_id, fecha, descripcion, monto, estado (`pendiente`/`aprobado`/`rechazado`/`liquidado`) |
+| `adelantos` | id, empleado_id, fecha, monto, motivo, estado (`pendiente`/`aprobado`/`rechazado`/`liquidado`), solicitado_por |
+| `consumos` | id, empleado_id, fecha, ticket_numero (único por empresa, del sistema de facturación externo), monto, foto_ticket_url, cupon_familiar (bool), monto_a_descontar, estado (`pendiente`/`aprobado`/`rechazado`/`liquidado`), cargado_por |
 | `liquidaciones` | id, empresa_id, periodo, estado, creada_por |
-| `liquidacion_items` | id, liquidacion_id, empleado_id, jornadas_pagas, monto_jornada, jornadas_autorizadas, jornadas_injustificadas, horas_extra, bruto_jornadas, bruto_extras, desc_cupones, neto |
+| `liquidacion_items` | id, liquidacion_id, empleado_id, jornadas_pagas, monto_jornada, jornadas_autorizadas, jornadas_injustificadas, horas_extra, bruto_jornadas, bruto_extras, desc_adelantos, desc_consumos, cupones_usados, neto, recibo_pdf_url |
 | `liquidacion_lineas` | id, item_id, concepto, monto (extensible a aportes) |
 
 ## RLS

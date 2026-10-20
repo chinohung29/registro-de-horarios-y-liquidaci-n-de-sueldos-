@@ -267,11 +267,76 @@ input[type=checkbox]{accent-color:var(--ok)}
 .tbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
 .tbar select{padding:7px 10px;border-radius:999px}
 @media (max-width:560px){.fgrid{grid-template-columns:1fr}}
+
+/* Liquidación: detalle, recibos y PDF */
+.grow{flex:1}
+.totact{display:flex;gap:8px;flex-wrap:wrap}
+.modal.xl{width:min(920px,calc(100vw - 32px))}
+.dsum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+.dsum div{background:var(--surface2);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
+.dsum b{font-family:var(--mono);font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
+.dsum .neto{background:var(--hi-soft)}
+@media (max-width:560px){.dsum{grid-template-columns:1fr 1fr}}
+table.mini{min-width:600px}
+table.mini th,table.mini td{padding:7px 10px}
+.addrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.modal .addrow input[type=text],.modal .addrow input[type=number]{flex:1 1 150px;width:auto}
+.lnk{border:0;background:none;color:var(--bad);text-decoration:underline;padding:0;font-size:12.5px}
+.att{position:relative;overflow:hidden;cursor:pointer}
+.att input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.thumb{border:1px solid var(--line);border-radius:8px;padding:0;width:40px;height:40px;overflow:hidden;background:var(--surface2)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.nowrap{white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.pdfv{position:fixed;inset:0;z-index:35;background:var(--page-deep);overflow-y:auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 32px max(16px,env(safe-area-inset-left,0px))}
+.pdfbar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:calc(12px + env(safe-area-inset-top,0px)) 0 12px;color:var(--on-page);background:var(--page-deep)}
+.pdfbar .meta{color:var(--on-page);opacity:.85;margin-left:10px}
+.pdfact{display:flex;gap:8px}
+.sheets{display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:8px}
+.sheet{background:#fff;color:var(--fg);width:min(794px,100%);padding:36px 32px;border-radius:4px;box-shadow:0 10px 30px rgba(5,15,35,.35);min-width:0}
+@media (max-width:560px){.sheet{padding:22px 16px}}
+.rlogo{display:block;margin:0 auto 10px;max-height:64px;max-width:180px;object-fit:contain}
+.rlogo.ph{width:140px;height:56px;border:1.5px dashed var(--line);border-radius:8px;display:grid;place-items:center;color:var(--muted);font-weight:700;font-size:12px;letter-spacing:.06em}
+.rhead{text-align:center;display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
+.rhead b{font-family:var(--display);font-size:18px}
+.rhead span{color:var(--muted);font-size:12.5px}
+.rname{font-family:var(--display);font-size:20px;font-weight:700;text-align:center;margin-bottom:8px}
+.rdata{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.rdata b{color:var(--fg)}
+.rtab{width:100%;border-collapse:collapse;min-width:0;font-size:13px}
+.rtab th{background:var(--surface2)}
+.rtab td,.rtab th{padding:7px 10px;border-bottom:1px solid var(--line);white-space:normal}
+.rtab tr.sub td{font-weight:700}
+.rtab tr.net td{font-weight:800;background:var(--hi-soft);font-size:14px}
+.rtab.wide{min-width:0;font-size:11px}
+.rtab.wide th{font-size:10px;letter-spacing:0;white-space:normal}
+.rtab.wide td.n{font-size:11px}
+.rtab.wide td,.rtab.wide th{padding:6px 6px}
+.rtab td.n,.rtab th.n{white-space:nowrap}
+.pdfbar .btn:not(.primary){color:var(--fg)}
+.rinfo{font-size:12px;color:var(--muted);margin:10px 0 0}
+.rsign{margin-top:28px}
+.rsign p{margin:0 0 34px;font-size:13px}
+.rsign .lines{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rsign .lines div{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);text-align:center}
+.rsign .lines span{display:block;border-top:1px solid var(--muted);height:1px}
+@media (max-width:560px){.rsign .lines{grid-template-columns:1fr}}
+.prec .rcpt{font-size:12px}
+.prec .rtab{font-size:11.5px}
+.prec .rtab td,.prec .rtab th{padding:5px 4px}
+.prec .rname{font-size:16px}
+.prec .rdata{gap:4px 10px;font-size:11.5px}
+.prec .rsign .lines{grid-template-columns:1fr}
+.fotov{position:fixed;inset:0;z-index:50;background:rgba(10,25,50,.7);display:grid;place-items:center;padding:16px}
+.fotobox{background:var(--surface);border-radius:14px;padding:12px;max-width:min(560px,100%);display:flex;flex-direction:column;gap:10px}
+.fotobox img{max-height:70vh;max-width:100%;border-radius:8px;object-fit:contain}
+.fotocap{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pdfv[hidden],.fotov[hidden]{display:none!important}
+@media print{body>*:not(.pdfv){display:none!important}.pdfv{position:static;background:none;padding:0}.pdfbar{display:none}.sheet{box-shadow:none;page-break-after:always;width:auto}}
 </style>
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 15</span></p></div></div>
+    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 16</span></p></div></div>
     <div class="tools"><span class="viewtag" id="viewTag">Vista: Administrador</span><button class="btn" id="theme" type="button"></button></div>
   </div>
   <div class="scrim" id="scrim"></div>
@@ -336,15 +401,17 @@ input[type=checkbox]{accent-color:var(--ok)}
       </div>
       <!-- liquidacion -->
       <div id="s-liq" class="sec hide">
-        <div class="head"><h2>Liquidación · septiembre</h2><span class="pill warn" id="liqState">Borrador</span></div>
-        <p class="meta" style="margin:6px 0 14px">Jornadas y ausencias salen de las marcas. Aprobá o rechazá consumos y horas extra antes de confirmar.</p>
-        <div class="tw"><table>
-          <thead><tr><th>Empleado</th><th class="n">Jornadas</th><th class="n">Aus. autorizadas</th><th class="n">Aus. injustificadas</th><th class="n">Monto jornada</th><th class="n">Hs extra</th><th>Aprobar extra</th><th class="n">Consumos</th><th>Aprobar consumos</th><th class="n">Neto</th></tr></thead>
+        <div class="head"><h2>Liquidación · septiembre 2026</h2><span class="pill warn" id="liqState">Borrador</span></div>
+        <div class="tbar"><span class="meta">Jornadas y ausencias salen de las marcas. Revisá horas extra, adelantos y consumos en el detalle de cada empleado.</span><span class="grow"></span><label for="cupPct" class="meta">Descuento por cupón familiar</label><select id="cupPct"><option value="10">10%</option><option value="15">15%</option><option value="20" selected>20%</option><option value="25">25%</option><option value="30">30%</option></select></div>
+        <div class="tw" style="margin-top:12px"><table>
+          <thead><tr><th>Empleado</th><th class="n">Jornadas</th><th class="n">Aus. aut.</th><th class="n">Aus. inj.</th><th class="n">Monto jornada</th><th>Horas extra (aprobar)</th><th class="n">Haberes</th><th class="n">Adelantos</th><th class="n">Consumos</th><th>Cupones</th><th class="n">Neto</th><th></th></tr></thead>
           <tbody id="liqRows"></tbody></table></div>
         <div class="tot" style="margin-top:14px">
-          <div><span class="meta">Total a pagar</span><br><b id="liqTotal">$0</b></div>
-          <div><span class="meta">Consumos descontados</span><br><b id="liqCons">$0</b></div>
-          <button class="btn primary" id="confirmLiq">Confirmar liquidación</button>
+          <div><span class="meta">Haberes</span><br><b id="liqBruto">$0</b></div>
+          <div><span class="meta">Adelantos</span><br><b id="liqAdel">$0</b></div>
+          <div><span class="meta">Consumos</span><br><b id="liqCons">$0</b></div>
+          <div><span class="meta">Neto a pagar</span><br><b id="liqTotal">$0</b></div>
+          <div class="totact"><button class="btn" id="pdfBtn" type="button">Ver recibos y PDF</button><button class="btn primary" id="confirmLiq" type="button">Confirmar liquidación</button></div>
         </div>
       </div>
     </div>
@@ -371,13 +438,11 @@ input[type=checkbox]{accent-color:var(--ok)}
         <div class="tabs" id="etabs"><button aria-selected="true" data-t="cons">Mis consumos</button><button aria-selected="false" data-t="rec">Mi recibo</button></div>
         <div id="t-cons" class="list">
           <h3>Consumos de septiembre</h3>
-          <div><span>Almuerzo personal · 04/09</span><span class="pill ok">Aprobado</span></div>
-          <div><span>Café y medialunas · 11/09</span><span class="pill warn">Pendiente</span></div>
-          <div><span>Pizza para llevar · 19/09</span><span class="pill warn">Pendiente</span></div>
-          <p class="meta" style="margin:10px 0 0">El administrador aprueba la suma al liquidar el sueldo.</p>
-          <button class="btn primary" style="margin-top:6px">+ Agregar consumo</button>
+          <section id="phCons"></section>
+          <p class="meta" id="phCup" style="margin:10px 0 0"></p>
+          <button class="btn primary" id="phAdd" type="button" style="margin-top:6px">+ Cargar consumo</button>
         </div>
-        <div id="t-rec" class="list hide">
+        <div id="t-rec" class="prec hide">
           <h3>Recibo · agosto</h3>
           <div><span>Jornadas pagas</span><span class="mono">22,5</span></div>
           <div><span>Monto por jornada</span><span class="mono">$38.000</span></div>
@@ -404,6 +469,11 @@ input[type=checkbox]{accent-color:var(--ok)}
   <div class="note">Boceto de diseño: no hay cámara ni GPS reales. El botón de fichar y la liquidación simulan el comportamiento.</div>
 </div>
 
+<div class="pdfv" id="pdfv" role="dialog" aria-modal="true" aria-label="Vista previa del PDF de liquidación" hidden>
+  <div class="pdfbar"><div><b>Vista previa del PDF · Liquidación septiembre 2026</b><span class="meta" id="pdfCount"></span></div><div class="pdfact"><button class="btn primary" id="pdfDl" type="button">Descargar PDF</button><button class="btn" id="pdfClose" type="button">Cerrar</button></div></div>
+  <div class="sheets" id="sheets"></div>
+</div>
+<div class="fotov" id="fotoV" hidden><div class="fotobox"><img id="fotoImg" alt="Foto del ticket"><div class="fotocap"><span id="fotoCap"></span><button class="btn sm" id="fotoClose" type="button">Cerrar</button></div></div></div>
 <div class="mscrim" id="mScrim" hidden></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
   <div class="mhead"><h3 id="mTitle"></h3><button class="mx" id="mClose" type="button" aria-label="Cerrar">✕</button></div>
@@ -443,7 +513,7 @@ input[type=checkbox]{accent-color:var(--ok)}
     {id:3,n:'Costanera',d:'Av. Rafael Obligado 1200',r:150,act:true},
     {id:4,n:'Belgrano',d:'Av. Cabildo 2100',r:100,act:true}
   ];
-  function E(l,n,ap,doc,tel,p,loc,m,j,au,a,hx,c){return {l:l,n:n,ap:ap,doc:doc,tel:tel,mail:(n+'.'+ap).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')+'@ejemplo.com',p:p,loc:loc,m:m,j:j,au:au,a:a,hx:hx,c:c,st:{hx:true,c:true}}}
+  function E(l,n,ap,doc,tel,p,loc,m,j,au,a,hx,c){return {l:l,n:n,ap:ap,doc:doc,tel:tel,mail:(n+'.'+ap).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')+'@ejemplo.com',p:p,loc:loc,m:m,j:j,au:au,a:a,hx:hx,adel:[],cons:c.map(function(m,k){return {f:String(3+k*6).padStart(2,'0')+'/09',t:'0003-'+String(12000+Math.floor(m/7)+k*31).padStart(8,'0'),m:m,cup:false,foto:null,ok:true}}),st:{hx:true}}}
   var emps=[
     E('0012','Lucía','Benítez','35123456','11 5123-4567','Mozo/a',1,38000,22.5,0,1,1.5,[4200,5200]),
     E('0015','Martín','Aguirre','33987654','11 5234-5678','Cocinero/a',1,46000,24,0,0,4,[3800]),
@@ -458,6 +528,8 @@ input[type=checkbox]{accent-color:var(--ok)}
     E('0035','Nicolás','Ferreyra','42667788','11 6123-4567','Cocinero/a',4,46000,23,0,1,1.5,[4100]),
     E('0036','Agustina','Ríos','43990011','11 6234-5678','Cajero/a',4,36000,22.5,0,0,0,[1900])
   ];
+  emps[0].adel.push({f:'10/09',m:60000,mot:'Adelanto de quincena',ok:true});emps[0].cons[1].ok=false;
+  emps[3].adel.push({f:'15/09',m:40000,mot:'Gastos médicos',ok:false});emps[8].cons[0].cup=true;emps[9].adel.push({f:'20/09',m:80000,mot:'Adelanto de quincena',ok:true});
   var PUESTOS=['Mozo/a','Cocinero/a','Ayudante de cocina','Parrillero/a','Bachero/a','Barra / Bartender','Cajero/a','Encargado/a','Delivery','Limpieza','Otro'];
   var full=function(e){return e.n+' '+e.ap};
   var locName=function(id){var l=locales.filter(function(x){return x.id===id})[0];return l?l.n:''};
@@ -470,7 +542,7 @@ input[type=checkbox]{accent-color:var(--ok)}
   // ventana modal reutilizable
   var onOk=null,lastFocus=null;
   function openModal(title,body,okLabel,fn){
-    lastFocus=document.activeElement;
+    lastFocus=document.activeElement;$('#mCancel').hidden=false;$('#modal').classList.remove('xl');
     $('#mTitle').textContent=title;$('#mBody').innerHTML=body;$('#mOk').textContent=okLabel||'Guardar';onOk=fn;
     $('#modal').hidden=false;$('#mScrim').hidden=false;
     var f=$('#mBody input:not([type=checkbox]),#mBody select');(f||$('#mOk')).focus();
@@ -564,28 +636,128 @@ input[type=checkbox]{accent-color:var(--ok)}
     if(isNew){e.l=String(Math.max.apply(null,emps.map(function(x){return +x.l}))+1).padStart(4,'0');emps.push(e)}
     drawLocales();drawEmps();toast(isNew?'Empleado dado de alta · legajo '+e.l:'Datos de '+full(e)+' actualizados');
   }}
-  $('#newEmp').onclick=function(){var e={n:'',ap:'',doc:'',tel:'',mail:'',p:'',loc:0,m:0,j:0,au:0,a:0,hx:0,c:[],st:{hx:true,c:true}};openModal('Alta de empleado',empForm(e),'Dar de alta',saveEmp(e,true))};
+  $('#newEmp').onclick=function(){var e={n:'',ap:'',doc:'',tel:'',mail:'',p:'',loc:0,m:0,j:0,au:0,a:0,hx:0,adel:[],cons:[],st:{hx:true}};openModal('Alta de empleado',empForm(e),'Dar de alta',saveEmp(e,true))};
   $('#empRows').addEventListener('click',function(ev){var b=ev.target.closest('button[data-edit]');if(!b)return;var e=emps[+b.dataset.edit];openModal('Editar empleado · legajo '+e.l,empForm(e),'Guardar cambios',saveEmp(e,false))});
   $('#empFilter').onchange=drawEmps;
 
   // liquidación
-  function drawLiq(){
-    var total=0,cons=0;
-    $('#liqRows').innerHTML=emps.map(function(e,i){
-      var s=e.st, consSum=e.c.reduce(function(a,b){return a+b},0);
-      var extra=s.hx?e.hx*(e.m/8)*1.5:0, desc=s.c?consSum:0;
-      var neto=(e.j+e.au)*e.m+extra-desc; total+=neto; cons+=desc;
-      return '<tr><td>'+esc(full(e))+'</td><td class="n">'+String(e.j).replace('.',',')+'</td><td class="n">'+e.au+'</td><td class="n">'+e.a+'</td><td class="n">'+(e.m?fmt(e.m):'—')+'</td><td class="n">'+String(e.hx).replace('.',',')+'</td>'+
-        '<td>'+(e.hx?'<label><input type="checkbox" data-i="'+i+'" data-k="hx"'+(s.hx?' checked':'')+'> '+fmt(e.hx*(e.m/8)*1.5)+'</label>':'<span class="meta">—</span>')+'</td>'+
-        '<td class="n">'+(consSum?fmt(consSum):'—')+'</td>'+
-        '<td>'+(consSum?'<label><input type="checkbox" data-i="'+i+'" data-k="c"'+(s.c?' checked':'')+'> Aprobar</label>':'<span class="meta">—</span>')+'</td>'+
-        '<td class="n"><b>'+fmt(neto)+'</b></td></tr>';
-    }).join('');
-    $('#liqTotal').textContent=fmt(total); $('#liqCons').textContent=fmt(cons);
-    $$('#liqRows input').forEach(function(c){c.onchange=function(){emps[c.dataset.i].st[c.dataset.k]=c.checked;drawLiq()}});
+  var CUP_MAX=2,cupPct=20,PERIODO='Septiembre 2026',EMPRESA='Casa Fuego',logoSrc='';
+  function sum(a,f){return a.reduce(function(t,x){return t+f(x)},0)}
+  function num(n){return String(n).replace('.',',')}
+  function consNeto(c){return c.cup?Math.round(c.m*(1-cupPct/100)):c.m}
+  function calc(e){
+    var bj=(e.j+e.au)*e.m,ex=e.st.hx?e.hx*(e.m/8)*1.5:0;
+    var ad=sum(e.adel.filter(function(x){return x.ok}),function(x){return x.m});
+    var okc=e.cons.filter(function(x){return x.ok});
+    var co=sum(okc,consNeto),ah=sum(okc.filter(function(x){return x.cup}),function(x){return x.m-consNeto(x)});
+    return {bj:bj,ex:ex,bruto:bj+ex,ad:ad,co:co,ah:ah,cup:e.cons.filter(function(x){return x.cup}).length,neto:bj+ex-ad-co};
   }
+  function drawLiq(){
+    var T={bruto:0,ad:0,co:0,neto:0};
+    $('#liqRows').innerHTML=emps.map(function(e,i){var c=calc(e);T.bruto+=c.bruto;T.ad+=c.ad;T.co+=c.co;T.neto+=c.neto;
+      var pend=e.cons.filter(function(x){return !x.ok}).length+e.adel.filter(function(x){return !x.ok}).length;
+      return '<tr><td>'+esc(full(e))+'<div class="meta">'+(e.loc?esc(locName(e.loc)):'Sin asignar')+'</div></td><td class="n">'+num(e.j)+'</td><td class="n">'+e.au+'</td><td class="n">'+e.a+'</td><td class="n">'+(e.m?fmt(e.m):'—')+'</td>'+
+        '<td>'+(e.hx?'<label class="nowrap"><input type="checkbox" data-i="'+i+'"'+(e.st.hx?' checked':'')+'> '+num(e.hx)+' h · '+fmt(e.hx*(e.m/8)*1.5)+'</label>':'<span class="meta">—</span>')+'</td>'+
+        '<td class="n">'+fmt(c.bruto)+'</td><td class="n">'+(c.ad?'−'+fmt(c.ad):'—')+'</td><td class="n">'+(c.co?'−'+fmt(c.co):'—')+'</td>'+
+        '<td><span class="pill '+(c.cup>=CUP_MAX?'warn':'info')+'">'+c.cup+' de '+CUP_MAX+'</span></td>'+
+        '<td class="n"><b>'+fmt(c.neto)+'</b></td><td><button class="btn sm" data-det="'+i+'">Detalle'+(pend?' · '+pend+' pend.':'')+'</button></td></tr>';
+    }).join('');
+    $('#liqBruto').textContent=fmt(T.bruto);$('#liqAdel').textContent='−'+fmt(T.ad);$('#liqCons').textContent='−'+fmt(T.co);$('#liqTotal').textContent=fmt(T.neto);
+    $$('#liqRows input[type=checkbox]').forEach(function(c){c.onchange=function(){emps[c.dataset.i].st.hx=c.checked;drawLiq()}});
+    drawPhone();
+  }
+  $('#liqRows').addEventListener('click',function(ev){var b=ev.target.closest('button[data-det]');if(b)openDetail(emps[+b.dataset.det])});
+  $('#cupPct').onchange=function(){cupPct=+this.value;drawLiq()};
+
+  // detalle por empleado: adelantos y consumos
+  function fotoCell(c,k){return c.foto?'<button type="button" class="thumb" data-ver="'+k+'" title="Ver foto del ticket"><img src="'+c.foto+'" alt="Foto del ticket '+esc(c.t)+'"></button>':'<label class="btn sm att">Adjuntar foto<input type="file" accept="image/*" data-foto="'+k+'"></label>'}
+  function detailBody(e){var c=calc(e),locked=liqClosed;
+    return '<div class="dsum"><div><span class="meta">Haberes</span><b>'+fmt(c.bruto)+'</b></div><div><span class="meta">Adelantos</span><b>'+(c.ad?'−'+fmt(c.ad):'$0')+'</b></div><div><span class="meta">Consumos</span><b>'+(c.co?'−'+fmt(c.co):'$0')+'</b></div><div class="neto"><span class="meta">Neto</span><b>'+fmt(c.neto)+'</b></div></div>'+
+    '<div class="fsec">Adelantos solicitados</div>'+
+    (e.adel.length?'<div class="tw"><table class="mini"><thead><tr><th>Fecha</th><th>Motivo</th><th class="n">Monto</th><th>Aprobar</th><th></th></tr></thead><tbody>'+e.adel.map(function(a,k){return '<tr><td class="mono">'+a.f+'</td><td>'+esc(a.mot||'—')+'</td><td class="n">'+fmt(a.m)+'</td><td><input type="checkbox" data-aok="'+k+'"'+(a.ok?' checked':'')+' aria-label="Aprobar adelanto"></td><td><button type="button" class="lnk" data-adel-del="'+k+'">Quitar</button></td></tr>'}).join('')+'</tbody></table></div>':'<p class="meta">Sin adelantos este mes.</p>')+
+    (locked?'':'<div class="addrow"><input id="aMon" type="number" min="0" step="1000" placeholder="Monto"><input id="aMot" type="text" placeholder="Motivo (opcional)"><button type="button" class="btn sm" id="aAdd">+ Agregar adelanto</button></div><span class="err" id="aErr"></span>')+
+    '<div class="fsec">Consumos del empleado</div><p class="meta" style="margin:0 0 8px">Cada consumo va contra el ticket del sistema de facturación. Podés adjuntar la foto del ticket. Cupón familiar: '+CUP_MAX+' por mes, '+cupPct+'% de descuento. Usados: <b>'+c.cup+' de '+CUP_MAX+'</b>.</p>'+
+    (e.cons.length?'<div class="tw"><table class="mini"><thead><tr><th>Fecha</th><th>N° de ticket</th><th class="n">Monto</th><th>Cupón familiar</th><th class="n">A descontar</th><th>Foto</th><th>Aprobar</th><th></th></tr></thead><tbody>'+e.cons.map(function(x,k){var dis=!x.cup&&c.cup>=CUP_MAX;
+      return '<tr><td class="mono">'+x.f+'</td><td class="mono">'+esc(x.t)+'</td><td class="n">'+fmt(x.m)+'</td><td><label class="nowrap"><input type="checkbox" data-cup="'+k+'"'+(x.cup?' checked':'')+(dis?' disabled title="Ya usó los 2 cupones del mes"':'')+'> −'+cupPct+'%</label></td><td class="n">'+fmt(consNeto(x))+'</td><td>'+fotoCell(x,k)+'</td><td><input type="checkbox" data-cok="'+k+'"'+(x.ok?' checked':'')+' aria-label="Aprobar consumo"></td><td><button type="button" class="lnk" data-cons-del="'+k+'">Quitar</button></td></tr>'}).join('')+'</tbody></table></div>':'<p class="meta">Sin consumos este mes.</p>')+
+    (locked?'':'<div class="addrow"><input id="cTic" type="text" placeholder="N° de ticket (ej.: 0003-00012345)"><input id="cMon" type="number" min="0" step="100" placeholder="Monto"><label class="nowrap tog"><input type="checkbox" id="cCup"'+(c.cup>=CUP_MAX?' disabled':'')+'> Cupón familiar</label><label class="btn sm att">Foto<input type="file" accept="image/*" id="cFoto"></label><button type="button" class="btn sm" id="cAdd">+ Agregar consumo</button></div><span class="meta" id="cFotoName"></span><span class="err" id="cErr"></span>');
+  }
+  function today(){var d=new Date();return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')}
+  function readImg(file,cb){if(!file)return;var r=new FileReader();r.onload=function(){cb(r.result)};r.readAsDataURL(file)}
+  function bindDetail(e){
+    var re=function(){var y=$('#modal').scrollTop;$('#mBody').innerHTML=detailBody(e);bindDetail(e);$('#modal').scrollTop=y;drawLiq()};
+    $$('#mBody [data-aok]').forEach(function(x){x.onchange=function(){e.adel[+x.dataset.aok].ok=x.checked;re()}});
+    $$('#mBody [data-adel-del]').forEach(function(x){x.onclick=function(){e.adel.splice(+x.dataset.adelDel,1);re()}});
+    $$('#mBody [data-cok]').forEach(function(x){x.onchange=function(){e.cons[+x.dataset.cok].ok=x.checked;re()}});
+    $$('#mBody [data-cup]').forEach(function(x){x.onchange=function(){e.cons[+x.dataset.cup].cup=x.checked;re()}});
+    $$('#mBody [data-cons-del]').forEach(function(x){x.onclick=function(){e.cons.splice(+x.dataset.consDel,1);re()}});
+    $$('#mBody [data-foto]').forEach(function(x){x.onchange=function(){readImg(x.files[0],function(src){e.cons[+x.dataset.foto].foto=src;re();toast('Foto del ticket adjuntada')})}});
+    $$('#mBody [data-ver]').forEach(function(x){x.onclick=function(){var c=e.cons[+x.dataset.ver];$('#fotoImg').src=c.foto;$('#fotoCap').textContent='Ticket '+c.t+' · '+c.f;$('#fotoV').hidden=false}});
+    var pendFoto=null;
+    if($('#cFoto'))$('#cFoto').onchange=function(){var f=this.files[0];readImg(f,function(src){pendFoto=src;$('#cFotoName').textContent='Foto lista: '+f.name})};
+    $$('#mBody .addrow input').forEach(function(x){x.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();var b=x.closest('.addrow').querySelector('button');if(b)b.click()}})});
+    if($('#aAdd'))$('#aAdd').onclick=function(){var m=+$('#aMon').value;if(!(m>0)){$('#aErr').textContent='Ingresá el monto del adelanto.';return}
+      e.adel.push({f:today(),m:m,mot:$('#aMot').value.trim(),ok:true});re();toast('Adelanto agregado')};
+    if($('#cAdd'))$('#cAdd').onclick=function(){var t=$('#cTic').value.trim(),m=+$('#cMon').value;
+      if(!t){$('#cErr').textContent='Ingresá el número de ticket del sistema de facturación.';return}
+      if(!(m>0)){$('#cErr').textContent='Ingresá el monto del ticket.';return}
+      if(emps.some(function(x){return x.cons.some(function(c){return c.t===t})})){$('#cErr').textContent='Ese ticket ya está cargado.';return}
+      e.cons.push({f:today(),t:t,m:m,cup:$('#cCup').checked,foto:pendFoto,ok:true});re();toast('Consumo agregado')};
+  }
+  function openDetail(e){openModal('Detalle · '+full(e),detailBody(e),'Listo',function(){drawLiq()});$('#mCancel').hidden=true;$('#modal').classList.add('xl');bindDetail(e)}
+  $('#fotoClose').onclick=function(){$('#fotoV').hidden=true};
+
+  // recibos y PDF
+  function logoHtml(){return logoSrc?'<img class="rlogo" src="'+logoSrc+'" alt="Logo">':'<div class="rlogo ph">TU LOGO</div>'}
+  function receipt(e){var c=calc(e),rows=[];
+    rows.push(['Jornadas trabajadas',num(e.j),fmt(e.j*e.m)]);
+    if(e.au)rows.push(['Ausencias autorizadas (se pagan)',e.au,fmt(e.au*e.m)]);
+    if(c.ex)rows.push(['Horas extra aprobadas (×1,5)',num(e.hx),fmt(c.ex)]);
+    var desc=[];
+    e.adel.filter(function(a){return a.ok}).forEach(function(a){desc.push(['Adelanto '+a.f+(a.mot?' · '+esc(a.mot):''),'','−'+fmt(a.m)])});
+    e.cons.filter(function(x){return x.ok}).forEach(function(x){desc.push(['Consumo ticket '+esc(x.t)+' · '+x.f+(x.cup?' · cupón familiar −'+cupPct+'%':''),'','−'+fmt(consNeto(x))])});
+    var tr=function(r,cl){return '<tr'+(cl?' class="'+cl+'"':'')+'><td>'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>'};
+    return '<div class="rcpt">'+logoHtml()+'<div class="rhead"><b>'+EMPRESA+'</b><span>Recibo de haberes · '+PERIODO+'</span></div>'+
+      '<div class="rname">'+esc(full(e))+'</div>'+
+      '<div class="rdata"><span>Legajo <b>'+e.l+'</b></span><span>DNI <b>'+esc(e.doc)+'</b></span><span>Puesto <b>'+esc(e.p||'—')+'</b></span><span>Local <b>'+(e.loc?esc(locName(e.loc)):'—')+'</b></span><span>Monto por jornada <b>'+(e.m?fmt(e.m):'—')+'</b></span></div>'+
+      '<table class="rtab"><thead><tr><th>Concepto</th><th class="n">Cant.</th><th class="n">Importe</th></tr></thead><tbody>'+rows.map(function(r){return tr(r)}).join('')+tr(['Total haberes','',fmt(c.bruto)],'sub')+
+      (desc.length?desc.map(function(r){return tr(r)}).join('')+tr(['Total descuentos','','−'+fmt(c.ad+c.co)],'sub'):'')+tr(['NETO A COBRAR','',fmt(c.neto)],'net')+'</tbody></table>'+
+      '<p class="rinfo">Ausencias injustificadas (no pagas): '+e.a+' · Cupones familiares usados: '+c.cup+' de '+CUP_MAX+(c.ah?' · Ahorro por cupones: '+fmt(c.ah):'')+'</p>'+
+      '<div class="rsign"><p>Recibí conforme el importe neto detallado en este recibo.</p><div class="lines"><div><span></span>Firma</div><div><span></span>Aclaración</div><div><span></span>Fecha</div></div></div></div>';
+  }
+  function renderPDF(){
+    var T={b:0,a:0,c:0,n:0};
+    var rows=emps.map(function(e){var c=calc(e);T.b+=c.bruto;T.a+=c.ad;T.c+=c.co;T.n+=c.neto;
+      return '<tr><td>'+esc(full(e))+'</td><td>'+(e.loc?esc(locName(e.loc)):'—')+'</td><td class="n">'+num(e.j)+'</td><td class="n">'+e.au+'</td><td class="n">'+e.a+'</td><td class="n">'+(c.ex?num(e.hx):'0')+'</td><td class="n">'+fmt(c.bruto)+'</td><td class="n">'+(c.ad?'−'+fmt(c.ad):'—')+'</td><td class="n">'+(c.co?'−'+fmt(c.co):'—')+'</td><td class="n"><b>'+fmt(c.neto)+'</b></td></tr>'}).join('');
+    var resumen='<section class="sheet">'+logoHtml()+'<div class="rhead"><b>'+EMPRESA+'</b><span>Liquidación de sueldos · '+PERIODO+' · '+(liqClosed?'Confirmada':'Borrador')+'</span></div>'+
+      '<div class="tw"><table class="rtab wide"><thead><tr><th>Empleado</th><th>Local</th><th class="n">Jornadas</th><th class="n">Aus. aut.</th><th class="n">Aus. inj.</th><th class="n">Hs extra</th><th class="n">Haberes</th><th class="n">Adelantos</th><th class="n">Consumos</th><th class="n">Neto</th></tr></thead><tbody>'+rows+
+      '<tr class="net"><td colspan="6">Totales ('+emps.length+' empleados)</td><td class="n">'+fmt(T.b)+'</td><td class="n">−'+fmt(T.a)+'</td><td class="n">−'+fmt(T.c)+'</td><td class="n">'+fmt(T.n)+'</td></tr></tbody></table></div>'+
+      '<p class="rinfo">Descuento por cupón familiar: '+cupPct+'% · hasta '+CUP_MAX+' cupones por empleado por mes. Siguen '+emps.length+' recibos, uno por hoja.</p></section>';
+    $('#sheets').innerHTML=resumen+emps.map(function(e){return '<section class="sheet">'+receipt(e)+'</section>'}).join('');
+    $('#pdfCount').textContent=(emps.length+1)+' hojas: resumen + '+emps.length+' recibos';
+  }
+  $('#pdfBtn').onclick=function(){renderPDF();$('#pdfv').hidden=false;$('#pdfv').scrollTop=0;$('#pdfClose').focus()};
+  $('#pdfClose').onclick=function(){$('#pdfv').hidden=true;$('#pdfBtn').focus()};
+  $('#pdfDl').onclick=function(){toast('En la app real este botón descarga el PDF. El boceto muestra la vista previa.')};
+  document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){if(!$('#fotoV').hidden)$('#fotoV').hidden=true;else if(!$('#pdfv').hidden&&$('#modal').hidden)$('#pdfv').hidden=true}});
+
+  // celular del empleado (Lucía): consumos y recibo
+  function drawPhone(){var e=emps[0];if(!e)return;var c=calc(e);
+    $('#phCons').innerHTML=e.cons.map(function(x){return '<div><span>Ticket '+esc(x.t)+' · '+x.f+(x.cup?' · cupón':'')+'<br><span class="meta">'+fmt(consNeto(x))+(x.foto?' · con foto':'')+'</span></span><span class="pill '+(x.ok?'ok':'warn')+'">'+(x.ok?'Aprobado':'Pendiente')+'</span></div>'}).join('')||'<div><span class="meta">Sin consumos este mes.</span></div>';
+    $('#phCup').textContent='Cupones familiares: '+c.cup+' de '+CUP_MAX+' usados';
+    $('#t-rec').innerHTML=receipt(e);
+  }
+  $('#phAdd').onclick=function(){var e=emps[0],c=calc(e);
+    openModal('Cargar consumo',fld('pTic','N° de ticket del sistema de facturación','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'})+fld('pMon','Monto del ticket','','number',{attrs:'min="0" step="100"'})+
+      '<div class="field"><label class="tog"><input type="checkbox" id="pCup"'+(c.cup>=CUP_MAX?' disabled':'')+'> Usar cupón familiar (−'+cupPct+'%) · quedan '+(CUP_MAX-c.cup)+'</label></div>'+
+      '<div class="field"><label for="pFoto">Foto del ticket</label><input type="file" accept="image/*" id="pFoto"></div><p class="hint">Queda pendiente hasta que el administrador lo apruebe en la liquidación.</p>','Cargar consumo',function(){
+      var t=val('pTic'),m=+val('pMon'),ok=setErr('pTic',t?'':'Ingresá el número de ticket.');ok=setErr('pMon',m>0?'':'Ingresá el monto.')&&ok;if(!ok)return false;
+      var add=function(src){e.cons.push({f:today(),t:t,m:m,cup:$('#pCup')&&$('#pCup').checked,foto:src||null,ok:false});drawLiq();toast('Consumo cargado · pendiente de aprobación')};
+      var f=$('#pFoto').files[0];var cup=$('#pCup').checked;if(f){readImg(f,function(src){e.cons.push({f:today(),t:t,m:m,cup:cup,foto:src,ok:false});drawLiq();toast('Consumo cargado · pendiente de aprobación')})}else add(null);
+    })};
+
   drawLocales();drawEmps();
-  $('#confirmLiq').onclick=function(){var p=$('#liqState');p.textContent='Confirmada';p.className='pill ok';this.disabled=true;this.textContent='Confirmada · recibos generados';};
+  var liqClosed=false;
+  $('#confirmLiq').onclick=function(){liqClosed=true;var p=$('#liqState');p.textContent='Confirmada';p.className='pill ok';this.disabled=true;this.textContent='Confirmada · recibos generados';toast('Liquidación confirmada')};
 
   // empleado: reloj y fichaje simulado
   function tick(){var d=new Date();$('#clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
@@ -625,7 +797,7 @@ input[type=checkbox]{accent-color:var(--ok)}
   // logo editable
   $$('.logoIn').forEach(function(inp){inp.onchange=function(){
     var f=inp.files&&inp.files[0];if(!f)return;
-    var r=new FileReader();r.onload=function(){
+    var r=new FileReader();r.onload=function(){logoSrc=r.result;drawPhone();
       $$('.logo').forEach(function(l){var s=l.querySelector('.lt');if(s)s.hidden=true;var im=l.querySelector('img');if(!im){im=document.createElement('img');im.alt='Logo';l.appendChild(im)}im.src=r.result});
     };r.readAsDataURL(f);
   }});

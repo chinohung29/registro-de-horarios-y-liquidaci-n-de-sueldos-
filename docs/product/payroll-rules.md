@@ -40,22 +40,45 @@ Cada empleado puede tener un override de `horas_jornada` en su ficha (p. ej. coc
 
 ## Cálculo
 ```
-jornadas_pagas = suma de fracciones de jornada trabajadas + ausencias autorizadas
+jornadas_pagas   = suma de fracciones de jornada trabajadas + ausencias autorizadas
 valor_hora_extra = monto_jornada / horas_jornada x recargo
-bruto_jornadas = jornadas_pagas x monto_jornada
-bruto_extras   = suma(horas_extra_aprobadas x valor_hora_extra)
-desc_cupones   = suma de consumos APROBADOS en el período
-neto           = bruto_jornadas + bruto_extras - desc_cupones
+haberes          = jornadas_pagas x monto_jornada + horas_extra_aprobadas x valor_hora_extra
+desc_adelantos   = suma de adelantos APROBADOS del período
+desc_consumos    = suma de consumos APROBADOS del período (con cupón familiar: monto x (1 - %cupón))
+neto             = haberes - desc_adelantos - desc_consumos
 ```
-Las horas extra quedan en estado `pendiente` hasta que el administrador las aprueba o rechaza al calcular la liquidación, igual que los consumos. Solo las aprobadas se pagan.
+La ausencia injustificada no genera un descuento aparte: esa jornada simplemente no se paga. La ausencia autorizada se paga como una jornada completa.
+
+Las horas extra, los adelantos y los consumos quedan en estado `pendiente` hasta que el administrador los aprueba o rechaza en el detalle de cada empleado. Solo los aprobados se liquidan.
 
 Si el monto por jornada cambia, el nuevo valor rige desde su fecha de vigencia; las liquidaciones cerradas no se recalculan.
 
-## Cupones y consumos
-1. El administrador define (más adelante) productos y descuentos disponibles.
-2. El empleado selecciona sus consumos durante el período (estado `pendiente`).
-3. Al calcular la liquidación, el administrador ve la sumatoria, aprueba o rechaza cada consumo.
-4. Solo los `aprobados` se descuentan. Al cerrar la liquidación pasan a `liquidado`.
+## Adelantos
+- El empleado solicita un adelanto (monto y motivo) o el administrador lo carga.
+- El administrador lo aprueba en el detalle de la liquidación; el aprobado se descuenta del neto del período.
+
+## Consumos del empleado
+- Cada consumo es un ítem individual (no una suma global) y va **contra el ticket emitido por el sistema de facturación externo**: se registra el número de ticket, la fecha y el monto.
+- Se puede **adjuntar una foto del ticket** como respaldo.
+- El número de ticket no puede repetirse.
+- El empleado puede cargar sus consumos desde el celular (quedan pendientes); el administrador los aprueba al liquidar.
+
+## Cupón familiar
+- Cada empleado tiene **2 cupones por mes** para descuentos en consumos de familiares.
+- El cupón se aplica a un consumo y descuenta un porcentaje configurable por empresa (valor inicial propuesto: 20%; a confirmar).
+- El sistema no permite marcar un tercer cupón en el mismo mes. Lo que no se usa no se acumula.
+- El recibo muestra cuántos cupones se usaron y el ahorro.
+
+## Recibo de haberes
+Uno por empleado, con:
+- Logo de la empresa centrado arriba, nombre de la empresa y período.
+- **Nombre y apellido** del empleado, legajo, DNI, puesto, local y monto por jornada.
+- Detalle: jornadas trabajadas, ausencias autorizadas, horas extra, total haberes; cada adelanto y cada consumo (con número de ticket y cupón, si corresponde), total descuentos y **neto a cobrar**.
+- Dato informativo: ausencias injustificadas y cupones usados.
+- Renglón **"Recibí conforme"** con espacios para firma, aclaración y fecha.
+
+## PDF para el administrador
+Un único PDF por liquidación: primera hoja con el **resumen igual al listado** (todos los empleados y totales) y, a continuación, **todos los recibos**, uno por hoja. El empleado ve su propio recibo desde el celular.
 
 ## Estados de una liquidación
 `borrador` → `confirmada` (inmutable, genera recibo). Los errores posteriores se corrigen con un ajuste en el período siguiente.
