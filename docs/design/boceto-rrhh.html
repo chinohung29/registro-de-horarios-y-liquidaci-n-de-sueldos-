@@ -271,7 +271,7 @@ input[type=checkbox]{accent-color:var(--ok)}
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 14</span></p></div></div>
+    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 15</span></p></div></div>
     <div class="tools"><span class="viewtag" id="viewTag">Vista: Administrador</span><button class="btn" id="theme" type="button"></button></div>
   </div>
   <div class="scrim" id="scrim"></div>
@@ -445,19 +445,20 @@ input[type=checkbox]{accent-color:var(--ok)}
   ];
   function E(l,n,ap,doc,tel,p,loc,m,j,au,a,hx,c){return {l:l,n:n,ap:ap,doc:doc,tel:tel,mail:(n+'.'+ap).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')+'@ejemplo.com',p:p,loc:loc,m:m,j:j,au:au,a:a,hx:hx,c:c,st:{hx:true,c:true}}}
   var emps=[
-    E('0012','Lucía','Benítez','35123456','11 5123-4567','Moza',1,38000,22.5,0,1,1.5,[4200,5200]),
-    E('0015','Martín','Aguirre','33987654','11 5234-5678','Cocinero',1,46000,24,0,0,4,[3800]),
-    E('0018','Julián','Paredes','40112233','11 5345-6789','Bachero',1,34000,23,0,1,0,[]),
-    E('0021','Camila','Rojas','38445566','11 5456-7890','Barra',2,40000,21,1,1,0,[6100,2300]),
-    E('0022','Tomás','Ibarra','36778899','11 5567-8901','Cocinero',2,46000,22,0,2,2,[]),
-    E('0024','Valentina','Paz','41223344','11 5678-9012','Moza',2,38000,21,1,0,0,[3500]),
-    E('0027','Diego','Sosa','32556677','11 5789-0123','Cocinero',3,44000,23.5,0,1,2.25,[]),
-    E('0029','Sofía','Luna','39889900','11 5890-1234','Moza',3,38000,22,0,0,1,[2800]),
-    E('0030','Joaquín','Díaz','37001122','11 5901-2345','Parrillero',3,48000,24,0,0,3,[5400]),
-    E('0033','Florencia','Medina','30334455','11 6012-3456','Encargada',4,55000,24,0,0,2,[]),
-    E('0035','Nicolás','Ferreyra','42667788','11 6123-4567','Cocinero',4,46000,23,0,1,1.5,[4100]),
-    E('0036','Agustina','Ríos','43990011','11 6234-5678','Cajera',4,36000,22.5,0,0,0,[1900])
+    E('0012','Lucía','Benítez','35123456','11 5123-4567','Mozo/a',1,38000,22.5,0,1,1.5,[4200,5200]),
+    E('0015','Martín','Aguirre','33987654','11 5234-5678','Cocinero/a',1,46000,24,0,0,4,[3800]),
+    E('0018','Julián','Paredes','40112233','11 5345-6789','Bachero/a',1,34000,23,0,1,0,[]),
+    E('0021','Camila','Rojas','38445566','11 5456-7890','Barra / Bartender',2,40000,21,1,1,0,[6100,2300]),
+    E('0022','Tomás','Ibarra','36778899','11 5567-8901','Cocinero/a',2,46000,22,0,2,2,[]),
+    E('0024','Valentina','Paz','41223344','11 5678-9012','Mozo/a',2,38000,21,1,0,0,[3500]),
+    E('0027','Diego','Sosa','32556677','11 5789-0123','Cocinero/a',3,44000,23.5,0,1,2.25,[]),
+    E('0029','Sofía','Luna','39889900','11 5890-1234','Mozo/a',3,38000,22,0,0,1,[2800]),
+    E('0030','Joaquín','Díaz','37001122','11 5901-2345','Parrillero/a',3,48000,24,0,0,3,[5400]),
+    E('0033','Florencia','Medina','30334455','11 6012-3456','Encargado/a',4,55000,24,0,0,2,[]),
+    E('0035','Nicolás','Ferreyra','42667788','11 6123-4567','Cocinero/a',4,46000,23,0,1,1.5,[4100]),
+    E('0036','Agustina','Ríos','43990011','11 6234-5678','Cajero/a',4,36000,22.5,0,0,0,[1900])
   ];
+  var PUESTOS=['Mozo/a','Cocinero/a','Ayudante de cocina','Parrillero/a','Bachero/a','Barra / Bartender','Cajero/a','Encargado/a','Delivery','Limpieza','Otro'];
   var full=function(e){return e.n+' '+e.ap};
   var locName=function(id){var l=locales.filter(function(x){return x.id===id})[0];return l?l.n:''};
   var byLoc=function(id){return emps.filter(function(e){return e.loc===id})};
@@ -546,7 +547,7 @@ input[type=checkbox]{accent-color:var(--ok)}
       '<p class="hint">Este correo va a ser el usuario con el que el empleado entra a su interfaz.</p>'+
       '<div class="fsec">Datos laborales</div><div class="fgrid">'+
       '<div class="field"><label for="eLoc">Local asignado</label><select id="eLoc">'+locs+'</select><span class="err"></span></div>'+
-      fld('ePue','Puesto',e.p,'text',{attrs:'placeholder="Ej.: Mozo, Cocinero"'})+
+      '<div class="field"><label for="ePue">Puesto</label><select id="ePue"><option value="">Elegí un puesto</option>'+PUESTOS.map(function(x){return '<option'+(e.p===x?' selected':'')+'>'+x+'</option>'}).join('')+'</select><span class="err"></span></div>'+
       fld('eMon','Monto por jornada (ARS)',e.m||'','number',{attrs:'min="0" step="500" placeholder="Ej.: 38000"'})+'</div>';
   }
   function saveEmp(e,isNew){return function(){
