@@ -44,7 +44,7 @@ jornadas_pagas   = suma de fracciones de jornada trabajadas + ausencias autoriza
 valor_hora_extra = monto_jornada / horas_jornada x recargo
 haberes          = jornadas_pagas x monto_jornada + horas_extra_aprobadas x valor_hora_extra
 desc_adelantos   = suma de adelantos APROBADOS del período
-desc_consumos    = suma de consumos APROBADOS del período (con cupón familiar: monto x (1 - %cupón))
+desc_consumos    = suma de consumos APROBADOS del período (monto completo del ticket)
 neto             = haberes - desc_adelantos - desc_consumos
 ```
 La ausencia injustificada no genera un descuento aparte: esa jornada simplemente no se paga. La ausencia autorizada se paga como una jornada completa.
@@ -58,23 +58,28 @@ Si el monto por jornada cambia, el nuevo valor rige desde su fecha de vigencia; 
 - El administrador lo aprueba en el detalle de la liquidación; el aprobado se descuenta del neto del período.
 
 ## Consumos del empleado
-- Cada consumo es un ítem individual (no una suma global) y va **contra el ticket emitido por el sistema de facturación externo**: se registra el número de ticket, la fecha y el monto.
+- Cada consumo es un ítem individual (no una suma global) y va **contra el ticket emitido por el sistema de facturación externo**: se registra el número de ticket, la fecha y el monto, y se descuenta completo del sueldo.
 - Se puede **adjuntar una foto del ticket** como respaldo.
 - El número de ticket no puede repetirse.
 - El empleado puede cargar sus consumos desde el celular (quedan pendientes); el administrador los aprueba al liquidar.
 
 ## Cupón familiar
-- Cada empleado tiene **2 cupones por mes** para descuentos en consumos de familiares.
-- El cupón se aplica a un consumo y descuenta un porcentaje configurable por empresa (valor inicial propuesto: 20%; a confirmar).
-- El sistema no permite marcar un tercer cupón en el mismo mes. Lo que no se usa no se acumula.
-- El recibo muestra cuántos cupones se usaron y el ahorro.
+- Cada empleado tiene **2 cupones por mes** con **15% de descuento** en consumos de sus familiares.
+- **No se descuentan del sueldo**: el descuento se aplica en el ticket del sistema de facturación y no pasa por la liquidación.
+- Activación con **código**:
+  1. El empleado pide el cupón al **encargado** de su local (desde el celular o en persona).
+  2. El encargado lo solicita y queda **pendiente**.
+  3. El **administrador** lo autoriza (o rechaza). Al autorizar se genera un código único (ej.: `FAM-3KT7`).
+  4. El código se usa en la caja; el administrador puede marcarlo como **usado** con el número de ticket.
+- No se pueden autorizar ni pedir más de 2 por empleado en el mes. Lo que no se usa no se acumula.
+- El recibo informa cuántos cupones se autorizaron, solo como dato.
 
 ## Recibo de haberes
 Uno por empleado, con:
 - Logo de la empresa centrado arriba, nombre de la empresa y período.
 - **Nombre y apellido** del empleado, legajo, DNI, puesto, local y monto por jornada.
-- Detalle: jornadas trabajadas, ausencias autorizadas, horas extra, total haberes; cada adelanto y cada consumo (con número de ticket y cupón, si corresponde), total descuentos y **neto a cobrar**.
-- Dato informativo: ausencias injustificadas y cupones usados.
+- Detalle: jornadas trabajadas, ausencias autorizadas, horas extra, total haberes; cada adelanto y cada consumo (con número de ticket), total descuentos y **neto a cobrar**.
+- Dato informativo: ausencias injustificadas y cupones familiares autorizados (no se descuentan).
 - Renglón **"Recibí conforme"** con espacios para firma, aclaración y fecha.
 
 ## PDF para el administrador
