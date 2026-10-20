@@ -5,7 +5,7 @@
 /* Layout: selector de vista arriba; admin = menú sándwich + contenido; PC gris claro fijo, modo oscuro solo en móvil; empleado = celular; local = pantalla del QR.
    Paleta: grises suaves; el acento y la tipografía los define la marca (panel "Marca"). */
 :root{
-  --bg:#e1e2e6; --surface:#ffffff; --surface2:#f2f2f4; --line:#dcdce1; --shadow:rgba(30,30,40,.08); --shadow-h:rgba(30,30,40,.16);
+  --page:#318ce7; --page-deep:#1d5fae; --on-page:#ffffff; --bg:#e1e2e6; --surface:#ffffff; --surface2:#f2f2f4; --line:#dcdce1; --shadow:rgba(30,30,40,.08); --shadow-h:rgba(30,30,40,.16);
   --fg:#2c2c31; --muted:#6c6c74; --accent:#4b4b53; --accent-fg:#ffffff; --accent-soft:#e3e3e7;
   --ok:#3f7a5b; --ok-soft:#e1eee7; --warn:#8d6a2d; --warn-soft:#f1e9d6; --bad:#a8473f; --bad-soft:#f3deda;
   --side:#3a3a40; --side-fg:#d0d0d5; --side-active:#4a4a52;
@@ -13,12 +13,12 @@
   --body:'Manrope',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (max-width:760px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
+  --page:#13294b; --page-deep:#13294b; --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
   --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
   --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
   --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}}
 @media (max-width:760px){:root[data-theme="dark"]{
-  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
+  --page:#13294b; --page-deep:#13294b; --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
   --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
   --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
   --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}}
@@ -187,11 +187,26 @@ select:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line))}
 .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 .crumb{display:flex;flex-direction:column;line-height:1.25;min-width:0}
 .crumb b{font-family:var(--display);font-size:17px}
+
+/* Fondo azul Francia */
+body{background:var(--page)}
+.top h1{color:var(--on-page)}
+.top p{color:color-mix(in srgb,var(--on-page) 85%,transparent)}
+.top .pill.info{background:rgba(255,255,255,.2);color:var(--on-page)}
+.top .logo{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.65);color:var(--on-page)}
+.top .logo:hover{background:rgba(255,255,255,.22);border-color:var(--on-page);color:var(--on-page)}
+.seg{background:rgba(255,255,255,.18)}
+.seg button{color:color-mix(in srgb,var(--on-page) 88%,transparent)}
+.seg button:hover{background:rgba(255,255,255,.16);color:var(--on-page)}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--page-deep);box-shadow:0 4px 12px rgba(10,30,70,.25)}
+.top .btn,details.brandbox summary{border-color:transparent}
+.admin{box-shadow:0 14px 40px rgba(10,30,70,.28);border-color:transparent}
+.phone{box-shadow:0 14px 40px rgba(10,30,70,.3);border-color:transparent}
 </style>
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 6</span></p></div></div>
+    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 7</span></p></div></div>
     <div class="tools"><details class="brandbox"><summary>Marca</summary><div class="brandpanel"><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#4b4b53"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div></details><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
       <button role="tab" aria-selected="true" data-v="admin">Administrador</button>
       <button role="tab" aria-selected="false" data-v="emp">Empleado (celular)</button>
