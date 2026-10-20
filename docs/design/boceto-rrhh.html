@@ -333,11 +333,29 @@ table.mini th,table.mini td{padding:7px 10px}
 .pdfv[hidden],.fotov[hidden]{display:none!important}
 @media print{body>*:not(.pdfv){display:none!important}.pdfv{position:static;background:none;padding:0}.pdfbar{display:none}.sheet{box-shadow:none;page-break-after:always;width:auto}}
 .list div>.pill{align-self:flex-start;white-space:nowrap}
+
+/* Interfaz del encargado */
+.encp{background:var(--surface);border-radius:16px;padding:22px;max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;box-shadow:0 14px 40px rgba(24,53,92,.28)}
+.encp h3{font-size:16px;margin-top:6px}
+.enchead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.enchead h2{font-size:22px}
+.encloc{display:flex;flex-direction:column;gap:4px}
+.encloc select,.genrow select{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--fg);font:inherit}
+.gen{background:var(--surface2);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.gen h3{margin:0}
+.gen p{margin:0}
+.genrow{display:flex;gap:8px;flex-wrap:wrap}
+.genrow select{flex:1 1 240px;min-width:0}
+.genout{background:var(--surface);border:1.5px dashed var(--hi);border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;animation:aparece 260ms var(--ease)}
+.gencode{display:flex;align-items:center;gap:10px}
+.gencode b{font-size:30px;letter-spacing:.12em;color:var(--hi)}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;flex-wrap:wrap}
+.prow+.prow{margin-top:6px}
 </style>
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 18</span></p></div></div>
+    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 19</span></p></div></div>
     <div class="tools"><span class="viewtag" id="viewTag">Vista: Administrador</span><button class="btn" id="theme" type="button"></button></div>
   </div>
   <div class="scrim" id="scrim"></div>
@@ -346,7 +364,7 @@ table.mini th,table.mini td{padding:7px 10px}
     <label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label>
     <div class="brand">Casa Fuego<small>Panel de gestión</small></div>
     <div class="grp">Vista</div>
-    <label class="sfield" for="viewSel"><span class="sr">Elegí la vista</span><select id="viewSel"><option value="admin">Administrador</option><option value="emp">Empleado (celular)</option><option value="kiosk">Pantalla del local</option></select></label>
+    <label class="sfield" for="viewSel"><span class="sr">Elegí la vista</span><select id="viewSel"><option value="admin">Administrador</option><option value="emp">Empleado (celular)</option><option value="enc">Encargado</option><option value="kiosk">Pantalla del local</option></select></label>
     <div id="adminNav" class="snav">
       <div class="grp">Personal</div>
       <button data-s="locales" aria-current="page">Locales</button>
@@ -418,8 +436,8 @@ table.mini th,table.mini td{padding:7px 10px}
       </div>
       <!-- cupones familiares -->
       <div id="s-cupones" class="sec hide">
-        <div class="head"><h2>Cupones familiares · septiembre 2026</h2><button class="btn primary" id="cupNew" type="button">+ Registrar pedido</button></div>
-        <p class="meta" style="margin:6px 0 0">15% de descuento en consumos de familiares, hasta 2 por empleado por mes. El empleado pide el código al encargado y el administrador lo autoriza. No se descuenta del sueldo.</p>
+        <div class="head"><h2>Cupones familiares · septiembre 2026</h2><span class="pill info">Los códigos los genera el encargado</span></div>
+        <p class="meta" style="margin:6px 0 0">15% de descuento en consumos de familiares, hasta 2 por empleado por mes. El encargado genera el código y queda inactivo hasta que lo autorizás. No se descuenta del sueldo.</p>
         <div class="kpis" style="margin-block:14px"><div class="kpi"><b id="kCupP">0</b><span>Pendientes de autorización</span></div><div class="kpi"><b id="kCupA">0</b><span>Autorizados sin usar</span></div><div class="kpi"><b id="kCupU">0</b><span>Usados</span></div></div>
         <div class="tw"><table><thead><tr><th>Fecha</th><th>Empleado</th><th>Local</th><th>Pedido por</th><th>Estado</th><th>Código</th><th></th></tr></thead><tbody id="cupRows"></tbody></table></div>
       </div>
@@ -451,7 +469,7 @@ table.mini th,table.mini td{padding:7px 10px}
           <button class="btn primary" id="phAdd" type="button" style="margin-top:8px">+ Cargar consumo</button>
           <h3 style="margin-top:16px">Cupones familiares <span class="meta" id="phCupN"></span></h3>
           <section id="phCup"></section>
-          <p class="meta" style="margin:6px 0 0">15% para familiares. Pedí el código al encargado; el administrador lo autoriza. No se descuenta del sueldo.</p>
+          <p class="meta" style="margin:6px 0 0">15% para familiares. Pedí el código al encargado; se activa cuando lo autoriza el administrador. No se descuenta del sueldo.</p>
           <button class="btn" id="phCupAdd" type="button" style="margin-top:6px">Pedir cupón al encargado</button>
         </div>
         <div id="t-rec" class="prec hide">
@@ -464,6 +482,30 @@ table.mini th,table.mini td{padding:7px 10px}
           <div><b>Neto</b><b class="mono">$852.725</b></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ENCARGADO -->
+  <section id="v-enc" class="hide">
+    <div class="encp">
+      <div class="enchead"><div><span class="meta">Casa Fuego · Encargado/a</span><h2 id="encName">Encargado/a</h2></div><label class="encloc" for="encLoc"><span class="meta">Local</span><select id="encLoc"></select></label></div>
+      <div class="gen">
+        <h3>Generador de códigos</h3>
+        <p class="meta">Cupón familiar del 15% en consumos de familiares. Hasta 2 por empleado por mes. El código queda activo cuando lo autoriza el administrador y no se descuenta del sueldo.</p>
+        <div class="genrow"><label class="sr" for="genEmp">Empleado</label><select id="genEmp"></select><button class="btn primary" id="genBtn" type="button">Generar código</button></div>
+        <div class="genout" id="genOut" hidden>
+          <span class="meta">Código generado</span>
+          <div class="gencode"><b id="genCode" class="mono"></b><button class="btn sm" id="genCopy" type="button">Copiar</button></div>
+          <span class="meta" id="genWho"></span>
+          <span class="pill" id="genSt"></span>
+        </div>
+      </div>
+      <h3>Pedidos de tu equipo</h3>
+      <div id="encPed"></div>
+      <h3>Códigos del mes</h3>
+      <div class="tw"><table class="mini"><thead><tr><th>Fecha</th><th>Empleado</th><th>Código</th><th>Estado</th></tr></thead><tbody id="encRows"></tbody></table></div>
+      <h3>Tu equipo · cupones usados</h3>
+      <div class="who" id="encTeam"></div>
     </div>
   </section>
 
@@ -500,7 +542,7 @@ table.mini th,table.mini td{padding:7px 10px}
 
   // vistas
   $('#viewSel').onchange=function(){var v=this.value;
-    ['admin','emp','kiosk'].forEach(function(k){$('#v-'+k).classList.toggle('hide',k!==v)});
+    ['admin','emp','enc','kiosk'].forEach(function(k){$('#v-'+k).classList.toggle('hide',k!==v)});
     $('#adminNav').hidden=v!=='admin';
     $('#viewTag').textContent='Vista: '+this.options[this.selectedIndex].text;menu(false);
   };
@@ -662,8 +704,9 @@ table.mini th,table.mini td{padding:7px 10px}
   var cupones=[
     {e:emps[8],f:'06/09',por:encDe(emps[8]),st:'usado',cod:'FAM-8Q2D',tic:'0003-00012788'},
     {e:emps[0],f:'12/09',por:encDe(emps[0]),st:'autorizado',cod:'FAM-3KT7',tic:''},
-    {e:emps[3],f:'18/09',por:encDe(emps[3]),st:'pendiente',cod:'',tic:''},
-    {e:emps[10],f:'21/09',por:encDe(emps[10]),st:'pendiente',cod:'',tic:''}
+    {e:emps[3],f:'18/09',por:encDe(emps[3]),st:'pendiente',cod:'FAM-H9W4',tic:''},
+    {e:emps[10],f:'21/09',por:encDe(emps[10]),st:'pendiente',cod:'FAM-Z6NB',tic:''},
+    {e:emps[11],f:'22/09',por:encDe(emps[11]),st:'pedido',cod:'',tic:''}
   ];
   function cupDe(e){return cupones.filter(function(c){return c.e===e})}
   function cupUsados(e){return cupDe(e).filter(function(c){return c.st==='autorizado'||c.st==='usado'}).length}
@@ -727,28 +770,54 @@ table.mini th,table.mini td{padding:7px 10px}
   $('#fotoClose').onclick=function(){$('#fotoV').hidden=true};
 
   // sección cupones familiares (administrador)
-  var ST={pendiente:['Pendiente de autorización','warn'],autorizado:['Autorizado · sin usar','ok'],usado:['Usado','info'],rechazado:['Rechazado','bad']};
+  var ST={pedido:['Pedido al encargado','info'],pendiente:['Pendiente de autorización','warn'],autorizado:['Autorizado · sin usar','ok'],usado:['Usado','info'],rechazado:['Rechazado','bad']};
   function drawCup(){
     if(!$('#cupRows'))return;
     var n=function(st){return cupones.filter(function(c){return c.st===st}).length};
+    drawEnc();
     $('#kCupP').textContent=n('pendiente');$('#kCupA').textContent=n('autorizado');$('#kCupU').textContent=n('usado');
     $('#cupRows').innerHTML=cupones.map(function(c,i){var e=c.e,lleno=cupUsados(e)>=CUP_MAX;
       var acc=c.st==='pendiente'?'<button class="btn sm primary" data-cup-ok="'+i+'"'+(lleno?' disabled title="Ya tiene 2 cupones autorizados este mes"':'')+'>Autorizar</button> <button class="btn sm" data-cup-no="'+i+'">Rechazar</button>':
-        c.st==='autorizado'?'<button class="btn sm" data-cup-use="'+i+'">Marcar usado</button>':c.st==='usado'?'<span class="meta">Ticket '+esc(c.tic||'—')+'</span>':'<span class="meta">—</span>';
-      return '<tr><td class="mono">'+c.f+'</td><td>'+esc(full(e))+'<div class="meta">'+cupUsados(e)+' de '+CUP_MAX+' este mes</div></td><td>'+(e.loc?esc(locName(e.loc)):'—')+'</td><td>'+esc(c.por)+'</td><td><span class="pill '+ST[c.st][1]+'">'+ST[c.st][0]+'</span></td><td class="mono"><b>'+(c.cod||'—')+'</b></td><td style="white-space:nowrap">'+acc+'</td></tr>'}).join('')||'<tr><td colspan="7" class="meta">No hay solicitudes este mes.</td></tr>';
+        c.st==='autorizado'?'<button class="btn sm" data-cup-use="'+i+'">Marcar usado</button>':c.st==='pedido'?'<span class="meta">Esperando que el encargado genere el código</span>':c.st==='usado'?'<span class="meta">Ticket '+esc(c.tic||'—')+'</span>':'<span class="meta">—</span>';
+      return '<tr><td class="mono">'+c.f+'</td><td>'+esc(full(e))+'<div class="meta">'+cupUsados(e)+' de '+CUP_MAX+' este mes</div></td><td>'+(e.loc?esc(locName(e.loc)):'—')+'</td><td>'+esc(c.por)+'</td><td><span class="pill '+ST[c.st][1]+'">'+ST[c.st][0]+'</span></td><td class="mono"><b>'+(c.cod||'—')+'</b>'+(c.st==='pendiente'?'<div class="meta">inactivo hasta autorizar</div>':'')+'</td><td style="white-space:nowrap">'+acc+'</td></tr>'}).join('')||'<tr><td colspan="7" class="meta">No hay solicitudes este mes.</td></tr>';
   }
   $('#cupRows').addEventListener('click',function(ev){var b=ev.target.closest('button');if(!b||b.disabled)return;
     if(b.dataset.cupOk){var c=cupones[+b.dataset.cupOk];c.st='autorizado';c.cod=code();drawLiq();toast('Cupón autorizado · código '+c.cod)}
     else if(b.dataset.cupNo){cupones[+b.dataset.cupNo].st='rechazado';drawLiq();toast('Solicitud rechazada')}
     else if(b.dataset.cupUse){var c2=cupones[+b.dataset.cupUse];openModal('Marcar cupón '+c2.cod+' como usado',fld('uTic','N° de ticket donde se aplicó el 15%','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'}),'Marcar usado',function(){c2.tic=val('uTic');c2.st='usado';drawLiq();toast('Cupón '+c2.cod+' marcado como usado')})}
   });
-  $('#cupNew').onclick=function(){
-    var opts=emps.map(function(e,i){var full2=cupOcupados(e)>=CUP_MAX;return '<option value="'+i+'"'+(full2?' disabled':'')+'>'+esc(full(e))+(full2?' (ya tiene 2 este mes)':' · '+cupOcupados(e)+' de '+CUP_MAX)+'</option>'}).join('');
-    openModal('Registrar pedido de cupón','<div class="fgrid"><div class="field wide"><label for="nEmp">Empleado</label><select id="nEmp">'+opts+'</select><span class="err"></span></div>'+fld('nPor','Pedido por (encargado)','','text',{wide:true,attrs:'placeholder="Nombre del encargado"'})+'</div><p class="hint">El encargado pide el código para el empleado. Queda pendiente hasta que lo autorices.</p>','Registrar pedido',function(){
-      var e=emps[+$('#nEmp').value];if(!e||cupOcupados(e)>=CUP_MAX)return setErr('nPor','Ese empleado ya tiene sus 2 cupones del mes.');
-      cupones.unshift({e:e,f:today(),por:val('nPor')||encDe(e),st:'pendiente',cod:'',tic:''});drawLiq();toast('Pedido registrado · pendiente de autorización')});
-    var first=emps.findIndex(function(e){return cupOcupados(e)<CUP_MAX});if(first>=0)$('#nEmp').value=first;
-  };
+  // interfaz del encargado: generador de códigos
+  function encOf(locId){var en=emps.filter(function(x){return x.loc===locId&&x.p==='Encargado/a'})[0];return en?full(en):'Encargado/a de '+locName(locId)}
+  function libres(e){var ped=cupDe(e).some(function(c){return c.st==='pedido'});return CUP_MAX-(cupOcupados(e)-(ped?1:0))}
+  function generar(e){var c=cupDe(e).filter(function(x){return x.st==='pedido'})[0],locId=+$('#encLoc').value;
+    if(!c){if(cupOcupados(e)>=CUP_MAX){toast(full(e)+' ya tiene sus 2 cupones del mes');return}c={e:e,f:today(),st:'pedido',cod:'',tic:''};cupones.unshift(c)}
+    c.st='pendiente';c.cod=code();c.por=encOf(locId);c.f=today();lastGen=c;drawLiq();toast('Código '+c.cod+' generado · falta autorización del administrador');
+  }
+  var lastGen=null;
+  function drawEnc(){
+    if(!$('#encLoc'))return;
+    var v=$('#encLoc').value;
+    $('#encLoc').innerHTML=locales.filter(function(l){return l.act}).map(function(l){return '<option value="'+l.id+'">'+esc(l.n)+'</option>'}).join('');
+    $('#encLoc').value=v||'4';if(!$('#encLoc').value)$('#encLoc').selectedIndex=0;
+    var locId=+$('#encLoc').value,equipo=byLoc(locId);
+    $('#encName').textContent=encOf(locId);
+    var g=$('#genEmp').value;
+    $('#genEmp').innerHTML=equipo.map(function(e){var i=emps.indexOf(e),l=libres(e);return '<option value="'+i+'"'+(l<=0?' disabled':'')+'>'+esc(full(e))+' · '+(l<=0?'sin cupones este mes':'le quedan '+l+' de '+CUP_MAX)+'</option>'}).join('')||'<option value="">No hay empleados en este local</option>';
+    if(g&&$('#genEmp').querySelector('option[value="'+g+'"]:not([disabled])'))$('#genEmp').value=g;else{var f=$('#genEmp').querySelector('option:not([disabled])');if(f)$('#genEmp').value=f.value}
+    $('#genBtn').disabled=!$('#genEmp').querySelector('option:not([disabled])');
+    if(lastGen&&lastGen.e.loc===locId){$('#genOut').hidden=false;$('#genCode').textContent=lastGen.cod;$('#genWho').textContent='Para '+full(lastGen.e)+' · '+CUP_PCT+'% en consumos de familiares';var st=ST[lastGen.st];$('#genSt').className='pill '+st[1];$('#genSt').textContent=st[0]}else $('#genOut').hidden=true;
+    var ped=cupones.filter(function(c){return c.st==='pedido'&&c.e.loc===locId});
+    $('#encPed').innerHTML=ped.map(function(c){return '<div class="prow"><span><b>'+esc(full(c.e))+'</b><span class="meta"> · pidió el '+c.f+' · le quedan '+libres(c.e)+' de '+CUP_MAX+'</span></span><button class="btn sm primary" data-gen="'+emps.indexOf(c.e)+'" type="button">Generar código</button></div>'}).join('')||'<p class="meta">No hay pedidos pendientes de tu equipo.</p>';
+    var mine=cupones.filter(function(c){return c.e.loc===locId&&c.st!=='pedido'});
+    $('#encRows').innerHTML=mine.map(function(c){return '<tr><td class="mono">'+c.f+'</td><td>'+esc(full(c.e))+'</td><td class="mono"><b>'+c.cod+'</b></td><td><span class="pill '+ST[c.st][1]+'">'+ST[c.st][0]+'</span></td></tr>'}).join('')||'<tr><td colspan="4" class="meta">Todavía no generaste códigos este mes.</td></tr>';
+    $('#encTeam').innerHTML=equipo.map(function(e){return '<span class="pill info">'+esc(full(e))+' · '+cupUsados(e)+'/'+CUP_MAX+'</span>'}).join('')||'<span class="meta">Sin empleados asignados</span>';
+  }
+  $('#encLoc').onchange=function(){lastGen=null;drawEnc()};
+  $('#genBtn').onclick=function(){var i=$('#genEmp').value;if(i!=='')generar(emps[+i])};
+  $('#encPed').addEventListener('click',function(ev){var b=ev.target.closest('button[data-gen]');if(b)generar(emps[+b.dataset.gen])});
+  $('#genCopy').onclick=function(){var t=$('#genCode').textContent,ok=function(){toast('Código copiado')};
+    try{navigator.clipboard.writeText(t).then(ok,function(){selCode()})}catch(e){selCode()}};
+  function selCode(){var r=document.createRange();r.selectNodeContents($('#genCode'));var s=window.getSelection();s.removeAllRanges();s.addRange(r);toast('Código seleccionado: copialo con Ctrl+C')}
 
   // recibos y PDF
   function logoHtml(){return logoSrc?'<img class="rlogo" src="'+logoSrc+'" alt="Logo">':'<div class="rlogo ph">TU LOGO</div>'}
@@ -788,13 +857,13 @@ table.mini th,table.mini td{padding:7px 10px}
   function drawPhone(){var e=emps[0];if(!e)return;
     $('#phCons').innerHTML=e.cons.map(function(x){return '<div><span>Ticket '+esc(x.t)+' · '+x.f+'<br><span class="meta">'+fmt(x.m)+(x.foto?' · con foto':'')+'</span></span><span class="pill '+(x.ok?'ok':'warn')+'">'+(x.ok?'Aprobado':'Pendiente')+'</span></div>'}).join('')||'<div><span class="meta">Sin consumos este mes.</span></div>';
     var cs=cupDe(e).filter(function(c){return c.st!=='rechazado'});
-    $('#phCup').innerHTML=cs.map(function(c){return '<div><span>'+(c.cod?'Código <b class="mono">'+c.cod+'</b>':'Pedido el '+c.f)+'<br><span class="meta">'+CUP_PCT+'% para familiares'+(c.st==='usado'?' · usado en ticket '+esc(c.tic||'—'):'')+'</span></span><span class="pill '+ST[c.st][1]+'">'+(c.st==='pendiente'?'Esperando autorización':c.st==='autorizado'?'Listo para usar':'Usado')+'</span></div>'}).join('')||'<div><span class="meta">Todavía no pediste cupones este mes.</span></div>';
+    $('#phCup').innerHTML=cs.map(function(c){return '<div><span>'+(c.cod&&(c.st==='autorizado'||c.st==='usado')?'Código <b class="mono">'+c.cod+'</b>':'Pedido el '+c.f)+'<br><span class="meta">'+CUP_PCT+'% para familiares'+(c.st==='usado'?' · usado en ticket '+esc(c.tic||'—'):'')+'</span></span><span class="pill '+ST[c.st][1]+'">'+(c.st==='pedido'?'Enviado al encargado':c.st==='pendiente'?'Esperando autorización':c.st==='autorizado'?'Listo para usar':'Usado')+'</span></div>'}).join('')||'<div><span class="meta">Todavía no pediste cupones este mes.</span></div>';
     $('#phCupN').textContent=cupOcupados(e)+' de '+CUP_MAX+' este mes';
     $('#phCupAdd').disabled=cupOcupados(e)>=CUP_MAX;
     $('#t-rec').innerHTML=receipt(e);
   }
   $('#phCupAdd').onclick=function(){var e=emps[0];if(cupOcupados(e)>=CUP_MAX)return;
-    cupones.unshift({e:e,f:today(),por:encDe(e),st:'pendiente',cod:'',tic:''});drawLiq();toast('Pedido enviado al encargado · lo autoriza el administrador')};
+    cupones.unshift({e:e,f:today(),por:encDe(e),st:'pedido',cod:'',tic:''});drawLiq();toast('Pedido enviado al encargado')};
   $('#phAdd').onclick=function(){var e=emps[0];
     openModal('Cargar consumo',fld('pTic','N° de ticket del sistema de facturación','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'})+fld('pMon','Monto del ticket','','number',{attrs:'min="0" step="100"'})+
       '<div class="field"><label for="pFoto">Foto del ticket</label><input type="file" accept="image/*" id="pFoto"></div><p class="hint">Queda pendiente hasta que el administrador lo apruebe en la liquidación. Se descuenta del sueldo.</p>','Cargar consumo',function(){

@@ -17,7 +17,7 @@ Multi-tenant por `empresa_id` en todas las tablas, aislado con Row Level Securit
 | `ausencias` | id, empleado_id, fecha, tipo (`autorizada`/`injustificada`/`franco`), motivo, cargada_por |
 | `adelantos` | id, empleado_id, fecha, monto, motivo, estado (`pendiente`/`aprobado`/`rechazado`/`liquidado`), solicitado_por |
 | `consumos` | id, empleado_id, fecha, ticket_numero (único por empresa, del sistema de facturación externo), monto, foto_ticket_url, estado (`pendiente`/`aprobado`/`rechazado`/`liquidado`), cargado_por |
-| `cupones_familiares` | id, empresa_id, empleado_id, periodo, pedido_por (encargado), estado (`pendiente`/`autorizado`/`usado`/`rechazado`/`vencido`), codigo (único), autorizado_por, autorizado_en, ticket_numero (al usarse). Máximo 2 autorizados por empleado y período; no impacta en la liquidación |
+| `cupones_familiares` | id, empresa_id, empleado_id, periodo, pedido_por (encargado), estado (`pedido`/`pendiente`/`autorizado`/`usado`/`rechazado`/`vencido`), codigo (único, lo genera el encargado; inactivo hasta autorizar), generado_por, autorizado_por, autorizado_en, ticket_numero (al usarse). Máximo 2 autorizados por empleado y período; no impacta en la liquidación |
 | `liquidaciones` | id, empresa_id, periodo, estado, creada_por |
 | `liquidacion_items` | id, liquidacion_id, empleado_id, jornadas_pagas, monto_jornada, jornadas_autorizadas, jornadas_injustificadas, horas_extra, bruto_jornadas, bruto_extras, desc_adelantos, desc_consumos, cupones_usados, neto, recibo_pdf_url |
 | `liquidacion_lineas` | id, item_id, concepto, monto (extensible a aportes) |

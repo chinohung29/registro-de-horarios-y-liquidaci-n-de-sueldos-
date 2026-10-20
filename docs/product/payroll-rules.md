@@ -67,10 +67,10 @@ Si el monto por jornada cambia, el nuevo valor rige desde su fecha de vigencia; 
 - Cada empleado tiene **2 cupones por mes** con **15% de descuento** en consumos de sus familiares.
 - **No se descuentan del sueldo**: el descuento se aplica en el ticket del sistema de facturación y no pasa por la liquidación.
 - Activación con **código**:
-  1. El empleado pide el cupón al **encargado** de su local (desde el celular o en persona).
-  2. El encargado lo solicita y queda **pendiente**.
-  3. El **administrador** lo autoriza (o rechaza). Al autorizar se genera un código único (ej.: `FAM-3KT7`).
-  4. El código se usa en la caja; el administrador puede marcarlo como **usado** con el número de ticket.
+  1. El empleado pide el cupón al **encargado** de su local (desde el celular o en persona). Estado: `pedido`.
+  2. El encargado **genera el código** en su interfaz (ej.: `FAM-3KT7`). El código nace **inactivo**. Estado: `pendiente`.
+  3. El **administrador** lo autoriza (se activa) o lo rechaza.
+  4. El empleado ve el código activo en su celular y lo usa en la caja; el administrador puede marcarlo como **usado** con el número de ticket.
 - No se pueden autorizar ni pedir más de 2 por empleado en el mes. Lo que no se usa no se acumula.
 - El recibo informa cuántos cupones se autorizaron, solo como dato.
 
