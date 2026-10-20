@@ -5,7 +5,7 @@
 /* Layout: selector de vista arriba; admin = menú lateral + contenido; empleado = celular; local = pantalla del QR.
    Paleta: grises suaves; el acento y la tipografía los define la marca (panel "Marca"). */
 :root{
-  --bg:#f1f1f2; --surface:#fafafa; --surface2:#e9e9eb; --line:#d9d9dd;
+  --bg:#e9e9ec; --surface:#fcfcfd; --surface2:#f0f0f2; --line:#dcdce1; --shadow:rgba(30,30,40,.08); --shadow-h:rgba(30,30,40,.16);
   --fg:#2c2c31; --muted:#6c6c74; --accent:#4b4b53; --accent-fg:#ffffff; --accent-soft:#e3e3e7;
   --ok:#3f7a5b; --ok-soft:#e1eee7; --warn:#8d6a2d; --warn-soft:#f1e9d6; --bad:#a8473f; --bad-soft:#f3deda;
   --side:#3a3a40; --side-fg:#d0d0d5; --side-active:#4a4a52;
@@ -13,12 +13,12 @@
   --body:'Manrope',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40;
+  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
   --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
   --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
   --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40;
+  --bg:#1b1b1e; --surface:#242427; --surface2:#2d2d31; --line:#3b3b40; --shadow:rgba(0,0,0,.3); --shadow-h:rgba(0,0,0,.5);
   --fg:#e7e7e9; --muted:#9e9ea6; --accent:#c9c9d0; --accent-fg:#1b1b1e; --accent-soft:#35353b;
   --ok:#7dbf9b; --ok-soft:#21342a; --warn:#d1ad6a; --warn-soft:#352e1d; --bad:#e08f87; --bad-soft:#3a2523;
   --side:#161618; --side-fg:#b6b6bd; --side-active:#2b2b30; color-scheme:dark}
@@ -131,6 +131,37 @@ button.kpi b{color:var(--bad)}
 .t-ok{color:var(--ok);font-weight:600}
 .t-bad{color:var(--bad);font-weight:600}
 @media (max-width:760px){.admin{grid-template-columns:1fr}.side{flex-direction:row;overflow-x:auto;padding:10px}.side .grp,.brand{display:none}.side button{white-space:nowrap}}
+
+/* Botones y transiciones */
+:root{--ease:cubic-bezier(.2,.7,.2,1);--t:180ms}
+.btn,.seg button,.side button,.chip,details.brandbox summary,.big,.tabs button,button.kpi,.logo,.card,select{transition:background-color var(--t) var(--ease),color var(--t) var(--ease),border-color var(--t) var(--ease),box-shadow var(--t) var(--ease),transform var(--t) var(--ease),opacity var(--t) var(--ease)}
+.btn,details.brandbox summary{border-radius:10px;padding:9px 15px;border:1px solid var(--line);background:var(--surface);box-shadow:0 1px 2px var(--shadow);letter-spacing:.01em}
+.btn:hover,details.brandbox summary:hover{border-color:color-mix(in srgb,var(--fg) 25%,var(--line));box-shadow:0 4px 12px var(--shadow-h);transform:translateY(-1px)}
+.btn:active,details.brandbox summary:active,.big:active,.chip:active{transform:translateY(0) scale(.97);box-shadow:0 1px 2px var(--shadow)}
+.btn.primary{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 88%,#fff),var(--accent));border-color:var(--accent);color:var(--accent-fg);box-shadow:0 1px 2px var(--shadow),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn.primary:hover{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 78%,#fff),color-mix(in srgb,var(--accent) 92%,#fff));box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.sm{padding:6px 11px;border-radius:8px;font-size:12.5px}
+.seg{background:color-mix(in srgb,var(--fg) 7%,var(--bg));border-radius:12px;padding:4px}
+.seg button{border-radius:9px}
+.seg button:hover{color:var(--fg);background:color-mix(in srgb,var(--surface) 55%,transparent)}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 2px 6px var(--shadow-h)}
+.side button:hover{background:color-mix(in srgb,var(--side-active) 70%,transparent);color:#fff;transform:translateX(2px)}
+.side button[aria-current="page"]{box-shadow:inset 3px 0 0 var(--side-fg)}
+.chip:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line));transform:translateY(-1px)}
+.big{border-radius:16px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 85%,#fff),var(--accent));box-shadow:0 6px 18px color-mix(in srgb,var(--accent) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.2)}
+.big:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 24px color-mix(in srgb,var(--accent) 38%,transparent)}
+.tabs button:hover{color:var(--fg)}
+button.kpi:hover{transform:translateY(-2px);box-shadow:0 6px 16px var(--shadow-h)}
+.card{background:var(--surface);box-shadow:0 1px 2px var(--shadow)}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--shadow-h)}
+.admin{box-shadow:0 2px 10px var(--shadow)}
+.phone{transition:box-shadow var(--t) var(--ease)}
+select:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line))}
+.sec:not(.hide),section:not(.hide),.abs:not(.hide),#t-cons:not(.hide),#t-rec:not(.hide){animation:aparece 260ms var(--ease)}
+.brandbox[open] .brandpanel{animation:aparece 200ms var(--ease)}
+@keyframes aparece{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 
 <div class="wrap">
