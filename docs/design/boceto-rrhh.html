@@ -230,11 +230,48 @@ input[type=checkbox]{accent-color:var(--ok)}
 .side .sbrand .btn:hover{background:var(--side-active);color:var(--side-fg)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .snav{display:flex;flex-direction:column;gap:2px}
+
+/* Formularios, ventana modal y avisos */
+.mscrim{position:fixed;inset:0;z-index:30;background:rgba(15,30,55,.45);animation:fade 200ms var(--ease)}
+.modal{position:fixed;z-index:31;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));max-height:calc(100% - 48px);overflow:auto;background:var(--surface);border-radius:18px;padding:20px;box-shadow:0 24px 60px rgba(10,25,50,.35);animation:pop 220ms var(--ease)}
+@keyframes pop{from{opacity:0;transform:translate(-50%,-46%) scale(.98)}to{opacity:1;transform:translate(-50%,-50%)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.mhead h3{font-size:18px}
+.mx{width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);transition:transform var(--t) var(--ease),background-color var(--t) var(--ease)}
+.mx:hover{transform:rotate(90deg);background:var(--surface2)}
+.fsec{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:6px 0 8px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field.wide{grid-column:1/-1}
+.field>label{font-size:12.5px;font-weight:600;color:var(--muted)}
+.modal input:not([type=checkbox]),.modal select{font:inherit;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--fg);transition:border-color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+.modal input:not([type=checkbox]):focus,.modal select:focus{outline:none;border-color:var(--hi);box-shadow:0 0 0 3px color-mix(in srgb,var(--hi) 22%,transparent)}
+.modal input[aria-invalid="true"]{border-color:var(--bad);box-shadow:0 0 0 3px color-mix(in srgb,var(--bad) 15%,transparent)}
+.err{color:var(--bad);font-size:12px;min-height:0}
+.err:empty{display:none}
+.tog{display:flex;align-items:center;gap:8px;padding:10px 0;font-weight:500}
+.hint{margin:12px 0 4px;padding:10px 12px;border-radius:10px;background:var(--hi-soft);color:var(--fg);font-size:12.5px}
+.mfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;flex-wrap:wrap}
+.alist{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;max-height:340px;overflow-y:auto}
+.arow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer;transition:background-color var(--t) var(--ease)}
+.arow:last-child{border-bottom:0}
+.arow:hover{background:var(--surface2)}
+.aname{flex:1;min-width:0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--fg);color:var(--surface);padding:10px 18px;border-radius:999px;font-weight:600;box-shadow:0 8px 24px rgba(10,25,50,.3);transition:opacity 220ms var(--ease),transform 220ms var(--ease)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.chead{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card.off{opacity:.7}
+.who{display:flex;flex-wrap:wrap;gap:4px}
+.cact{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.tbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.tbar select{padding:7px 10px;border-radius:999px}
+@media (max-width:560px){.fgrid{grid-template-columns:1fr}}
 </style>
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 13</span></p></div></div>
+    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 14</span></p></div></div>
     <div class="tools"><span class="viewtag" id="viewTag">Vista: Administrador</span><button class="btn" id="theme" type="button"></button></div>
   </div>
   <div class="scrim" id="scrim"></div>
@@ -263,8 +300,8 @@ input[type=checkbox]{accent-color:var(--ok)}
       <div id="s-locales" class="sec">
         <div class="head"><h2>Locales</h2><button class="btn primary" id="newLocal">+ Nuevo local</button></div>
         <div class="kpis" style="margin-block:14px">
-          <div class="kpi"><b>3</b><span>Locales activos</span></div>
-          <div class="kpi"><b>14</b><span>Empleados</span></div>
+          <div class="kpi"><b id="kLoc">4</b><span>Locales activos</span></div>
+          <div class="kpi"><b id="kEmp">12</b><span>Empleados</span></div>
           <div class="kpi"><b>9</b><span>Fichados ahora</span></div>
           <button class="kpi" id="absBtn" type="button" aria-expanded="false" aria-controls="absPanel"><b>4</b><span>Ausentes y francos hoy · ver detalle</span></button>
         </div>
@@ -278,9 +315,10 @@ input[type=checkbox]{accent-color:var(--ok)}
       </div>
       <!-- empleados -->
       <div id="s-empleados" class="sec hide">
-        <div class="head"><h2>Empleados</h2><button class="btn primary">+ Alta de empleado</button></div>
-        <div class="tw" style="margin-top:14px"><table>
-          <thead><tr><th>Legajo</th><th>Nombre</th><th>Puesto</th><th>Local asignado</th><th class="n">Monto por jornada</th><th>Fichar en otro local</th></tr></thead>
+        <div class="head"><h2>Empleados</h2><button class="btn primary" id="newEmp">+ Alta de empleado</button></div>
+        <div class="tbar"><label for="empFilter" class="meta">Mostrar</label><select id="empFilter"></select><span class="meta" id="empCount"></span></div>
+        <div class="tw" style="margin-top:12px"><table>
+          <thead><tr><th>Legajo</th><th>Nombre y apellido</th><th>Documento</th><th>Teléfono</th><th>Correo (usuario)</th><th>Local</th><th class="n">Monto por jornada</th><th>Habilitar en otro local</th><th></th></tr></thead>
           <tbody id="empRows"></tbody></table></div>
       </div>
       <!-- fichajes -->
@@ -366,6 +404,13 @@ input[type=checkbox]{accent-color:var(--ok)}
   <div class="note">Boceto de diseño: no hay cámara ni GPS reales. El botón de fichar y la liquidación simulan el comportamiento.</div>
 </div>
 
+<div class="mscrim" id="mScrim" hidden></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+  <div class="mhead"><h3 id="mTitle"></h3><button class="mx" id="mClose" type="button" aria-label="Cerrar">✕</button></div>
+  <form id="mForm" novalidate><div id="mBody"></div><div class="mfoot"><button type="button" class="btn" id="mCancel">Cancelar</button><button type="submit" class="btn primary" id="mOk">Guardar</button></div></form>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
@@ -390,43 +435,155 @@ input[type=checkbox]{accent-color:var(--ok)}
     $('#s-'+b.dataset.s).classList.remove('hide');
   }});
 
-  // locales
-  var locales=[{n:'Centro',d:'Av. Corrientes 1450',e:6,r:100},{n:'Palermo',d:'Honduras 4800',e:5,r:100},{n:'Costanera',d:'Av. Rafael Obligado 1200',e:3,r:150}];
-  function drawLocales(){
-    $('#localCards').innerHTML=locales.map(function(l){return '<div class="card"><h3>'+l.n+'</h3><div class="meta">'+l.d+'</div><div class="mapbox"><i></i><b></b></div><div class="meta">Geocerca '+l.r+' m · '+l.e+' empleados</div><div style="display:flex;gap:6px"><button class="btn sm">Editar</button><button class="btn sm">Asignar empleados</button></div></div>'}).join('');
+  // datos de ejemplo
+  var esc=function(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var locales=[
+    {id:1,n:'Centro',d:'Av. Corrientes 1450',r:100,act:true},
+    {id:2,n:'Palermo',d:'Honduras 4800',r:100,act:true},
+    {id:3,n:'Costanera',d:'Av. Rafael Obligado 1200',r:150,act:true},
+    {id:4,n:'Belgrano',d:'Av. Cabildo 2100',r:100,act:true}
+  ];
+  function E(l,n,ap,doc,tel,p,loc,m,j,au,a,hx,c){return {l:l,n:n,ap:ap,doc:doc,tel:tel,mail:(n+'.'+ap).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')+'@ejemplo.com',p:p,loc:loc,m:m,j:j,au:au,a:a,hx:hx,c:c,st:{hx:true,c:true}}}
+  var emps=[
+    E('0012','Lucía','Benítez','35123456','11 5123-4567','Moza',1,38000,22.5,0,1,1.5,[4200,5200]),
+    E('0015','Martín','Aguirre','33987654','11 5234-5678','Cocinero',1,46000,24,0,0,4,[3800]),
+    E('0018','Julián','Paredes','40112233','11 5345-6789','Bachero',1,34000,23,0,1,0,[]),
+    E('0021','Camila','Rojas','38445566','11 5456-7890','Barra',2,40000,21,1,1,0,[6100,2300]),
+    E('0022','Tomás','Ibarra','36778899','11 5567-8901','Cocinero',2,46000,22,0,2,2,[]),
+    E('0024','Valentina','Paz','41223344','11 5678-9012','Moza',2,38000,21,1,0,0,[3500]),
+    E('0027','Diego','Sosa','32556677','11 5789-0123','Cocinero',3,44000,23.5,0,1,2.25,[]),
+    E('0029','Sofía','Luna','39889900','11 5890-1234','Moza',3,38000,22,0,0,1,[2800]),
+    E('0030','Joaquín','Díaz','37001122','11 5901-2345','Parrillero',3,48000,24,0,0,3,[5400]),
+    E('0033','Florencia','Medina','30334455','11 6012-3456','Encargada',4,55000,24,0,0,2,[]),
+    E('0035','Nicolás','Ferreyra','42667788','11 6123-4567','Cocinero',4,46000,23,0,1,1.5,[4100]),
+    E('0036','Agustina','Ríos','43990011','11 6234-5678','Cajera',4,36000,22.5,0,0,0,[1900])
+  ];
+  var full=function(e){return e.n+' '+e.ap};
+  var locName=function(id){var l=locales.filter(function(x){return x.id===id})[0];return l?l.n:''};
+  var byLoc=function(id){return emps.filter(function(e){return e.loc===id})};
+
+  // aviso breve
+  var tt;
+  function toast(t){var el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){el.classList.remove('on')},2600)}
+
+  // ventana modal reutilizable
+  var onOk=null,lastFocus=null;
+  function openModal(title,body,okLabel,fn){
+    lastFocus=document.activeElement;
+    $('#mTitle').textContent=title;$('#mBody').innerHTML=body;$('#mOk').textContent=okLabel||'Guardar';onOk=fn;
+    $('#modal').hidden=false;$('#mScrim').hidden=false;
+    var f=$('#mBody input:not([type=checkbox]),#mBody select');(f||$('#mOk')).focus();
   }
-  drawLocales();
-  $('#newLocal').onclick=function(){locales.push({n:'Nuevo local '+(locales.length-2),d:'Dirección a completar',e:0,r:100});drawLocales();};
+  function closeModal(){$('#modal').hidden=true;$('#mScrim').hidden=true;onOk=null;if(lastFocus)lastFocus.focus()}
+  $('#mClose').onclick=$('#mCancel').onclick=$('#mScrim').onclick=closeModal;
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#modal').hidden)closeModal()});
+  $('#mForm').addEventListener('submit',function(e){e.preventDefault();if(onOk&&onOk($('#mForm'))!==false)closeModal()});
+  function fld(id,label,val,type,extra){return '<div class="field'+(extra&&extra.wide?' wide':'')+'"><label for="'+id+'">'+label+'</label><input id="'+id+'" name="'+id+'" type="'+(type||'text')+'" value="'+esc(val)+'"'+(extra&&extra.attrs?' '+extra.attrs:'')+'><span class="err" id="'+id+'-err"></span></div>'}
+  function setErr(id,msg){var i=$('#'+id),e=$('#'+id+'-err');if(e)e.textContent=msg||'';if(i){if(msg)i.setAttribute('aria-invalid','true');else i.removeAttribute('aria-invalid')}return !msg}
+  function val(id){return ($('#'+id).value||'').trim()}
+
+  // locales
+  function drawKpis(){$('#kLoc').textContent=locales.filter(function(l){return l.act}).length;$('#kEmp').textContent=emps.length}
+  function drawLocales(){
+    $('#localCards').innerHTML=locales.map(function(l){var es=byLoc(l.id);
+      return '<div class="card'+(l.act?'':' off')+'"><div class="chead"><h3>'+esc(l.n)+'</h3>'+(l.act?'':'<span class="pill info">Inactivo</span>')+'</div><div class="meta">'+esc(l.d)+'</div><div class="mapbox"><i style="width:'+(30+l.r/6)+'px;height:'+(30+l.r/6)+'px;margin:-'+(15+l.r/12)+'px"></i><b></b></div>'+
+      '<div class="meta">Geocerca '+l.r+' m · '+es.length+' empleado'+(es.length===1?'':'s')+'</div>'+
+      '<div class="who">'+(es.length?es.map(function(e){return '<span class="pill info">'+esc(full(e))+'</span>'}).join(''):'<span class="meta">Sin empleados asignados</span>')+'</div>'+
+      '<div class="cact"><button class="btn sm" data-act="edit" data-id="'+l.id+'">Editar</button><button class="btn sm" data-act="assign" data-id="'+l.id+'">Asignar empleados</button></div></div>'}).join('');
+    drawKpis();
+  }
+  function localForm(l){
+    var radios=[50,100,150,200,300].map(function(r){return '<option value="'+r+'"'+(l.r===r?' selected':'')+'>'+r+' m</option>'}).join('');
+    return '<div class="fgrid">'+fld('lNom','Nombre del local',l.n,'text',{wide:true})+fld('lDir','Dirección',l.d,'text',{wide:true})+
+      '<div class="field"><label for="lRad">Radio de la geocerca</label><select id="lRad">'+radios+'</select><span class="err"></span></div>'+
+      '<div class="field"><label>Estado</label><label class="tog"><input type="checkbox" id="lAct"'+(l.act?' checked':'')+'> Local activo</label><span class="err"></span></div></div>'+
+      '<p class="hint">El radio define desde qué distancia los empleados pueden fichar en este local.</p>';
+  }
+  function saveLocal(l,isNew){return function(){
+    var ok=setErr('lNom',val('lNom')?'':'Ingresá el nombre del local.')&setErr('lDir',val('lDir')?'':'Ingresá la dirección.');
+    var dup=locales.some(function(x){return x!==l&&x.n.toLowerCase()===val('lNom').toLowerCase()});
+    if(ok&&dup)ok=setErr('lNom','Ya existe un local con ese nombre.');
+    if(!ok)return false;
+    l.n=val('lNom');l.d=val('lDir');l.r=+$('#lRad').value;l.act=$('#lAct').checked;
+    if(isNew){l.id=Math.max.apply(null,locales.map(function(x){return x.id}))+1;locales.push(l)}
+    drawLocales();drawEmps();toast(isNew?'Local creado':'Cambios guardados en '+l.n);
+  }}
+  $('#newLocal').onclick=function(){var l={n:'',d:'',r:100,act:true};openModal('Nuevo local',localForm(l),'Crear local',saveLocal(l,true))};
+  function assignForm(l){
+    return '<p class="meta" style="margin:0 0 10px">Marcá quién trabaja en <b>'+esc(l.n)+'</b>. Si elegís a alguien de otro local, se cambia de local.</p><div class="alist">'+
+      emps.map(function(e,i){return i}).sort(function(x,y){return (emps[y].loc===l.id)-(emps[x].loc===l.id)}).map(function(i){var e=emps[i],here=e.loc===l.id;return '<label class="arow"><input type="checkbox" data-i="'+i+'"'+(here?' checked':'')+'><span class="aname">'+esc(full(e))+'<span class="meta"> · '+esc(e.p||'Sin puesto')+'</span></span><span class="pill '+(here?'ok':e.loc?'info':'warn')+'">'+(here?'En este local':e.loc?locName(e.loc):'Sin asignar')+'</span></label>'}).join('')+'</div>';
+  }
+  $('#localCards').addEventListener('click',function(ev){var b=ev.target.closest('button[data-act]');if(!b)return;
+    var l=locales.filter(function(x){return x.id===+b.dataset.id})[0];
+    if(b.dataset.act==='edit')openModal('Editar local',localForm(l),'Guardar cambios',saveLocal(l,false));
+    else openModal('Asignar empleados · '+l.n,assignForm(l),'Guardar asignación',function(){
+      var moved=0;$$('#mBody .arow input').forEach(function(c){var e=emps[+c.dataset.i];
+        if(c.checked&&e.loc!==l.id){e.loc=l.id;moved++}else if(!c.checked&&e.loc===l.id){e.loc=0;moved++}});
+      drawLocales();drawEmps();toast(moved?'Asignación actualizada ('+moved+' cambio'+(moved===1?'':'s')+')':'Sin cambios');
+    });
+  });
 
   // empleados
-  var emps=[
-    {l:'0012',n:'Lucía Benítez',p:'Mozo',loc:'Centro',m:38000,j:22.5,au:0,a:1,hx:1.5,c:[4200,5200]},
-    {l:'0015',n:'Martín Aguirre',p:'Cocinero',loc:'Centro',m:46000,j:24,au:0,a:0,hx:4,c:[3800]},
-    {l:'0021',n:'Camila Rojas',p:'Barra',loc:'Palermo',m:40000,j:21,au:1,a:1,hx:0,c:[6100,2300]},
-    {l:'0027',n:'Diego Sosa',p:'Cocinero',loc:'Costanera',m:44000,j:23.5,au:0,a:1,hx:2.25,c:[]}
-  ];
-  var opts=['Ninguno'].concat(locales.map(function(l){return l.n}));
-  $('#empRows').innerHTML=emps.map(function(e){
-    return '<tr><td class="mono">'+e.l+'</td><td>'+e.n+'</td><td>'+e.p+'</td><td>'+e.loc+'</td><td class="n">'+fmt(e.m)+'</td><td><select aria-label="Habilitar a '+e.n+'">'+opts.filter(function(o){return o!==e.loc}).map(function(o){return '<option>'+o+'</option>'}).join('')+'</select></td></tr>'}).join('');
+  function drawEmps(){
+    var f=$('#empFilter').value;
+    $('#empFilter').innerHTML='<option value="">Todos los locales</option>'+locales.map(function(l){return '<option value="'+l.id+'">'+esc(l.n)+'</option>'}).join('')+'<option value="0">Sin asignar</option>';
+    $('#empFilter').value=f;
+    var list=emps.filter(function(e){return f===''||String(e.loc)===f});
+    $('#empRows').innerHTML=list.map(function(e){var i=emps.indexOf(e);
+      return '<tr><td class="mono">'+e.l+'</td><td>'+esc(full(e))+'<div class="meta">'+esc(e.p||'Sin puesto')+'</div></td><td class="mono">'+esc(e.doc)+'</td><td class="mono">'+esc(e.tel)+'</td><td>'+esc(e.mail)+'</td>'+
+      '<td>'+(e.loc?esc(locName(e.loc)):'<span class="pill warn">Sin asignar</span>')+'</td><td class="n">'+(e.m?fmt(e.m):'—')+'</td>'+
+      '<td><select aria-label="Habilitar a '+esc(full(e))+' en otro local"><option>Ninguno</option>'+locales.filter(function(l){return l.id!==e.loc}).map(function(l){return '<option>'+esc(l.n)+'</option>'}).join('')+'</select></td>'+
+      '<td><button class="btn sm" data-edit="'+i+'">Editar</button></td></tr>'}).join('')||'<tr><td colspan="9" class="meta">No hay empleados en este filtro.</td></tr>';
+    $('#empCount').textContent=list.length+' de '+emps.length+' empleados';
+    drawKpis();drawLiq();
+  }
+  function empForm(e){
+    var locs='<option value="0">Sin asignar</option>'+locales.filter(function(l){return l.act||l.id===e.loc}).map(function(l){return '<option value="'+l.id+'"'+(e.loc===l.id?' selected':'')+'>'+esc(l.n)+'</option>'}).join('');
+    return '<div class="fsec">Datos personales</div><div class="fgrid">'+
+      fld('eNom','Nombre',e.n,'text',{attrs:'autocomplete="given-name"'})+fld('eApe','Apellido',e.ap,'text',{attrs:'autocomplete="family-name"'})+
+      fld('eDoc','Documento (DNI)',e.doc,'text',{attrs:'inputmode="numeric" placeholder="Solo números"'})+fld('eTel','Teléfono de contacto',e.tel,'tel',{attrs:'placeholder="11 5555-5555"'})+
+      fld('eMail','Correo electrónico',e.mail,'email',{wide:true,attrs:'autocomplete="email" placeholder="nombre@correo.com"'})+'</div>'+
+      '<p class="hint">Este correo va a ser el usuario con el que el empleado entra a su interfaz.</p>'+
+      '<div class="fsec">Datos laborales</div><div class="fgrid">'+
+      '<div class="field"><label for="eLoc">Local asignado</label><select id="eLoc">'+locs+'</select><span class="err"></span></div>'+
+      fld('ePue','Puesto',e.p,'text',{attrs:'placeholder="Ej.: Mozo, Cocinero"'})+
+      fld('eMon','Monto por jornada (ARS)',e.m||'','number',{attrs:'min="0" step="500" placeholder="Ej.: 38000"'})+'</div>';
+  }
+  function saveEmp(e,isNew){return function(){
+    var doc=val('eDoc').replace(/\D/g,''),mail=val('eMail').toLowerCase(),tel=val('eTel');
+    var ok=true;
+    ok=setErr('eNom',val('eNom')?'':'Ingresá el nombre.')&&ok;
+    ok=setErr('eApe',val('eApe')?'':'Ingresá el apellido.')&&ok;
+    ok=setErr('eDoc',!doc?'Ingresá el documento.':(doc.length<7||doc.length>8)?'El DNI tiene 7 u 8 números.':emps.some(function(x){return x!==e&&x.doc===doc})?'Ya hay un empleado con ese documento.':'')&&ok;
+    ok=setErr('eTel',!tel?'Ingresá un teléfono de contacto.':tel.replace(/\D/g,'').length<8?'El teléfono parece incompleto.':'')&&ok;
+    ok=setErr('eMail',!mail?'Ingresá el correo electrónico.':!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)?'Revisá el formato del correo (ej.: nombre@correo.com).':emps.some(function(x){return x!==e&&x.mail===mail})?'Ese correo ya está en uso por otro empleado.':'')&&ok;
+    var mon=val('eMon');ok=setErr('eMon',mon&&+mon<0?'El monto no puede ser negativo.':'')&&ok;
+    if(!ok){var first=$('#mBody [aria-invalid="true"]');if(first)first.focus();return false}
+    e.n=val('eNom');e.ap=val('eApe');e.doc=doc;e.tel=tel;e.mail=mail;e.loc=+$('#eLoc').value;e.p=val('ePue');e.m=+mon||0;
+    if(isNew){e.l=String(Math.max.apply(null,emps.map(function(x){return +x.l}))+1).padStart(4,'0');emps.push(e)}
+    drawLocales();drawEmps();toast(isNew?'Empleado dado de alta · legajo '+e.l:'Datos de '+full(e)+' actualizados');
+  }}
+  $('#newEmp').onclick=function(){var e={n:'',ap:'',doc:'',tel:'',mail:'',p:'',loc:0,m:0,j:0,au:0,a:0,hx:0,c:[],st:{hx:true,c:true}};openModal('Alta de empleado',empForm(e),'Dar de alta',saveEmp(e,true))};
+  $('#empRows').addEventListener('click',function(ev){var b=ev.target.closest('button[data-edit]');if(!b)return;var e=emps[+b.dataset.edit];openModal('Editar empleado · legajo '+e.l,empForm(e),'Guardar cambios',saveEmp(e,false))});
+  $('#empFilter').onchange=drawEmps;
 
   // liquidación
-  var state=emps.map(function(){return {hx:true,c:true}});
   function drawLiq(){
     var total=0,cons=0;
     $('#liqRows').innerHTML=emps.map(function(e,i){
-      var s=state[i], consSum=e.c.reduce(function(a,b){return a+b},0);
+      var s=e.st, consSum=e.c.reduce(function(a,b){return a+b},0);
       var extra=s.hx?e.hx*(e.m/8)*1.5:0, desc=s.c?consSum:0;
       var neto=(e.j+e.au)*e.m+extra-desc; total+=neto; cons+=desc;
-      return '<tr><td>'+e.n+'</td><td class="n">'+String(e.j).replace('.',',')+'</td><td class="n">'+e.au+'</td><td class="n">'+e.a+'</td><td class="n">'+fmt(e.m)+'</td><td class="n">'+String(e.hx).replace('.',',')+'</td>'+
+      return '<tr><td>'+esc(full(e))+'</td><td class="n">'+String(e.j).replace('.',',')+'</td><td class="n">'+e.au+'</td><td class="n">'+e.a+'</td><td class="n">'+(e.m?fmt(e.m):'—')+'</td><td class="n">'+String(e.hx).replace('.',',')+'</td>'+
         '<td>'+(e.hx?'<label><input type="checkbox" data-i="'+i+'" data-k="hx"'+(s.hx?' checked':'')+'> '+fmt(e.hx*(e.m/8)*1.5)+'</label>':'<span class="meta">—</span>')+'</td>'+
         '<td class="n">'+(consSum?fmt(consSum):'—')+'</td>'+
         '<td>'+(consSum?'<label><input type="checkbox" data-i="'+i+'" data-k="c"'+(s.c?' checked':'')+'> Aprobar</label>':'<span class="meta">—</span>')+'</td>'+
         '<td class="n"><b>'+fmt(neto)+'</b></td></tr>';
     }).join('');
     $('#liqTotal').textContent=fmt(total); $('#liqCons').textContent=fmt(cons);
-    $$('#liqRows input').forEach(function(c){c.onchange=function(){state[c.dataset.i][c.dataset.k]=c.checked;drawLiq()}});
+    $$('#liqRows input').forEach(function(c){c.onchange=function(){emps[c.dataset.i].st[c.dataset.k]=c.checked;drawLiq()}});
   }
-  drawLiq();
+  drawLocales();drawEmps();
   $('#confirmLiq').onclick=function(){var p=$('#liqState');p.textContent='Confirmada';p.className='pill ok';this.disabled=true;this.textContent='Confirmada · recibos generados';};
 
   // empleado: reloj y fichaje simulado
@@ -447,10 +604,10 @@ input[type=checkbox]{accent-color:var(--ok)}
 
   // ausentes hoy
   var aus=[
-    {n:'Valentina Paz',loc:'Centro',t:'11:00–19:00',k:'aut'},
-    {n:'Tomás Ibarra',loc:'Palermo',t:'12:00–20:00',k:'inj'},
-    {n:'Sofía Luna',loc:'Costanera',t:'—',k:'fra'},
-    {n:'Joaquín Díaz',loc:'Centro',t:'—',k:'fra'}
+    {n:'Valentina Paz',t:'11:00–19:00',k:'aut'},
+    {n:'Tomás Ibarra',t:'12:00–20:00',k:'inj'},
+    {n:'Sofía Luna',t:'—',k:'fra'},
+    {n:'Agustina Ríos',t:'—',k:'fra'}
   ];
   var K={aut:['Ausencia autorizada','ok','Se paga la jornada (no se descuenta)'],inj:['Ausencia injustificada','bad','Se descuenta la jornada'],fra:['Franco / día libre','info','No es ausencia: no se descuenta']};
   var filtro='todos';
@@ -459,7 +616,7 @@ input[type=checkbox]{accent-color:var(--ok)}
     $('#absChips').innerHTML=cs.map(function(c){return '<button type="button" class="chip" data-f="'+c[0]+'" aria-pressed="'+(filtro===c[0])+'">'+c[1]+'</button>'}).join('');
     $$('#absChips .chip').forEach(function(b){b.onclick=function(){filtro=b.dataset.f;drawAus()}});
     $('#absRows').innerHTML=aus.filter(function(a){return filtro==='todos'||a.k===filtro}).map(function(a){
-      return '<tr><td>'+a.n+'</td><td>'+a.loc+'</td><td class="mono">'+a.t+'</td><td><span class="pill '+K[a.k][1]+'">'+K[a.k][0]+'</span></td><td class="meta">'+K[a.k][2]+'</td></tr>'}).join('');
+      var e=emps.filter(function(x){return full(x)===a.n})[0];return '<tr><td>'+a.n+'</td><td>'+(e&&e.loc?locName(e.loc):'Sin asignar')+'</td><td class="mono">'+a.t+'</td><td><span class="pill '+K[a.k][1]+'">'+K[a.k][0]+'</span></td><td class="meta">'+K[a.k][2]+'</td></tr>'}).join('');
   }
   drawAus();
   $('#absBtn').onclick=function(){var p=$('#absPanel'),o=p.classList.toggle('hide');this.setAttribute('aria-expanded',!o)};

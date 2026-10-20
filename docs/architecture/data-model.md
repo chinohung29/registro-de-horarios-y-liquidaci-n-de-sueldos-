@@ -7,7 +7,7 @@ Multi-tenant por `empresa_id` en todas las tablas, aislado con Row Level Securit
 | `empresas` | id, nombre, moneda, parametros_liquidacion (jsonb: horas_jornada, horas_media_jornada, tolerancia_min, recargos) |
 | `locales` | id, empresa_id, nombre, direccion, lat, lng, radio_m, qr_secret, activo |
 | `perfiles` | id (= auth.users), empresa_id, rol (`admin`/`encargado`/`empleado`), nombre |
-| `empleados` | id, empresa_id, perfil_id, legajo, documento, fecha_ingreso, horas_jornada (override opcional), activo |
+| `empleados` | id, empresa_id, perfil_id, legajo, nombre, apellido, documento (único por empresa), telefono, email (único; será el usuario de acceso), puesto, fecha_ingreso, horas_jornada (override opcional), activo |
 | `montos_jornada` | id, empleado_id, monto, vigente_desde (historial; el vigente es el último con `vigente_desde <= fecha`) |
 | `asignaciones` | id, empleado_id, local_id, desde, hasta |
 | `habilitaciones_local` | id, empleado_id, local_id, desde, hasta, motivo, habilitada_por (permite fichar en un local distinto del asignado) |
