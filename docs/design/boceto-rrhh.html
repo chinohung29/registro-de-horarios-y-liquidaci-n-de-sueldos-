@@ -6,7 +6,7 @@
    Paleta de prueba: Frank's Grill (colores medidos en su sitio), sin negro: azul (fondo y menú), crema (paneles),
    azul marino (texto), rosa (acción), azul medio (selección), rojo (alertas). Presets: "mostaza" y "smash". */
 :root{
-  --page:#22487e; --page-deep:#22487e; --on-page:#f8f3e8; --bg:#f8f3e8; --surface:#fffdf8; --surface2:#f8f3e8; --line:#e3dac8; --shadow:rgba(24,53,92,.12); --shadow-h:rgba(24,53,92,.24); --fg:#18355c; --muted:#5a6c87; --accent:#fcaec7; --accent-fg:#18355c; --accent-soft:#fde7ef; --hi:#3462a6; --hi-fg:#f8f3e8; --hi-soft:#d0e1fd; --ok:#3e8e41; --ok-soft:#e3f1df; --warn:#9a6a12; --warn-soft:#fbedcf; --bad:#c62828; --bad-soft:#fbe0e0; --side:rgba(24,53,92,.92); --side-fg:#f8f3e8; --side-active:rgba(248,243,232,.14); --wine:#18355c;
+  --page:#3a679f; --page-deep:#2c568c; --on-page:#fbf6ec; --bg:#f2eadb; --surface:#fbf6ec; --surface2:#f2eadb; --line:#e2d5bd; --shadow:rgba(24,53,92,.12); --shadow-h:rgba(24,53,92,.24); --fg:#18355c; --muted:#5a6c87; --accent:#fcaec7; --accent-fg:#18355c; --accent-soft:#fde7ef; --hi:#3462a6; --hi-fg:#f8f3e8; --hi-soft:#d0e1fd; --ok:#3e8e41; --ok-soft:#e3f1df; --warn:#9a6a12; --warn-soft:#fbedcf; --bad:#c62828; --bad-soft:#fbe0e0; --side:rgba(24,53,92,.92); --side-fg:#f8f3e8; --side-active:rgba(248,243,232,.14); --wine:#18355c;
   --display:'Manrope',system-ui,sans-serif;
   --body:'Manrope',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
@@ -97,7 +97,7 @@ input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
 .bar i{display:block;height:100%;background:#cfcfd6;transition:width 1s linear}
 .kiosk .mono{font-size:28px}
 .kiosk p{margin:0;color:var(--on-page);max-width:46ch}
-.hide{display:none}
+.hide{display:none!important}
 details.brandbox{position:relative}
 details.brandbox summary{list-style:none;cursor:pointer;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 12px;font-weight:500}
 details.brandbox summary::-webkit-details-marker{display:none}
@@ -215,34 +215,50 @@ input[type=checkbox]{accent-color:var(--ok)}
 .scan{background:var(--wine);color:var(--on-page)}
 .scan:before{border-color:var(--hi)}
 .scan:after{background:var(--hi)}
+
+/* Menú global con vista y marca */
+.hd{gap:14px}
+.viewtag{display:inline-block;padding:7px 14px;border-radius:999px;background:color-mix(in srgb,var(--on-page) 16%,transparent);color:var(--on-page);font-weight:600;font-size:13px}
+.top .burger{border-color:transparent}
+.side .grp{color:var(--side-fg);opacity:.75}
+.sfield,.sbrand label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--side-fg);padding:0 4px}
+.sbrand{display:flex;flex-direction:column;gap:10px;padding-bottom:6px}
+.side select,.side input[type=color]{width:100%;background:var(--surface);color:var(--fg);border:1px solid transparent;border-radius:10px;padding:8px 10px;font-size:13.5px}
+.side input[type=color]{height:38px;padding:3px}
+.side select option{color:var(--fg);background:var(--surface)}
+.side .sbrand .btn{align-self:flex-start;border-width:1px;border-style:solid;margin-left:4px;background:transparent;color:var(--side-fg);border-color:color-mix(in srgb,var(--side-fg) 50%,transparent);box-shadow:none}
+.side .sbrand .btn:hover{background:var(--side-active);color:var(--side-fg)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.snav{display:flex;flex-direction:column;gap:2px}
 </style>
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 11 · paleta Frank's Grill</span></p></div></div>
-    <div class="tools"><details class="brandbox"><summary>Marca</summary><div class="brandpanel"><label for="palSel">Paleta<select id="palSel"><option value="">Frank's Grill: azul y rosa</option><option value="mostaza">Mostaza y ketchup</option><option value="smash">Smash: ciruela y rosa</option></select></label><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#fcaec7"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div></details><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
-      <button role="tab" aria-selected="true" data-v="admin">Administrador</button>
-      <button role="tab" aria-selected="false" data-v="emp">Empleado (celular)</button>
-      <button role="tab" aria-selected="false" data-v="kiosk">Pantalla del local</button>
-    </div></div>
+    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 12</span></p></div></div>
+    <div class="tools"><span class="viewtag" id="viewTag">Vista: Administrador</span><button class="btn" id="theme" type="button"></button></div>
   </div>
-
-  <!-- ADMIN -->
-  <section id="v-admin" class="admin">
-    <div class="scrim" id="scrim"></div>
-    <nav class="side" id="nav" aria-label="Menú principal">
-      <div class="stop"><button class="sclose" id="sclose" type="button" aria-label="Cerrar menú">✕</button></div>
-      <label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label>
-      <div class="brand">Casa Fuego<small>Administrador</small></div>
+  <div class="scrim" id="scrim"></div>
+  <nav class="side" id="nav" aria-label="Menú principal">
+    <div class="stop"><button class="sclose" id="sclose" type="button" aria-label="Cerrar menú">✕</button></div>
+    <label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label>
+    <div class="brand">Casa Fuego<small>Panel de gestión</small></div>
+    <div class="grp">Vista</div>
+    <label class="sfield" for="viewSel"><span class="sr">Elegí la vista</span><select id="viewSel"><option value="admin">Administrador</option><option value="emp">Empleado (celular)</option><option value="kiosk">Pantalla del local</option></select></label>
+    <div id="adminNav" class="snav">
       <div class="grp">Personal</div>
       <button data-s="locales" aria-current="page">Locales</button>
       <button data-s="empleados">Empleados</button>
       <button data-s="fichajes">Fichajes</button>
       <div class="grp">Sueldos</div>
       <button data-s="liq">Liquidación</button>
-    </nav>
+    </div>
+    <div class="grp">Marca</div>
+    <div class="sbrand"><label for="palSel">Paleta<select id="palSel"><option value="">Frank's Grill: azul y rosa</option><option value="mostaza">Mostaza y ketchup</option><option value="smash">Smash: ciruela y rosa</option></select></label><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#fcaec7"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div>
+  </nav>
+
+  <!-- ADMIN -->
+  <section id="v-admin" class="admin">
     <div class="main">
-      <div class="abar"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><div class="crumb"><span class="meta">Casa Fuego · Administrador</span><b id="crumb">Locales</b></div></div>
       <!-- locales -->
       <div id="s-locales" class="sec">
         <div class="head"><h2>Locales</h2><button class="btn primary" id="newLocal">+ Nuevo local</button></div>
@@ -356,10 +372,11 @@ input[type=checkbox]{accent-color:var(--ok)}
   var fmt=function(n){return '$'+Math.round(n).toLocaleString('es-AR')};
 
   // vistas
-  $$('#views button').forEach(function(b){b.onclick=function(){
-    $$('#views button').forEach(function(x){x.setAttribute('aria-selected',x===b)});
-    ['admin','emp','kiosk'].forEach(function(v){$('#v-'+v).classList.toggle('hide',v!==b.dataset.v)});
-  }});
+  $('#viewSel').onchange=function(){var v=this.value;
+    ['admin','emp','kiosk'].forEach(function(k){$('#v-'+k).classList.toggle('hide',k!==v)});
+    $('#adminNav').hidden=v!=='admin';
+    $('#viewTag').textContent='Vista: '+this.options[this.selectedIndex].text;menu(false);
+  };
   // secciones admin
   function menu(open){$('#nav').classList.toggle('open',open);$('#scrim').classList.toggle('open',open);$('#burger').setAttribute('aria-expanded',open);if(open)$('#sclose').focus()}
   $('#burger').onclick=function(){menu(!$('#nav').classList.contains('open'))};
@@ -367,7 +384,7 @@ input[type=checkbox]{accent-color:var(--ok)}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('#nav').classList.contains('open')){menu(false);$('#burger').focus()}});
   $$('#nav button[data-s]').forEach(function(b){b.onclick=function(){
     $$('#nav button[data-s]').forEach(function(x){x.removeAttribute('aria-current')});
-    $('#crumb').textContent=b.textContent;menu(false);
+    menu(false);
     b.setAttribute('aria-current','page');
     $$('.sec').forEach(function(s){s.classList.add('hide')});
     $('#s-'+b.dataset.s).classList.remove('hide');

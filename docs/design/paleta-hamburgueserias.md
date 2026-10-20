@@ -33,8 +33,8 @@ Colores tomados de franksgrill.com.ar: azules `#3462A6`, `#2B5AA3`, `#22487E`, `
 
 | Rol | Color |
 |---|---|
-| Fondo de página | azul `#22487E` |
-| Paneles | crema `#FFFDF8` / `#F8F3E8` |
+| Fondo de página | azul suavizado `#3A679F` (un tono más claro que `#22487E`) |
+| Paneles | hueso `#FBF6EC` / `#F2EADB` |
 | Texto | azul marino `#18355C` |
 | Botón de acción | rosa `#FCAEC7` con texto azul marino |
 | Selección | azul medio `#3462A6` |
