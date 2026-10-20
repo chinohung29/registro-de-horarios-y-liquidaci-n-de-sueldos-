@@ -5,7 +5,7 @@
 /* Layout: selector de vista arriba; admin = menú lateral + contenido; empleado = celular; local = pantalla del QR.
    Paleta: grises suaves; el acento y la tipografía los define la marca (panel "Marca"). */
 :root{
-  --bg:#e9e9ec; --surface:#fcfcfd; --surface2:#f0f0f2; --line:#dcdce1; --shadow:rgba(30,30,40,.08); --shadow-h:rgba(30,30,40,.16);
+  --bg:#e1e2e6; --surface:#ffffff; --surface2:#f2f2f4; --line:#dcdce1; --shadow:rgba(30,30,40,.08); --shadow-h:rgba(30,30,40,.16);
   --fg:#2c2c31; --muted:#6c6c74; --accent:#4b4b53; --accent-fg:#ffffff; --accent-soft:#e3e3e7;
   --ok:#3f7a5b; --ok-soft:#e1eee7; --warn:#8d6a2d; --warn-soft:#f1e9d6; --bad:#a8473f; --bad-soft:#f3deda;
   --side:#3a3a40; --side-fg:#d0d0d5; --side-active:#4a4a52;
@@ -135,15 +135,15 @@ button.kpi b{color:var(--bad)}
 /* Botones y transiciones */
 :root{--ease:cubic-bezier(.2,.7,.2,1);--t:180ms}
 .btn,.seg button,.side button,.chip,details.brandbox summary,.big,.tabs button,button.kpi,.logo,.card,select{transition:background-color var(--t) var(--ease),color var(--t) var(--ease),border-color var(--t) var(--ease),box-shadow var(--t) var(--ease),transform var(--t) var(--ease),opacity var(--t) var(--ease)}
-.btn,details.brandbox summary{border-radius:10px;padding:9px 15px;border:1px solid var(--line);background:var(--surface);box-shadow:0 1px 2px var(--shadow);letter-spacing:.01em}
+.btn,details.brandbox summary{border-radius:999px;padding:9px 18px;font-weight:600;border:1px solid var(--line);background:var(--surface);box-shadow:0 1px 2px var(--shadow);letter-spacing:.01em}
 .btn:hover,details.brandbox summary:hover{border-color:color-mix(in srgb,var(--fg) 25%,var(--line));box-shadow:0 4px 12px var(--shadow-h);transform:translateY(-1px)}
 .btn:active,details.brandbox summary:active,.big:active,.chip:active{transform:translateY(0) scale(.97);box-shadow:0 1px 2px var(--shadow)}
 .btn.primary{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 88%,#fff),var(--accent));border-color:var(--accent);color:var(--accent-fg);box-shadow:0 1px 2px var(--shadow),inset 0 1px 0 rgba(255,255,255,.18)}
 .btn.primary:hover{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 78%,#fff),color-mix(in srgb,var(--accent) 92%,#fff));box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
 .btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
-.btn.sm{padding:6px 11px;border-radius:8px;font-size:12.5px}
-.seg{background:color-mix(in srgb,var(--fg) 7%,var(--bg));border-radius:12px;padding:4px}
-.seg button{border-radius:9px}
+.btn.sm{padding:6px 13px;border-radius:999px;font-size:12.5px}
+.seg{background:color-mix(in srgb,var(--fg) 8%,var(--bg));border-radius:999px;padding:4px}
+.seg button{border-radius:999px}
 .seg button:hover{color:var(--fg);background:color-mix(in srgb,var(--surface) 55%,transparent)}
 .seg button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 2px 6px var(--shadow-h)}
 .side button:hover{background:color-mix(in srgb,var(--side-active) 70%,transparent);color:#fff;transform:translateX(2px)}
@@ -166,7 +166,7 @@ select:hover{border-color:color-mix(in srgb,var(--fg) 30%,var(--line))}
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos.</p></div></div>
+    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 5</span></p></div></div>
     <div class="tools"><details class="brandbox"><summary>Marca</summary><div class="brandpanel"><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#4b4b53"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div></details><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
       <button role="tab" aria-selected="true" data-v="admin">Administrador</button>
       <button role="tab" aria-selected="false" data-v="emp">Empleado (celular)</button>
