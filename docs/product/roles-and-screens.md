@@ -10,7 +10,7 @@
 
 ## Encargado
 Interfaz propia (vista "Encargado"):
-- **Generador de códigos** de cupón familiar: elige un empleado de su local (ve cuántos cupones le quedan en el mes) y genera el código. El código queda inactivo hasta que lo autoriza el administrador. Botón para copiarlo.
+- **Generador de códigos** de cupón familiar: elige un empleado de su local, incluido él mismo (ve cuántos cupones le quedan en el mes) y genera el código. Con las mismas condiciones para todos: después del segundo cupón del mes no deja generar otro; la cuenta se reinicia el día 1 de cada mes. El código queda inactivo hasta que lo autoriza el administrador. Botón para copiarlo.
 - **Pedidos de su equipo**: los pedidos que hicieron los empleados desde el celular, con un botón para generar el código de cada uno.
 - **Códigos del mes** de su local con su estado (pendiente, autorizado, usado, rechazado).
 - **Su equipo** con los cupones usados por cada uno.

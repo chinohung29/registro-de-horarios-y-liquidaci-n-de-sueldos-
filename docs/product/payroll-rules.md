@@ -71,7 +71,8 @@ Si el monto por jornada cambia, el nuevo valor rige desde su fecha de vigencia; 
   2. El encargado **genera el código** en su interfaz (ej.: `FAM-3KT7`). El código nace **inactivo**. Estado: `pendiente`.
   3. El **administrador** lo autoriza (se activa) o lo rechaza.
   4. El empleado ve el código activo en su celular y lo usa en la caja; el administrador puede marcarlo como **usado** con el número de ticket.
-- No se pueden autorizar ni pedir más de 2 por empleado en el mes. Lo que no se usa no se acumula.
+- **Mismas condiciones para todos, incluido el encargado**: 2 por persona por mes. Después del segundo cupón no se puede pedir, generar ni autorizar otro (un cupón rechazado libera el lugar).
+- La cuenta es por **mes calendario** y **se reinicia el día 1 de cada mes**. Lo que no se usa no se acumula.
 - El recibo informa cuántos cupones se autorizaron, solo como dato.
 
 ## Recibo de haberes

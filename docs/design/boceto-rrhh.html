@@ -355,7 +355,7 @@ table.mini th,table.mini td{padding:7px 10px}
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 19</span></p></div></div>
+    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 20</span></p></div></div>
     <div class="tools"><span class="viewtag" id="viewTag">Vista: Administrador</span><button class="btn" id="theme" type="button"></button></div>
   </div>
   <div class="scrim" id="scrim"></div>
@@ -436,7 +436,7 @@ table.mini th,table.mini td{padding:7px 10px}
       </div>
       <!-- cupones familiares -->
       <div id="s-cupones" class="sec hide">
-        <div class="head"><h2>Cupones familiares · septiembre 2026</h2><span class="pill info">Los códigos los genera el encargado</span></div>
+        <div class="head"><h2 id="cupTitle">Cupones familiares · septiembre 2026</h2><div class="cact"><span class="pill info" id="cupReset"></span><button class="btn sm" id="cupNext" type="button">Simular inicio del mes siguiente</button></div></div>
         <p class="meta" style="margin:6px 0 0">15% de descuento en consumos de familiares, hasta 2 por empleado por mes. El encargado genera el código y queda inactivo hasta que lo autorizás. No se descuenta del sueldo.</p>
         <div class="kpis" style="margin-block:14px"><div class="kpi"><b id="kCupP">0</b><span>Pendientes de autorización</span></div><div class="kpi"><b id="kCupA">0</b><span>Autorizados sin usar</span></div><div class="kpi"><b id="kCupU">0</b><span>Usados</span></div></div>
         <div class="tw"><table><thead><tr><th>Fecha</th><th>Empleado</th><th>Local</th><th>Pedido por</th><th>Estado</th><th>Código</th><th></th></tr></thead><tbody id="cupRows"></tbody></table></div>
@@ -491,7 +491,8 @@ table.mini th,table.mini td{padding:7px 10px}
       <div class="enchead"><div><span class="meta">Casa Fuego · Encargado/a</span><h2 id="encName">Encargado/a</h2></div><label class="encloc" for="encLoc"><span class="meta">Local</span><select id="encLoc"></select></label></div>
       <div class="gen">
         <h3>Generador de códigos</h3>
-        <p class="meta">Cupón familiar del 15% en consumos de familiares. Hasta 2 por empleado por mes. El código queda activo cuando lo autoriza el administrador y no se descuenta del sueldo.</p>
+        <span class="pill info" id="encPer"></span>
+        <p class="meta">Cupón familiar del 15% en consumos de familiares. Hasta 2 por persona por mes, incluido el encargado: después del segundo no se puede generar otro. El código queda activo cuando lo autoriza el administrador y no se descuenta del sueldo.</p>
         <div class="genrow"><label class="sr" for="genEmp">Empleado</label><select id="genEmp"></select><button class="btn primary" id="genBtn" type="button">Generar código</button></div>
         <div class="genout" id="genOut" hidden>
           <span class="meta">Código generado</span>
@@ -708,7 +709,14 @@ table.mini th,table.mini td{padding:7px 10px}
     {e:emps[10],f:'21/09',por:encDe(emps[10]),st:'pendiente',cod:'FAM-Z6NB',tic:''},
     {e:emps[11],f:'22/09',por:encDe(emps[11]),st:'pedido',cod:'',tic:''}
   ];
-  function cupDe(e){return cupones.filter(function(c){return c.e===e})}
+  // la cuenta de cupones es por mes calendario y se reinicia el día 1
+  var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var CUP_PER={y:2026,m:9};
+  function perKey(){return CUP_PER.y+'-'+String(CUP_PER.m).padStart(2,'0')}
+  function perLabel(){return MESES[CUP_PER.m-1]+' '+CUP_PER.y}
+  function resetLabel(){var y=CUP_PER.m===12?CUP_PER.y+1:CUP_PER.y,m=CUP_PER.m===12?1:CUP_PER.m+1;return '01/'+String(m).padStart(2,'0')+'/'+y}
+  function curr(){return cupones.filter(function(c){return (c.per||'2026-09')===perKey()})}
+  function cupDe(e){return curr().filter(function(c){return c.e===e})}
   function cupUsados(e){return cupDe(e).filter(function(c){return c.st==='autorizado'||c.st==='usado'}).length}
   function cupOcupados(e){return cupDe(e).filter(function(c){return c.st!=='rechazado'}).length}
   function calc(e){
@@ -773,10 +781,11 @@ table.mini th,table.mini td{padding:7px 10px}
   var ST={pedido:['Pedido al encargado','info'],pendiente:['Pendiente de autorización','warn'],autorizado:['Autorizado · sin usar','ok'],usado:['Usado','info'],rechazado:['Rechazado','bad']};
   function drawCup(){
     if(!$('#cupRows'))return;
-    var n=function(st){return cupones.filter(function(c){return c.st===st}).length};
+    var n=function(st){return curr().filter(function(c){return c.st===st}).length};
+    $('#cupTitle').textContent='Cupones familiares · '+perLabel();$('#cupReset').textContent='La cuenta se reinicia el '+resetLabel();
     drawEnc();
     $('#kCupP').textContent=n('pendiente');$('#kCupA').textContent=n('autorizado');$('#kCupU').textContent=n('usado');
-    $('#cupRows').innerHTML=cupones.map(function(c,i){var e=c.e,lleno=cupUsados(e)>=CUP_MAX;
+    $('#cupRows').innerHTML=curr().map(function(c){var i=cupones.indexOf(c),e=c.e,lleno=cupUsados(e)>=CUP_MAX;
       var acc=c.st==='pendiente'?'<button class="btn sm primary" data-cup-ok="'+i+'"'+(lleno?' disabled title="Ya tiene 2 cupones autorizados este mes"':'')+'>Autorizar</button> <button class="btn sm" data-cup-no="'+i+'">Rechazar</button>':
         c.st==='autorizado'?'<button class="btn sm" data-cup-use="'+i+'">Marcar usado</button>':c.st==='pedido'?'<span class="meta">Esperando que el encargado genere el código</span>':c.st==='usado'?'<span class="meta">Ticket '+esc(c.tic||'—')+'</span>':'<span class="meta">—</span>';
       return '<tr><td class="mono">'+c.f+'</td><td>'+esc(full(e))+'<div class="meta">'+cupUsados(e)+' de '+CUP_MAX+' este mes</div></td><td>'+(e.loc?esc(locName(e.loc)):'—')+'</td><td>'+esc(c.por)+'</td><td><span class="pill '+ST[c.st][1]+'">'+ST[c.st][0]+'</span></td><td class="mono"><b>'+(c.cod||'—')+'</b>'+(c.st==='pendiente'?'<div class="meta">inactivo hasta autorizar</div>':'')+'</td><td style="white-space:nowrap">'+acc+'</td></tr>'}).join('')||'<tr><td colspan="7" class="meta">No hay solicitudes este mes.</td></tr>';
@@ -786,11 +795,13 @@ table.mini th,table.mini td{padding:7px 10px}
     else if(b.dataset.cupNo){cupones[+b.dataset.cupNo].st='rechazado';drawLiq();toast('Solicitud rechazada')}
     else if(b.dataset.cupUse){var c2=cupones[+b.dataset.cupUse];openModal('Marcar cupón '+c2.cod+' como usado',fld('uTic','N° de ticket donde se aplicó el 15%','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'}),'Marcar usado',function(){c2.tic=val('uTic');c2.st='usado';drawLiq();toast('Cupón '+c2.cod+' marcado como usado')})}
   });
+  $('#cupNext').onclick=function(){if(CUP_PER.m===12){CUP_PER.m=1;CUP_PER.y++}else CUP_PER.m++;lastGen=null;drawLiq();toast('Comenzó '+perLabel()+': cada persona vuelve a tener 2 cupones')};
   // interfaz del encargado: generador de códigos
   function encOf(locId){var en=emps.filter(function(x){return x.loc===locId&&x.p==='Encargado/a'})[0];return en?full(en):'Encargado/a de '+locName(locId)}
   function libres(e){var ped=cupDe(e).some(function(c){return c.st==='pedido'});return CUP_MAX-(cupOcupados(e)-(ped?1:0))}
   function generar(e){var c=cupDe(e).filter(function(x){return x.st==='pedido'})[0],locId=+$('#encLoc').value;
-    if(!c){if(cupOcupados(e)>=CUP_MAX){toast(full(e)+' ya tiene sus 2 cupones del mes');return}c={e:e,f:today(),st:'pedido',cod:'',tic:''};cupones.unshift(c)}
+    if(libres(e)<=0){toast(full(e)+' ya tiene sus 2 cupones de '+perLabel()+'. Se reinicia el '+resetLabel());return}
+    if(!c){c={e:e,f:today(),st:'pedido',cod:'',tic:'',per:perKey()};cupones.unshift(c)}
     c.st='pendiente';c.cod=code();c.por=encOf(locId);c.f=today();lastGen=c;drawLiq();toast('Código '+c.cod+' generado · falta autorización del administrador');
   }
   var lastGen=null;
@@ -806,9 +817,10 @@ table.mini th,table.mini td{padding:7px 10px}
     if(g&&$('#genEmp').querySelector('option[value="'+g+'"]:not([disabled])'))$('#genEmp').value=g;else{var f=$('#genEmp').querySelector('option:not([disabled])');if(f)$('#genEmp').value=f.value}
     $('#genBtn').disabled=!$('#genEmp').querySelector('option:not([disabled])');
     if(lastGen&&lastGen.e.loc===locId){$('#genOut').hidden=false;$('#genCode').textContent=lastGen.cod;$('#genWho').textContent='Para '+full(lastGen.e)+' · '+CUP_PCT+'% en consumos de familiares';var st=ST[lastGen.st];$('#genSt').className='pill '+st[1];$('#genSt').textContent=st[0]}else $('#genOut').hidden=true;
-    var ped=cupones.filter(function(c){return c.st==='pedido'&&c.e.loc===locId});
+    var ped=curr().filter(function(c){return c.st==='pedido'&&c.e.loc===locId});
+    $('#encPer').textContent='Mes en curso: '+perLabel()+' · la cuenta se reinicia el '+resetLabel();
     $('#encPed').innerHTML=ped.map(function(c){return '<div class="prow"><span><b>'+esc(full(c.e))+'</b><span class="meta"> · pidió el '+c.f+' · le quedan '+libres(c.e)+' de '+CUP_MAX+'</span></span><button class="btn sm primary" data-gen="'+emps.indexOf(c.e)+'" type="button">Generar código</button></div>'}).join('')||'<p class="meta">No hay pedidos pendientes de tu equipo.</p>';
-    var mine=cupones.filter(function(c){return c.e.loc===locId&&c.st!=='pedido'});
+    var mine=curr().filter(function(c){return c.e.loc===locId&&c.st!=='pedido'});
     $('#encRows').innerHTML=mine.map(function(c){return '<tr><td class="mono">'+c.f+'</td><td>'+esc(full(c.e))+'</td><td class="mono"><b>'+c.cod+'</b></td><td><span class="pill '+ST[c.st][1]+'">'+ST[c.st][0]+'</span></td></tr>'}).join('')||'<tr><td colspan="4" class="meta">Todavía no generaste códigos este mes.</td></tr>';
     $('#encTeam').innerHTML=equipo.map(function(e){return '<span class="pill info">'+esc(full(e))+' · '+cupUsados(e)+'/'+CUP_MAX+'</span>'}).join('')||'<span class="meta">Sin empleados asignados</span>';
   }
@@ -863,7 +875,7 @@ table.mini th,table.mini td{padding:7px 10px}
     $('#t-rec').innerHTML=receipt(e);
   }
   $('#phCupAdd').onclick=function(){var e=emps[0];if(cupOcupados(e)>=CUP_MAX)return;
-    cupones.unshift({e:e,f:today(),por:encDe(e),st:'pedido',cod:'',tic:''});drawLiq();toast('Pedido enviado al encargado')};
+    cupones.unshift({e:e,f:today(),por:encDe(e),st:'pedido',cod:'',tic:'',per:perKey()});drawLiq();toast('Pedido enviado al encargado')};
   $('#phAdd').onclick=function(){var e=emps[0];
     openModal('Cargar consumo',fld('pTic','N° de ticket del sistema de facturación','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'})+fld('pMon','Monto del ticket','','number',{attrs:'min="0" step="100"'})+
       '<div class="field"><label for="pFoto">Foto del ticket</label><input type="file" accept="image/*" id="pFoto"></div><p class="hint">Queda pendiente hasta que el administrador lo apruebe en la liquidación. Se descuenta del sueldo.</p>','Cargar consumo',function(){
