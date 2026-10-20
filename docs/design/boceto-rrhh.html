@@ -3,28 +3,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&family=Lora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: selector de vista arriba; admin = menú sándwich + contenido; PC con fondo fijo, modo oscuro solo en móvil.
-   Paleta gastronómica sin negro: oliva (fondo y menú), harina (paneles), cacao (texto), tomate (acción), azafrán (selección), vino (pantalla del local). */
+   Paleta inspirada en hamburgueserías porteñas, sin negro: mostaza (fondo), pan (paneles), carne tostada (texto y menú),
+   ketchup (acción), pepino (selección). Presets alternativos: "smash" (ciruela, rosa, amarillo) y "leña" (azul, crema, coral). */
 :root{
-  --page:#5f6b36; --page-deep:#4a5427; --on-page:#fff8ec;
-  --bg:#f4ecdd; --surface:#fffaf2; --surface2:#f6eddc; --line:#e7dac2; --shadow:rgba(70,45,20,.10); --shadow-h:rgba(70,45,20,.20);
-  --fg:#3b2a20; --muted:#7c6553; --accent:#d4462c; --accent-fg:#fffaf2; --accent-soft:#fae0d7;
-  --hi:#e3a33a; --hi-fg:#3b2a20; --hi-soft:#f9ead0;
-  --ok:#3f7d48; --ok-soft:#e2efdf; --warn:#9a6a12; --warn-soft:#f8ead0; --bad:#a8322a; --bad-soft:#f6dcd7;
-  --side:rgba(74,84,39,.95); --side-fg:#fff8ec; --side-active:rgba(255,248,236,.16);
-  --wine:#4e1d27;
+  --page:#f2b517; --page-deep:#6e2e12; --on-page:#4a2414; --bg:#fbeed3; --surface:#fff7e8; --surface2:#fbeed3; --line:#efdcb6; --shadow:rgba(90,50,10,.12); --shadow-h:rgba(90,50,10,.24); --fg:#4a2414; --muted:#8a6448; --accent:#d7261e; --accent-fg:#fff7e8; --accent-soft:#fadcd6; --hi:#7a9a2b; --hi-fg:#fff7e8; --hi-soft:#e9f0d6; --ok:#3e8e41; --ok-soft:#e3f1df; --warn:#9a6a12; --warn-soft:#fbedcf; --bad:#9e1b14; --bad-soft:#f7d9d5; --side:rgba(110,46,18,.95); --side-fg:#fff7e8; --side-active:rgba(255,247,232,.16); --wine:#6e2e12;
   --display:'Manrope',system-ui,sans-serif;
   --body:'Manrope',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
-@media (max-width:760px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --page:#1d2114; --page-deep:#efc770; --on-page:#fff8ec; --bg:#1d2114; --surface:#282c1d; --surface2:#323726; --line:#424834; --shadow:rgba(0,0,0,.35); --shadow-h:rgba(0,0,0,.55);
-  --fg:#f3ebdc; --muted:#b5a993; --accent:#ef6a4c; --accent-fg:#1d2114; --accent-soft:#4a2419; --hi:#efb84f; --hi-fg:#1d2114; --hi-soft:#3e3216;
-  --ok:#86c48f; --ok-soft:#24361f; --warn:#e3b862; --warn-soft:#3b3015; --bad:#ef8a7f; --bad-soft:#40211c;
-  --side:rgba(58,66,30,.96); --side-fg:#fff8ec; --side-active:rgba(255,248,236,.14); --wine:#3a141c; color-scheme:dark}}
-@media (max-width:760px){:root[data-theme="dark"]{
-  --page:#1d2114; --page-deep:#efc770; --on-page:#fff8ec; --bg:#1d2114; --surface:#282c1d; --surface2:#323726; --line:#424834; --shadow:rgba(0,0,0,.35); --shadow-h:rgba(0,0,0,.55);
-  --fg:#f3ebdc; --muted:#b5a993; --accent:#ef6a4c; --accent-fg:#1d2114; --accent-soft:#4a2419; --hi:#efb84f; --hi-fg:#1d2114; --hi-soft:#3e3216;
-  --ok:#86c48f; --ok-soft:#24361f; --warn:#e3b862; --warn-soft:#3b3015; --bad:#ef8a7f; --bad-soft:#40211c;
-  --side:rgba(58,66,30,.96); --side-fg:#fff8ec; --side-active:rgba(255,248,236,.14); --wine:#3a141c; color-scheme:dark}}
+:root[data-palette="smash"]{ --page:#3b2045; --page-deep:#3b2045; --on-page:#fff2df; --bg:#fbecd6; --surface:#fff8ee; --surface2:#fbecd6; --line:#ecd9bd; --shadow:rgba(40,15,45,.14); --shadow-h:rgba(40,15,45,.28); --fg:#3b2045; --muted:#7a5f78; --accent:#e2527f; --accent-fg:#fff8ee; --accent-soft:#fde1ea; --hi:#ffc654; --hi-fg:#3b2045; --hi-soft:#fff0cc; --side:rgba(59,32,69,.95); --side-fg:#fff2df; --side-active:rgba(255,242,223,.16); --wine:#3b2045 }
+:root[data-palette="lena"]{ --page:#22487e; --page-deep:#22487e; --on-page:#f8f3e8; --bg:#f8f3e8; --surface:#fffdf8; --surface2:#f8f3e8; --line:#e6dccb; --shadow:rgba(15,35,70,.14); --shadow-h:rgba(15,35,70,.28); --fg:#18355c; --muted:#5d6f88; --accent:#d9534b; --accent-fg:#fffdf8; --accent-soft:#fbe1df; --hi:#dca039; --hi-fg:#18355c; --hi-soft:#f8ecd2; --side:rgba(24,53,92,.95); --side-fg:#f8f3e8; --side-active:rgba(248,243,232,.16); --wine:#18355c }
+@media (max-width:760px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --page:#1f1510; --page-deep:#f2b517; --on-page:#fff7e8; --bg:#1f1510; --surface:#2a1d16; --surface2:#34251c; --line:#4a3628; --shadow:rgba(0,0,0,.35); --shadow-h:rgba(0,0,0,.55); --fg:#fbeedc; --muted:#c2a68c; --accent:#f0574c; --accent-fg:#1f1510; --accent-soft:#4a1d18; --hi:#b7d36a; --hi-fg:#1f1510; --hi-soft:#2f3a18; --ok:#86c48f; --ok-soft:#20331f; --warn:#e9be5f; --warn-soft:#3b2e14; --bad:#f08a80; --bad-soft:#43201c; --side:rgba(70,32,14,.96); --side-fg:#fff7e8; --side-active:rgba(255,247,232,.14); --wine:#3a1a0e; color-scheme:dark }}
+@media (max-width:760px){:root[data-theme="dark"]{ --page:#1f1510; --page-deep:#f2b517; --on-page:#fff7e8; --bg:#1f1510; --surface:#2a1d16; --surface2:#34251c; --line:#4a3628; --shadow:rgba(0,0,0,.35); --shadow-h:rgba(0,0,0,.55); --fg:#fbeedc; --muted:#c2a68c; --accent:#f0574c; --accent-fg:#1f1510; --accent-soft:#4a1d18; --hi:#b7d36a; --hi-fg:#1f1510; --hi-soft:#2f3a18; --ok:#86c48f; --ok-soft:#20331f; --warn:#e9be5f; --warn-soft:#3b2e14; --bad:#f08a80; --bad-soft:#43201c; --side:rgba(70,32,14,.96); --side-fg:#fff7e8; --side-active:rgba(255,247,232,.14); --wine:#3a1a0e; color-scheme:dark }}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45;
   padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -230,8 +219,8 @@ input[type=checkbox]{accent-color:var(--ok)}
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 9</span></p></div></div>
-    <div class="tools"><details class="brandbox"><summary>Marca</summary><div class="brandpanel"><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#d4462c"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div></details><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
+    <div class="hd"><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>ERP Gastronómico · RRHH</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 10</span></p></div></div>
+    <div class="tools"><details class="brandbox"><summary>Marca</summary><div class="brandpanel"><label for="palSel">Paleta<select id="palSel"><option value="">Mostaza y ketchup</option><option value="smash">Smash: ciruela y rosa</option><option value="lena">Leña: azul y coral</option></select></label><label for="fontSel">Tipografía de la empresa<select id="fontSel"><option>Manrope</option><option>DM Sans</option><option>Work Sans</option><option>IBM Plex Sans</option><option value="Lora">Lora (serif)</option></select></label><label for="colSel">Color de marca<input type="color" id="colSel" value="#d7261e"></label><button class="btn sm" id="brandReset" type="button">Restablecer</button></div></details><button class="btn" id="theme" type="button"></button><div class="seg" role="tablist" id="views">
       <button role="tab" aria-selected="true" data-v="admin">Administrador</button>
       <button role="tab" aria-selected="false" data-v="emp">Empleado (celular)</button>
       <button role="tab" aria-selected="false" data-v="kiosk">Pantalla del local</button>
@@ -478,7 +467,8 @@ input[type=checkbox]{accent-color:var(--ok)}
   function lum(h){var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return (0.299*r+0.587*g+0.114*b)/255}
   $('#fontSel').onchange=function(){var f="'"+this.value+"',system-ui,sans-serif";root.style.setProperty('--display',f);root.style.setProperty('--body',f)};
   $('#colSel').oninput=function(){var c=this.value;root.style.setProperty('--accent',c);root.style.setProperty('--accent-fg',lum(c)>0.6?'#1b1b1e':'#ffffff');root.style.setProperty('--accent-soft','color-mix(in srgb, '+c+' 16%, var(--surface))')};
-  $('#brandReset').onclick=function(){['--display','--body','--accent','--accent-fg','--accent-soft'].forEach(function(k){root.style.removeProperty(k)});$('#fontSel').value='Manrope';$('#colSel').value='#d4462c'};
+  $('#palSel').onchange=function(){['--accent','--accent-fg','--accent-soft'].forEach(function(k){root.style.removeProperty(k)});if(this.value)root.setAttribute('data-palette',this.value);else root.removeAttribute('data-palette');$('#colSel').value=getComputedStyle(root).getPropertyValue('--accent').trim()||'#d7261e'};
+  $('#brandReset').onclick=function(){root.removeAttribute('data-palette');$('#palSel').value='';['--display','--body','--accent','--accent-fg','--accent-soft'].forEach(function(k){root.style.removeProperty(k)});$('#fontSel').value='Manrope';$('#colSel').value='#d7261e'};
 
   // QR de ejemplo que se regenera cada 120 s
   var seed=7;
