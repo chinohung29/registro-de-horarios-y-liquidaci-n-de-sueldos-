@@ -1,0 +1,10 @@
+{
+  "name": "Sistema de fichajes",
+  "short_name": "Fichajes",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3a679f",
+  "theme_color": "#3a679f",
+  "lang": "es-AR",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

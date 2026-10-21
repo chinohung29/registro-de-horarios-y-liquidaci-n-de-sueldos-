@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sistema de fichajes · demo</title>
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg"><meta name="theme-color" content="#3a679f">
+<link rel="stylesheet" href="/app.css">
+<style>
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:var(--surface);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px;text-decoration:none;box-shadow:0 14px 40px rgba(20,40,70,.25);transition:transform .15s}
+.card:hover{transform:translateY(-2px)}
+.card h2{font-size:18px}
+ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div><h1>Sistema de fichajes</h1><div class="sub">Prueba de concepto: QR rotativo + ubicación del celular</div></div></div>
+  <div class="cards">
+    <a class="card" href="/admin"><h2>Administrador</h2><span class="meta">Configurá la ubicación del local, vinculá la pantalla y revisá las marcas.</span><span class="btn primary">Abrir</span></a>
+    <a class="card" href="/kiosco"><h2>Pantalla del local</h2><span class="meta">Para la tablet: muestra el QR que cambia cada 2 minutos, aun sin internet.</span><span class="btn primary">Abrir</span></a>
+    <a class="card" href="/fichar"><h2>Empleado</h2><span class="meta">Se abre al escanear el QR con la cámara del celular.</span><span class="btn">Abrir</span></a>
+  </div>
+  <div class="panel">
+    <h2>Cómo hacer la muestra</h2>
+    <ol>
+      <li>En la compu o el celular del administrador: <b>Administrador</b> → PIN → <b>Usar mi ubicación actual</b> estando en el local → Guardar.</li>
+      <li>En la tablet: <b>Administrador</b> → <b>Vincular esta pantalla</b> (o abrí <b>Pantalla del local</b> y vinculala con el PIN). Queda mostrando el QR.</li>
+      <li>En el celular del empleado: escaneá el QR con la <b>cámara del teléfono</b>, elegí quién sos y aceptá el permiso de ubicación.</li>
+      <li>Mirá el resultado en el celular y en <b>Marcas</b> del administrador: válida, a revisar o rechazada, con el motivo.</li>
+      <li>Para probar el rechazo, fichá desde lejos del local o con otro celular a nombre del mismo empleado.</li>
+    </ol>
+    <p class="note">Demo: los empleados se eligen de una lista. En la versión real cada uno entra con su correo electrónico.</p>
+  </div>
+</div>
+<script src="/common.js"></script>
+</body>
+</html>

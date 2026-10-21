@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fichar · Sistema de fichajes</title>
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg"><meta name="theme-color" content="#3a679f">
+<link rel="stylesheet" href="/app.css">
+<style>
+.phone{max-width:460px;margin:0 auto;width:100%}
+.steps{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface2)}
+.steps li b{min-width:22px}
+.steps li.ok{background:var(--ok-soft)} .steps li.bad{background:var(--bad-soft)} .steps li.wait{background:var(--hi-soft)}
+.res{border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.res.valida{background:var(--ok-soft)} .res.a_revisar{background:var(--warn-soft)} .res.rechazada{background:var(--bad-soft)}
+.res h2{font-size:22px}
+.res p{margin:0}
+.res ul{margin:0;padding-left:18px}
+.who{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+video{width:100%;border-radius:12px;background:var(--surface2)}
+.lista{display:flex;flex-direction:column;gap:8px}
+</style>
+</head>
+<body>
+<div class="wrap phone">
+  <div class="top"><div><h1>Fichar</h1><div class="sub">Sistema de fichajes</div></div></div>
+
+  <section class="panel" id="elegir" hidden>
+    <h2>¿Quién sos?</h2>
+    <p class="meta">Demo: elegí tu nombre. En la versión real entrás con tu correo y este paso no existe.</p>
+    <div class="lista" id="lista"></div>
+  </section>
+
+  <section class="panel" id="main" hidden>
+    <div class="who"><div><span class="meta">Fichando como</span><h2 id="yo"></h2></div><button class="btn sm" id="cambiar" type="button">No soy yo</button></div>
+
+    <div id="sinQR" hidden>
+      <p class="hint">Abrí la <b>cámara de tu celular</b> y escaneá el QR de la pantalla del local. Se abre esta página lista para fichar.</p>
+      <button class="btn" id="scanBtn" type="button" hidden>Escanear desde acá</button>
+      <video id="video" playsinline muted hidden></video>
+    </div>
+
+    <div id="conQR" hidden>
+      <ul class="steps">
+        <li id="s1" class="ok"><b>1</b><span>Código del local leído</span></li>
+        <li id="s2"><b>2</b><span>Ubicación: la pedimos solo ahora, para confirmar que estás en el local.</span></li>
+        <li id="s3"><b>3</b><span>Validación en el servidor</span></li>
+      </ul>
+      <button class="btn primary big" id="fichar" type="button">Fichar ahora</button>
+    </div>
+
+    <div id="resultado"></div>
+  </section>
+</div>
+<script src="/common.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+let token = params.get("t") || "";
+let deviceId = store.get("deviceId"); if (!deviceId) { deviceId = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); store.set("deviceId", deviceId); }
+let yo = null; try { yo = JSON.parse(store.get("empleado") || "null"); } catch {}
+
+async function elegir() {
+  $("#elegir").hidden = false; $("#main").hidden = true;
+  const d = await api("/estado").catch(() => ({ error: "Sin conexión" }));
+  $("#lista").innerHTML = d.error ? `<p class="err">${esc(d.error)}</p>` : d.empleados.map((e) => `<button class="btn" data-id="${esc(e.id)}" data-n="${esc(e.nombre)}" type="button">${esc(e.nombre)} · ${esc(e.puesto)}</button>`).join("");
+  $$("#lista button").forEach((b) => (b.onclick = () => { yo = { id: b.dataset.id, nombre: b.dataset.n }; store.set("empleado", JSON.stringify(yo)); principal(); }));
+}
+function principal() {
+  $("#elegir").hidden = true; $("#main").hidden = false; $("#yo").textContent = yo.nombre;
+  $("#conQR").hidden = !token; $("#sinQR").hidden = !!token;
+  $("#scanBtn").hidden = !("BarcodeDetector" in window);
+  if (token) { ["s2", "s3"].forEach((id) => ($("#" + id).className = "")); $("#fichar").disabled = false; $("#fichar").hidden = false; }
+}
+$("#cambiar").onclick = () => { store.del("empleado"); yo = null; elegir(); };
+
+function pos() {
+  return new Promise((ok) => {
+    if (!navigator.geolocation) return ok({ error: "Este navegador no da la ubicación" });
+    navigator.geolocation.getCurrentPosition(
+      (p) => ok({ lat: p.coords.latitude, lng: p.coords.longitude, precision: p.coords.accuracy }),
+      (e) => ok({ error: e.code === 1 ? "Permiso de ubicación denegado" : e.code === 3 ? "El GPS tardó demasiado" : "No se pudo obtener la ubicación" }),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+  });
+}
+
+function mostrar(r) {
+  const m = r.marca || r;
+  if (r.error) { $("#resultado").innerHTML = `<div class="res rechazada"><h2>No se pudo fichar</h2><p>${esc(r.error)}</p></div>`; return; }
+  const [txt] = ESTADO[m.estado] || ["", ""];
+  const titulo = m.estado === "rechazada" ? "Marca rechazada" : `${m.tipo === "egreso" ? "Egreso" : "Ingreso"} registrado`;
+  $("#resultado").innerHTML = `<div class="res ${m.estado}">
+    ${r.duplicada ? `<p><b>${esc(r.mensaje)}</b></p>` : ""}
+    <h2>${titulo}</h2>
+    <p class="mono">${hora(m.ts)} · ${esc(m.local || "")}</p>
+    <p><span class="pill ${ESTADO[m.estado][1]}">${txt}</span>${m.distancia != null ? ` <span class="meta">a ${m.distancia} m del local</span>` : ""}</p>
+    ${m.motivos && m.motivos.length ? `<ul>${m.motivos.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+    ${m.senales && m.senales.length ? `<p class="meta">✓ ${m.senales.map(esc).join(" · ✓ ")}</p>` : ""}
+    ${m.estado === "a_revisar" ? '<p class="meta">Tu marca quedó guardada. El encargado o el administrador la va a revisar.</p>' : ""}
+    ${m.estado === "rechazada" ? '<button class="btn primary" id="reint" type="button">Reintentar</button>' : ""}
+  </div>`;
+  const re = $("#reint"); if (re) re.onclick = () => { $("#resultado").innerHTML = ""; fichar(); };
+}
+
+async function fichar() {
+  $("#fichar").disabled = true; $("#resultado").innerHTML = "";
+  $("#s2").className = "wait"; $("#s2 span").textContent = "Obteniendo tu ubicación…";
+  const p = await pos();
+  $("#s2").className = p.error ? "bad" : "ok";
+  $("#s2 span").textContent = p.error ? `Sin ubicación: ${p.error}` : `Ubicación obtenida (±${Math.round(p.precision)} m)`;
+  $("#s3").className = "wait"; $("#s3 span").textContent = "Validando…";
+  const r = await api("/fichar", { token, empleadoId: yo.id, deviceId, lat: p.lat, lng: p.lng, precision: p.precision, errorGps: p.error }).catch(() => ({ error: "Sin conexión a internet. Probá de nuevo o fichá con PIN en la pantalla del local." }));
+  const m = r.marca || r;
+  $("#s3").className = r.error || m.estado === "rechazada" ? "bad" : "ok";
+  $("#s3 span").textContent = r.error ? "No se pudo validar" : "Validación en el servidor terminada";
+  mostrar(r);
+  if (!r.error && m.estado !== "rechazada") { history.replaceState(null, "", "/fichar"); $("#fichar").hidden = true; } // evita fichar de nuevo al recargar
+  else $("#fichar").disabled = false;
+}
+$("#fichar").onclick = fichar;
+
+// Escáner dentro de la app (solo navegadores con BarcodeDetector, como Chrome en Android)
+$("#scanBtn").onclick = async () => {
+  try {
+    const det = new BarcodeDetector({ formats: ["qr_code"] });
+    const st = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    const v = $("#video"); v.srcObject = st; v.hidden = false; await v.play();
+    const loop = async () => {
+      const codes = await det.detect(v).catch(() => []);
+      const raw = codes[0] && codes[0].rawValue;
+      if (raw) { try { const t = new URL(raw).searchParams.get("t"); if (t) { st.getTracks().forEach((x) => x.stop()); v.hidden = true; token = t; principal(); return; } } catch {} }
+      requestAnimationFrame(loop);
+    };
+    loop();
+  } catch { toast("No se pudo abrir la cámara. Usá la cámara del teléfono."); }
+};
+
+yo ? principal() : elegir();
+</script>
+</body>
+</html>

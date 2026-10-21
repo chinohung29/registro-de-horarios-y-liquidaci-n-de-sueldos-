@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Administrador · Sistema de fichajes</title>
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg"><meta name="theme-color" content="#3a679f">
+<link rel="stylesheet" href="/app.css">
+<style>
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface2);border-radius:12px;padding:10px 12px}
+.kpi b{display:block;font-family:var(--mono);font-size:22px}
+.kpi.warn{background:var(--warn-soft)}
+.coords{font-family:var(--mono);font-size:13px;background:var(--surface2);border-radius:10px;padding:10px 12px}
+.thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1px solid var(--line)}
+td ul{margin:0;padding-left:16px}
+.filtros{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:13px;border:1px solid var(--line);background:#fff;color:var(--fg);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--hi);color:#fff;border-color:transparent}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div><h1>Administrador</h1><div class="sub">Sistema de fichajes · prueba de concepto</div></div><div class="row"><a class="btn sm" href="/">Inicio</a><button class="btn sm" id="salir" type="button" hidden>Salir</button></div></div>
+
+  <section class="panel" id="login" style="max-width:420px;margin:0 auto;width:100%">
+    <h2>Ingresar</h2>
+    <label class="f">PIN de administrador<input id="pin" type="password" inputmode="numeric" autocomplete="off"></label>
+    <span class="err" id="lErr"></span>
+    <button class="btn primary" id="entrar" type="button">Entrar</button>
+  </section>
+
+  <div id="app" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="grid2">
+      <section class="panel">
+        <h2>Ubicación del local</h2>
+        <label class="f">Local<select id="local"></select></label>
+        <div class="coords" id="coords"></div>
+        <p class="meta">Parate dentro del local (idealmente en el centro) y tocá el botón. Usá el celular, que tiene GPS.</p>
+        <div class="row"><button class="btn primary" id="miUbic" type="button">Usar mi ubicación actual</button><a class="btn sm" id="mapa" target="_blank" rel="noopener" hidden>Ver en el mapa</a></div>
+        <label class="f">Radio de la geocerca<select id="radio"><option>50</option><option>100</option><option>150</option><option>200</option><option>300</option></select></label>
+        <div class="row"><button class="btn" id="red" type="button">Registrar la red (wifi) del local</button><span class="meta" id="redTxt"></span></div>
+        <button class="btn primary" id="guardar" type="button">Guardar</button>
+        <span class="err" id="uErr"></span>
+      </section>
+      <section class="panel">
+        <h2>Pantalla del local</h2>
+        <p class="meta">Abrí esta opción en la tablet del local. Queda vinculada y genera el QR sin internet.</p>
+        <button class="btn primary" id="vincular" type="button">Vincular esta pantalla y abrir el QR</button>
+        <h2 style="margin-top:8px">Empleados</h2>
+        <div id="emps"></div>
+      </section>
+    </div>
+
+    <section class="panel">
+      <div class="row" style="justify-content:space-between"><h2>Marcas</h2><div class="filtros" id="filtros"></div></div>
+      <div class="kpis"><div class="kpi"><b id="kTot">0</b>Marcas</div><div class="kpi"><b id="kOk">0</b>Válidas</div><div class="kpi warn"><b id="kRev">0</b>A revisar</div><div class="kpi"><b id="kNo">0</b>Rechazadas</div></div>
+      <div class="tw"><table><thead><tr><th>Hora</th><th>Empleado</th><th>Tipo</th><th>Estado</th><th>Ubicación</th><th>Detalle</th><th></th></tr></thead><tbody id="marcas"></tbody></table></div>
+      <div class="row" style="justify-content:space-between"><span class="meta" id="act"></span><button class="btn sm" id="reset" type="button">Reiniciar datos de la demo</button></div>
+    </section>
+  </div>
+</div>
+<script src="/common.js"></script>
+<script>
+let PIN = sessionStorage.getItem("adminPin") || "";
+let D = null, nuevaUbic = null, filtro = "todas";
+
+async function cargar() {
+  const d = await api("/admin/estado", null, PIN).catch(() => ({ error: "Sin conexión" }));
+  if (d.error) { if (/PIN/.test(d.error)) { PIN = ""; sessionStorage.removeItem("adminPin"); ver(); $("#lErr").textContent = d.error; } else $("#act").textContent = d.error; return; }
+  D = d; dibujar(); $("#act").textContent = "Actualizado " + hora(Date.now()) + " · se refresca solo cada 5 s";
+}
+function ver() { const ok = !!PIN; $("#login").hidden = ok; $("#app").hidden = !ok; $("#salir").hidden = !ok; if (ok) cargar(); }
+$("#entrar").onclick = async () => { PIN = $("#pin").value; const d = await api("/admin/estado", null, PIN).catch(() => ({ error: "Sin conexión" })); if (d.error) { $("#lErr").textContent = d.error; PIN = ""; return; } sessionStorage.setItem("adminPin", PIN); $("#lErr").textContent = ""; ver(); };
+$("#pin").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#entrar").click(); });
+$("#salir").onclick = () => { PIN = ""; sessionStorage.removeItem("adminPin"); ver(); };
+
+function localSel() { return D.locales.find((l) => l.id === $("#local").value) || D.locales[0]; }
+function dibujar() {
+  const v = $("#local").value;
+  $("#local").innerHTML = D.locales.map((l) => `<option value="${esc(l.id)}">${esc(l.nombre)}</option>`).join(""); if (v) $("#local").value = v;
+  const l = localSel();
+  if (!nuevaUbic) { $("#radio").value = String(l.radio); }
+  const u = nuevaUbic || (l.lat != null ? { lat: l.lat, lng: l.lng } : null);
+  $("#coords").innerHTML = u ? `${u.lat.toFixed(6)}, ${u.lng.toFixed(6)}${nuevaUbic ? ` · ±${Math.round(nuevaUbic.precision)} m · <b>sin guardar</b>` : " · guardada"}` : "Todavía no hay ubicación configurada.";
+  $("#mapa").hidden = !u; if (u) $("#mapa").href = `https://www.google.com/maps?q=${u.lat},${u.lng}`;
+  $("#redTxt").textContent = l.ipLocal ? `Red registrada (${l.ipLocal}). Tu conexión actual: ${D.miIp || "?"}` : "Opcional: entrá desde el wifi del local y tocá el botón.";
+  $("#emps").innerHTML = D.empleados.map((e) => `<div class="row" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span><b>${esc(e.nombre)}</b> <span class="meta">· ${esc(e.puesto)} · PIN demo ${esc(e.pin)}</span></span><span class="row">${e.dispositivoVinculado ? '<span class="pill ok">Celular vinculado</span><button class="btn sm" data-desv="' + esc(e.id) + '" type="button">Desvincular</button>' : '<span class="pill info">Sin celular vinculado</span>'}</span></div>`).join("");
+  $$("[data-desv]").forEach((b) => (b.onclick = async () => { const r = await api("/admin/desvincular", { empleadoId: b.dataset.desv }, PIN); toast(r.error || "Celular desvinculado: el próximo que use queda vinculado"); cargar(); }));
+
+  const ms = D.marcas;
+  $("#kTot").textContent = ms.length; $("#kOk").textContent = ms.filter((m) => m.estado === "valida").length; $("#kRev").textContent = ms.filter((m) => m.estado === "a_revisar").length; $("#kNo").textContent = ms.filter((m) => m.estado === "rechazada").length;
+  const fs = [["todas", "Todas"], ["a_revisar", "A revisar"], ["valida", "Válidas"], ["rechazada", "Rechazadas"]];
+  $("#filtros").innerHTML = fs.map(([k, t]) => `<button class="chip" type="button" data-f="${k}" aria-pressed="${filtro === k}">${t}</button>`).join("");
+  $$("#filtros .chip").forEach((b) => (b.onclick = () => { filtro = b.dataset.f; dibujar(); }));
+  const lista = ms.filter((m) => filtro === "todas" || m.estado === filtro);
+  $("#marcas").innerHTML = lista.map((m) => {
+    const ub = m.via === "pin" ? (m.foto ? `<img class="thumb" src="${m.foto}" alt="Foto al fichar">` : "PIN sin foto") : m.distancia != null ? `${m.distancia} m${m.precision != null ? ` · ±${Math.round(m.precision)} m` : ""}` : m.lat != null ? `±${Math.round(m.precision || 0)} m` : "—";
+    return `<tr><td class="mono">${fechaHora(m.ts)}</td><td>${esc(m.empleado || "?")}<div class="meta">${m.via === "pin" ? "PIN en la pantalla del local" : "QR + celular"}</div></td><td>${esc(m.tipo || "—")}</td>
+      <td><span class="pill ${ESTADO[m.estado][1]}">${ESTADO[m.estado][0]}</span>${m.revisada ? `<div class="meta">revisada</div>` : ""}</td><td>${ub}</td>
+      <td>${m.motivos && m.motivos.length ? `<ul>${m.motivos.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}${m.senales && m.senales.length ? `<div class="meta">✓ ${m.senales.map(esc).join(" · ✓ ")}</div>` : ""}</td>
+      <td>${m.estado === "a_revisar" ? `<div class="row"><button class="btn sm primary" data-ap="${esc(m.id)}" type="button">Aprobar</button><button class="btn sm" data-re="${esc(m.id)}" type="button">Rechazar</button></div>` : ""}</td></tr>`;
+  }).join("") || '<tr><td colspan="7" class="meta">Todavía no hay marcas. Escaneá el QR de la pantalla del local con un celular.</td></tr>';
+  $$("[data-ap],[data-re]").forEach((b) => (b.onclick = async () => { const r = await api("/admin/revisar", { marcaId: b.dataset.ap || b.dataset.re, decision: b.dataset.ap ? "aprobar" : "rechazar" }, PIN); toast(r.error || (b.dataset.ap ? "Marca aprobada" : "Marca rechazada")); cargar(); }));
+}
+$("#local").onchange = () => { nuevaUbic = null; dibujar(); };
+$("#miUbic").onclick = () => {
+  if (!navigator.geolocation) { $("#uErr").textContent = "Este navegador no da la ubicación."; return; }
+  $("#miUbic").disabled = true; $("#uErr").textContent = "";
+  navigator.geolocation.getCurrentPosition((p) => { nuevaUbic = { lat: p.coords.latitude, lng: p.coords.longitude, precision: p.coords.accuracy }; $("#miUbic").disabled = false; dibujar(); if (p.coords.accuracy > 50) toast(`Precisión baja (±${Math.round(p.coords.accuracy)} m): probá cerca de una ventana`); },
+    (e) => { $("#miUbic").disabled = false; $("#uErr").textContent = e.code === 1 ? "Permiso de ubicación denegado." : "No se pudo obtener la ubicación."; }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+};
+$("#guardar").onclick = async () => {
+  const l = localSel(), b = { id: l.id, radio: Number($("#radio").value) };
+  if (nuevaUbic) { b.lat = nuevaUbic.lat; b.lng = nuevaUbic.lng; }
+  const r = await api("/admin/local", b, PIN); if (r.error) { $("#uErr").textContent = r.error; return; }
+  nuevaUbic = null; toast("Local guardado"); cargar();
+};
+$("#red").onclick = async () => { const r = await api("/admin/local", { id: localSel().id, registrarIp: true }, PIN); toast(r.error || "Red del local registrada"); cargar(); };
+$("#vincular").onclick = async () => { const r = await api("/admin/vincular-pantalla", { localId: localSel().id }, PIN); if (r.error) return toast(r.error); store.set("kiosco", JSON.stringify(r)); location.href = "/kiosco"; };
+$("#reset").onclick = async () => { const b = $("#reset"); if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = "Tocá otra vez: borra marcas y vínculos"; setTimeout(() => { delete b.dataset.sure; b.textContent = "Reiniciar datos de la demo"; }, 4000); return; } const r = await api("/admin/reiniciar-demo", {}, PIN); store.del("kiosco"); toast(r.error || "Demo reiniciada: volvé a configurar la ubicación y a vincular la pantalla"); delete b.dataset.sure; b.textContent = "Reiniciar datos de la demo"; cargar(); };
+setInterval(() => { if (PIN && !document.hidden) cargar(); }, 5000);
+ver();
+</script>
+</body>
+</html>

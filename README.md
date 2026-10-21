@@ -14,11 +14,13 @@ PWA SaaS multi-local para registrar el ingreso y egreso del personal (fichaje po
 | [Reglas de liquidación](docs/product/payroll-rules.md) | Cálculo de sueldo, ausencias, cupones |
 | [Roles y pantallas](docs/product/roles-and-screens.md) | Administrador, encargado, empleado |
 | [Roadmap](docs/roadmap.md) | Fases de construcción |
+| [Prueba de fichaje](apps/fichaje-demo/README.md) | App funcional de QR rotativo + GPS para la muestra (Cloudflare Workers) |
 
 ## Estructura prevista
 
 ```
 apps/web/            App Next.js (PWA): admin, encargado, empleado
+apps/fichaje-demo/   Prueba de concepto del fichaje (Cloudflare Workers)
 supabase/migrations/ Migraciones SQL (esquema + políticas RLS)
 docs/                Especificaciones y decisiones
 ```

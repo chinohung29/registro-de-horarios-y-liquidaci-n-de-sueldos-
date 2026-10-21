@@ -1,0 +1,21 @@
+# Prueba de concepto del fichaje con QR rotativo + geolocalización.
+# Un Worker sirve la PWA (carpeta public) y la API (/api/*).
+# Los datos se guardan en un Durable Object con SQLite: no hace falta crear recursos a mano.
+name = "sistema-fichajes-demo"
+main = "src/worker.js"
+compatibility_date = "2025-09-01"
+
+[assets]
+directory = "./public"
+
+[[durable_objects.bindings]]
+name = "STORE"
+class_name = "Store"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Store"]
+
+[vars]
+# PIN de administrador de la demo. Cambialo antes de mostrarla (o usá un secret: wrangler secret put ADMIN_PIN).
+ADMIN_PIN = "1234"

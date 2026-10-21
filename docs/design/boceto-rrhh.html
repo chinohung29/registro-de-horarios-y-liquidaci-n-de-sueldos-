@@ -351,11 +351,14 @@ table.mini th,table.mini td{padding:7px 10px}
 .gencode b{font-size:30px;letter-spacing:.12em;color:var(--hi)}
 .prow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;flex-wrap:wrap}
 .prow+.prow{margin-top:6px}
+
+.coordbox{font-family:var(--mono);font-size:13px;background:var(--surface2);border-radius:10px;padding:9px 12px}
+.kpill{background:color-mix(in srgb,var(--on-page) 18%,transparent)!important;color:var(--on-page)!important}
 </style>
 
 <div class="wrap">
   <div class="top">
-    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 20</span></p></div></div>
+    <div class="hd"><button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button><label class="logo" title="Subí el logo de tu local"><span class="lt">Tu logo</span><input type="file" accept="image/*" class="logoIn"></label><div><h1>Sistema de fichajes</h1><p>Boceto navegable del primer subproyecto. Todos los datos son ejemplos. <span class="pill info">Versión 21</span></p></div></div>
     <div class="tools"><span class="viewtag" id="viewTag">Vista: Administrador</span><button class="btn" id="theme" type="button"></button></div>
   </div>
   <div class="scrim" id="scrim"></div>
@@ -410,14 +413,19 @@ table.mini th,table.mini td{padding:7px 10px}
       <div id="s-fichajes" class="sec hide">
         <div class="head"><h2>Fichajes de hoy</h2><span class="meta">Martes · tolerancia de ingreso 10 min</span></div>
         <div class="tw" style="margin-top:14px"><table>
-          <thead><tr><th>Empleado</th><th>Local</th><th class="n">Turno</th><th class="n">Ingreso</th><th class="n">Diferencia</th><th class="n">Distancia</th><th>Estado</th></tr></thead>
+          <thead><tr><th>Empleado</th><th>Local</th><th class="n">Turno</th><th class="n">Ingreso</th><th class="n">Diferencia</th><th class="n">Distancia</th><th>Estado</th><th>Validación</th></tr></thead>
           <tbody>
-            <tr><td>Lucía Benítez</td><td>Centro</td><td class="n">11:00</td><td class="n t-ok">11:02</td><td class="n t-ok">+2 min</td><td class="n">12 m</td><td><span class="pill ok">En horario</span></td></tr>
-            <tr><td>Martín Aguirre</td><td>Centro</td><td class="n">11:00</td><td class="n t-ok">10:58</td><td class="n t-ok">−2 min</td><td class="n">9 m</td><td><span class="pill ok">En horario</span></td></tr>
-            <tr><td>Julián Paredes</td><td>Centro</td><td class="n">11:00</td><td class="n t-bad">11:14</td><td class="n t-bad">+14 min</td><td class="n">15 m</td><td><span class="pill bad">Fuera de tolerancia</span></td></tr>
-            <tr><td>Camila Rojas</td><td>Palermo</td><td class="n">11:00</td><td class="n t-bad">11:30</td><td class="n t-bad">+30 min</td><td class="n t-bad">180 m</td><td><span class="pill bad">Retraso · fuera de radio</span></td></tr>
-            <tr><td>Diego Sosa</td><td>Costanera</td><td class="n">08:00</td><td class="n t-ok">07:55</td><td class="n t-ok">−5 min</td><td class="n">21 m</td><td><span class="pill ok">En horario</span></td></tr>
+            <tr><td>Lucía Benítez</td><td>Centro</td><td class="n">11:00</td><td class="n t-ok">11:02</td><td class="n t-ok">+2 min</td><td class="n">12 m</td><td><span class="pill ok">En horario</span></td><td><span class="pill ok">QR + GPS ✓</span></td></tr>
+            <tr><td>Martín Aguirre</td><td>Centro</td><td class="n">11:00</td><td class="n t-ok">10:58</td><td class="n t-ok">−2 min</td><td class="n">9 m</td><td><span class="pill ok">En horario</span></td><td><span class="pill ok">QR + GPS ✓</span></td></tr>
+            <tr><td>Julián Paredes</td><td>Centro</td><td class="n">11:00</td><td class="n t-bad">11:14</td><td class="n t-bad">+14 min</td><td class="n">15 m</td><td><span class="pill bad">Fuera de tolerancia</span></td><td><span class="pill warn">A revisar</span></td></tr>
+            <tr><td>Camila Rojas</td><td>Palermo</td><td class="n">11:00</td><td class="n t-bad">11:30</td><td class="n t-bad">+30 min</td><td class="n t-bad">180 m</td><td><span class="pill bad">Retraso · fuera de radio</span></td><td><span class="pill bad">Rechazada</span></td></tr>
+            <tr><td>Diego Sosa</td><td>Costanera</td><td class="n">08:00</td><td class="n t-ok">07:55</td><td class="n t-ok">−5 min</td><td class="n">21 m</td><td><span class="pill ok">En horario</span></td><td><span class="pill ok">QR + GPS ✓</span></td></tr>
           </tbody></table></div>
+        <div class="abs" id="revPanel" style="margin-top:14px">
+          <div class="head"><h3>Marcas a revisar <span class="pill warn" id="revN"></span></h3><span class="meta">Los casos dudosos no se rechazan: quedan acá para que los apruebes o rechaces.</span></div>
+          <div class="tw"><table><thead><tr><th>Hora</th><th>Empleado</th><th>Cómo fichó</th><th>Motivo</th><th></th></tr></thead><tbody id="revRows"></tbody></table></div>
+        </div>
+        <p class="meta" style="margin-top:10px">Rechazos automáticos de hoy: Camila Rojas, fuera del local (180 m, radio 100 m) · 1 QR vencido (foto de un código viejo).</p>
       </div>
       <!-- liquidacion -->
       <div id="s-liq" class="sec hide">
@@ -519,6 +527,8 @@ table.mini th,table.mini td{padding:7px 10px}
       <div class="bar"><i id="bar" style="width:100%"></i></div>
       <div class="mono" id="cd">02:00</div>
       <p>El código cambia cada 2 minutos. Tenés que estar dentro del local con la ubicación activada.</p>
+      <span class="pill ok kpill">Funciona sin internet: el QR se genera en la tablet</span>
+      <button class="btn" id="kPin" type="button">¿Sin señal en el celular? Fichar con PIN</button>
     </div>
   </section>
   <div class="note">Boceto de diseño: no hay cámara ni GPS reales. El botón de fichar y la liquidación simulan el comportamiento.</div>
@@ -563,10 +573,10 @@ table.mini th,table.mini td{padding:7px 10px}
   // datos de ejemplo
   var esc=function(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
   var locales=[
-    {id:1,n:'Centro',d:'Av. Corrientes 1450',r:100,act:true},
-    {id:2,n:'Palermo',d:'Honduras 4800',r:100,act:true},
-    {id:3,n:'Costanera',d:'Av. Rafael Obligado 1200',r:150,act:true},
-    {id:4,n:'Belgrano',d:'Av. Cabildo 2100',r:100,act:true}
+    {id:1,n:'Centro',d:'Av. Corrientes 1450',r:100,act:true,lat:-34.603722,lng:-58.381592,red:true},
+    {id:2,n:'Palermo',d:'Honduras 4800',r:100,act:true,lat:-34.588912,lng:-58.430145,red:false},
+    {id:3,n:'Costanera',d:'Av. Rafael Obligado 1200',r:150,act:true,lat:-34.566830,lng:-58.403920,red:false},
+    {id:4,n:'Belgrano',d:'Av. Cabildo 2100',r:100,act:true,lat:null,lng:null,red:false}
   ];
   function E(l,n,ap,doc,tel,p,loc,m,j,au,a,hx,c){return {l:l,n:n,ap:ap,doc:doc,tel:tel,mail:(n+'.'+ap).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')+'@ejemplo.com',p:p,loc:loc,m:m,j:j,au:au,a:a,hx:hx,adel:[],cons:c.map(function(m,k){return {f:String(3+k*6).padStart(2,'0')+'/09',t:'0003-'+String(12000+Math.floor(m/7)+k*31).padStart(8,'0'),m:m,cup:false,foto:null,ok:true}}),st:{hx:true}}}
   var emps=[
@@ -615,7 +625,7 @@ table.mini th,table.mini td{padding:7px 10px}
   function drawLocales(){
     $('#localCards').innerHTML=locales.map(function(l){var es=byLoc(l.id);
       return '<div class="card'+(l.act?'':' off')+'"><div class="chead"><h3>'+esc(l.n)+'</h3>'+(l.act?'':'<span class="pill info">Inactivo</span>')+'</div><div class="meta">'+esc(l.d)+'</div><div class="mapbox"><i style="width:'+(30+l.r/6)+'px;height:'+(30+l.r/6)+'px;margin:-'+(15+l.r/12)+'px"></i><b></b></div>'+
-      '<div class="meta">Geocerca '+l.r+' m · '+es.length+' empleado'+(es.length===1?'':'s')+'</div>'+
+      '<div class="meta">Geocerca '+l.r+' m · '+es.length+' empleado'+(es.length===1?'':'s')+'</div>'+(l.lat==null?'<span class="pill warn" style="align-self:flex-start">Falta cargar la ubicación</span>':'')+
       '<div class="who">'+(es.length?es.map(function(e){return '<span class="pill info">'+esc(full(e))+'</span>'}).join(''):'<span class="meta">Sin empleados asignados</span>')+'</div>'+
       '<div class="cact"><button class="btn sm" data-act="edit" data-id="'+l.id+'">Editar</button><button class="btn sm" data-act="assign" data-id="'+l.id+'">Asignar empleados</button></div></div>'}).join('');
     drawKpis();
@@ -624,8 +634,10 @@ table.mini th,table.mini td{padding:7px 10px}
     var radios=[50,100,150,200,300].map(function(r){return '<option value="'+r+'"'+(l.r===r?' selected':'')+'>'+r+' m</option>'}).join('');
     return '<div class="fgrid">'+fld('lNom','Nombre del local',l.n,'text',{wide:true})+fld('lDir','Dirección',l.d,'text',{wide:true})+
       '<div class="field"><label for="lRad">Radio de la geocerca</label><select id="lRad">'+radios+'</select><span class="err"></span></div>'+
-      '<div class="field"><label>Estado</label><label class="tog"><input type="checkbox" id="lAct"'+(l.act?' checked':'')+'> Local activo</label><span class="err"></span></div></div>'+
-      '<p class="hint">El radio define desde qué distancia los empleados pueden fichar en este local.</p>';
+      '<div class="field"><label>Estado</label><label class="tog"><input type="checkbox" id="lAct"'+(l.act?' checked':'')+'> Local activo</label><span class="err"></span></div>'+
+      '<div class="field wide"><label>Ubicación del local</label><div class="coordbox" id="lCoord" data-lat="'+(l.lat==null?'':l.lat)+'" data-lng="'+(l.lng==null?'':l.lng)+'">'+(l.lat!=null?l.lat.toFixed(6)+', '+l.lng.toFixed(6)+' · guardada':'Sin configurar: los empleados no pueden fichar con GPS hasta cargarla')+'</div>'+
+      '<div class="cact"><button type="button" class="btn sm primary" id="lGps">Usar mi ubicación actual</button><button type="button" class="btn sm" id="lRed">'+(l.red?'Red del local registrada ✓':'Registrar la red (wifi) del local')+'</button></div><span class="err"></span></div></div>'+
+      '<p class="hint">Parate dentro del local y tocá "Usar mi ubicación actual". El radio (recomendado 100 a 150 m) define desde qué distancia se puede fichar; la red del local es opcional y suma confianza.</p>';
   }
   function saveLocal(l,isNew){return function(){
     var ok=setErr('lNom',val('lNom')?'':'Ingresá el nombre del local.')&setErr('lDir',val('lDir')?'':'Ingresá la dirección.');
@@ -633,17 +645,23 @@ table.mini th,table.mini td{padding:7px 10px}
     if(ok&&dup)ok=setErr('lNom','Ya existe un local con ese nombre.');
     if(!ok)return false;
     l.n=val('lNom');l.d=val('lDir');l.r=+$('#lRad').value;l.act=$('#lAct').checked;
+    var cb=$('#lCoord');l.lat=cb.dataset.lat===''?null:+cb.dataset.lat;l.lng=cb.dataset.lng===''?null:+cb.dataset.lng;l.red=$('#lRed').dataset.on==='1'||!!l.red;
     if(isNew){l.id=Math.max.apply(null,locales.map(function(x){return x.id}))+1;locales.push(l)}
     drawLocales();drawEmps();toast(isNew?'Local creado':'Cambios guardados en '+l.n);
   }}
-  $('#newLocal').onclick=function(){var l={n:'',d:'',r:100,act:true};openModal('Nuevo local',localForm(l),'Crear local',saveLocal(l,true))};
+  function bindLocalForm(){
+    $('#lGps').onclick=function(){var lat=-34.6037+(Math.random()-.5)*.002,lng=-58.3816+(Math.random()-.5)*.002,cb=$('#lCoord');cb.dataset.lat=lat.toFixed(6);cb.dataset.lng=lng.toFixed(6);
+      cb.innerHTML=lat.toFixed(6)+', '+lng.toFixed(6)+' · ±18 m · <b>sin guardar</b>';toast('Ubicación tomada. En el boceto es simulada; la prueba real usa el GPS del celular')};
+    $('#lRed').onclick=function(){this.dataset.on='1';this.textContent='Red del local registrada ✓';toast('Red del local registrada (se guarda al confirmar)')};
+  }
+  $('#newLocal').onclick=function(){var l={n:'',d:'',r:100,act:true,lat:null,lng:null,red:false};openModal('Nuevo local',localForm(l),'Crear local',saveLocal(l,true));bindLocalForm()};
   function assignForm(l){
     return '<p class="meta" style="margin:0 0 10px">Marcá quién trabaja en <b>'+esc(l.n)+'</b>. Si elegís a alguien de otro local, se cambia de local.</p><div class="alist">'+
       emps.map(function(e,i){return i}).sort(function(x,y){return (emps[y].loc===l.id)-(emps[x].loc===l.id)}).map(function(i){var e=emps[i],here=e.loc===l.id;return '<label class="arow"><input type="checkbox" data-i="'+i+'"'+(here?' checked':'')+'><span class="aname">'+esc(full(e))+'<span class="meta"> · '+esc(e.p||'Sin puesto')+'</span></span><span class="pill '+(here?'ok':e.loc?'info':'warn')+'">'+(here?'En este local':e.loc?locName(e.loc):'Sin asignar')+'</span></label>'}).join('')+'</div>';
   }
   $('#localCards').addEventListener('click',function(ev){var b=ev.target.closest('button[data-act]');if(!b)return;
     var l=locales.filter(function(x){return x.id===+b.dataset.id})[0];
-    if(b.dataset.act==='edit')openModal('Editar local',localForm(l),'Guardar cambios',saveLocal(l,false));
+    if(b.dataset.act==='edit'){openModal('Editar local',localForm(l),'Guardar cambios',saveLocal(l,false));bindLocalForm()}
     else openModal('Asignar empleados · '+l.n,assignForm(l),'Guardar asignación',function(){
       var moved=0;$$('#mBody .arow input').forEach(function(c){var e=emps[+c.dataset.i];
         if(c.checked&&e.loc!==l.id){e.loc=l.id;moved++}else if(!c.checked&&e.loc===l.id){e.loc=0;moved++}});
@@ -922,6 +940,19 @@ table.mini th,table.mini td{padding:7px 10px}
   }
   drawAus();
   $('#absBtn').onclick=function(){var p=$('#absPanel'),o=p.classList.toggle('hide');this.setAttribute('aria-expanded',!o)};
+
+  // marcas a revisar (fichajes)
+  var revs=[
+    {h:'11:14',n:'Julián Paredes',via:'QR + celular · a 200 m (±30 m)',mot:'En el borde de la geocerca (radio 150 m).'},
+    {h:'11:21',n:'Valentina Paz',via:'QR + celular',mot:'Fichó desde un celular distinto al vinculado.'},
+    {h:'11:40',n:'Tomás Ibarra',via:'PIN en la pantalla del local · con foto',mot:'Sin señal en el celular: fichaje de respaldo con PIN.'},
+    {h:'12:05',n:'Nicolás Ferreyra',via:'QR + celular · precisión ±1 m',mot:'Precisión sospechosa: posible ubicación simulada.'}
+  ];
+  function drawRev(){var pend=revs.filter(function(r){return !r.st});$('#revN').textContent=pend.length+' pendiente'+(pend.length===1?'':'s');
+    $('#revRows').innerHTML=revs.map(function(r,i){return '<tr><td class="mono">'+r.h+'</td><td>'+esc(r.n)+'</td><td>'+esc(r.via)+'</td><td>'+esc(r.mot)+'</td><td style="white-space:nowrap">'+(r.st?'<span class="pill '+(r.st==='ok'?'ok':'bad')+'">'+(r.st==='ok'?'Aprobada':'Rechazada')+'</span>':'<button class="btn sm primary" data-rv="'+i+'" data-d="ok" type="button">Aprobar</button> <button class="btn sm" data-rv="'+i+'" data-d="no" type="button">Rechazar</button>')+'</td></tr>'}).join('')}
+  $('#revRows').addEventListener('click',function(ev){var b=ev.target.closest('button[data-rv]');if(!b)return;var r=revs[+b.dataset.rv];r.st=b.dataset.d;drawRev();toast(r.st==='ok'?'Marca de '+r.n+' aprobada':'Marca de '+r.n+' rechazada')});
+  drawRev();
+  $('#kPin').onclick=function(){toast('Fichaje con PIN: el empleado elige su nombre, pone su PIN y la tablet le saca una foto. Queda a revisar.')};
 
   // logo editable
   $$('.logoIn').forEach(function(inp){inp.onchange=function(){
