@@ -28,7 +28,22 @@ El resto no tiene sitio propio accesible (solo redes) o usa plantillas que no ex
 - **Marrón carne** y **carbón** como tono oscuro. Como el producto no usa negro, el tono oscuro es marrón carne.
 - **Azul** aparece como contrapunto en marcas de leña o mariscos.
 
-## Paleta en prueba: Frank's Grill (por defecto desde la versión 11 del boceto)
+## Paleta oficial: Mirana Burger (por defecto desde la versión 22 del boceto)
+Tomada del logo de Mirana Burger (primer cliente; logo de su tienda de pedidos en másDelivery, ya que el Instagram @miranaburger requiere sesión).
+
+| Color del logo | Hex | Uso en el sistema |
+|---|---|---|
+| Carbón (fondo) | `#201C1B` | Fondo de página, menú y pantalla del local (texto: `#2A201B`, carbón cálido) |
+| Hueso (letras) | `#F4F2EA` | Textos sobre carbón; paneles `#F8F4EA` / `#EFE7D6` |
+| Naranja llama | `#FBAC07` / `#C86500` | Botón de acción `#EF8F0D` con texto carbón |
+| Rojo brasa | `#9D1F06` | Selección `#B8410A` (menú activo, filtros, pestañas) |
+| Amarillo llama | `#F5CA09` | Degradé de la llama en la cuenta regresiva del QR |
+| Mostaza ("burger") | `#CF9C39` | Detalles |
+| Plata (anillo) | `#A2A2A0` | Bordes y detalles |
+
+Modo oscuro (móvil): carbón profundo `#141110` con naranja `#F5A524`.
+
+## Paleta Frank's Grill (preset)
 Colores tomados de franksgrill.com.ar: azules `#3462A6`, `#2B5AA3`, `#22487E`, `#18355C`; crema `#F8F3E8`; rosa `#FCAEC7`; celeste `#D0E1FD`; rojo `#C62828`.
 
 | Rol | Color |
