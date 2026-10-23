@@ -14,6 +14,7 @@ PWA SaaS multi-local para registrar el ingreso y egreso del personal (fichaje po
 | [Reglas de liquidación](docs/product/payroll-rules.md) | Cálculo de sueldo, ausencias, cupones |
 | [Roles y pantallas](docs/product/roles-and-screens.md) | Administrador, encargado, empleado |
 | [Roadmap](docs/roadmap.md) | Fases de construcción |
+| [Integración con Fudo](docs/architecture/integracion-fudo.md) | API de Fudo: consumos, cupones, personal y gastos |
 | [Prueba de fichaje](apps/fichaje-demo/README.md) | App funcional de QR rotativo + GPS para la muestra (Cloudflare Workers) |
 
 ## Estructura prevista

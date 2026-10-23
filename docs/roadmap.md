@@ -8,4 +8,6 @@ Cada fase termina con algo usable y probado.
 4. **Liquidación**: cálculo automático por jornadas trabajadas (monto por jornada de la ficha), detección de ausencias, recibo.
 5. **Cupones de consumo**: carga por el empleado, aprobación del administrador al liquidar. Catálogo de productos y descuentos: más adelante (fuera de este subproyecto).
 
+6. **Integración con Fudo** (40–70 h): lectura de consumos por cuenta corriente, uso de cupones y personal; luego alta automática de clientes y sueldos/adelantos como gastos; luego cruces de ventas sin fichaje y propinas. Ver `docs/architecture/integracion-fudo.md`.
+
 Fuera de alcance (otros subproyectos): POS, stock, compras, facturación.

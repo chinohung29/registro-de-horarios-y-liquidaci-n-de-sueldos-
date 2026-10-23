@@ -61,6 +61,9 @@ Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architectur
 - Integración: políticas RLS (un empleado o empresa no ve datos ajenos), flujo completo de marca.
 - E2E: alta de local, alta de empleado, fichaje, liquidación y aprobación de cupones.
 
+## 8b. Integración con Fudo
+Los consumos de empleados (cobrados en Fudo con el medio de pago "Cuenta corriente empleados"), el uso de cupones familiares (descuento "Cupón familiar 15%" + código en el comentario de la venta) y la lista de personal se leen de la API pública de Fudo (Plan Pro). Al confirmar la liquidación, sueldos y adelantos se registran como gastos en Fudo. Los fichajes no pasan por Fudo. Detalle: [integración con Fudo](../../architecture/integracion-fudo.md).
+
 ## 9. Fuera de alcance
 POS, stock, compras, facturación, aportes y retenciones legales, app nativa, reconocimiento facial, catálogo de productos y descuentos.
 
