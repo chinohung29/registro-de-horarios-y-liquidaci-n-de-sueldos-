@@ -10,7 +10,7 @@ PWA SaaS multi-local donde el personal registra ingreso y egreso de su jornada m
 - **Fichaje:** QR que se renueva cada **15 segundos** (cambio de la reunión del 2026-10-26) + geolocalización del dispositivo.
 - **Legajos:** se arman previamente con el alta del empleado. Los turnos se derivan del ingreso y egreso fichados.
 - **Liquidación:** se paga por **jornada trabajada**, no por un divisor de días fijo. El monto por jornada se define al crear la ficha del empleado. Las ausencias y la liquidación se calculan automáticamente desde el perfil.
-- **Cupones:** el empleado selecciona sus consumos; el administrador aprueba y confirma la sumatoria al calcular la liquidación. El catálogo de productos y descuentos se define más adelante.
+- **Consumos:** los consumos de empleados (contra el ticket de Fudo) llevan un **descuento de empleado del 20 %**, sin límite en el mes, y los aprueba solo el administrador al liquidar. **Se eliminaron los cupones familiares** (decisión del 2026-10-26).
 - **Alcance inicial:** opción A, solo RRHH. Sin POS, stock ni facturación.
 
 ## 3. Supuestos a confirmar
@@ -57,17 +57,17 @@ Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architectur
 - Liquidación confirmada es inmutable; los errores se corrigen con un ajuste en el período siguiente.
 
 ## 8. Pruebas
-- Unitarias: distancia haversine, firma/ventana del QR, cálculo de liquidación (casos de ausencias, cupones, mensual/por hora).
+- Unitarias: distancia haversine, firma/ventana del QR, cálculo de liquidación (ausencias, atrasos y horas extra en bloques de 15 min, adelantos con tope, consumos con 20 %).
 - Integración: políticas RLS (un empleado o empresa no ve datos ajenos), flujo completo de marca.
-- E2E: alta de local, alta de empleado, fichaje, liquidación y aprobación de cupones.
+- E2E: alta de local, alta de empleado, fichaje, liquidación y aprobación de adelantos y consumos.
 
 ## 8b. Integración con Fudo
-Los consumos de empleados (cobrados en Fudo con el medio de pago "Cuenta corriente empleados"), el uso de cupones familiares (descuento "Cupón familiar 15%" + código en el comentario de la venta) y la lista de personal se leen de la API pública de Fudo (Plan Pro). Al confirmar la liquidación, sueldos y adelantos se registran como gastos en Fudo. Los fichajes no pasan por Fudo. Detalle: [integración con Fudo](../../architecture/integracion-fudo.md).
+Los consumos de empleados (cobrados en Fudo con el medio de pago "Cuenta corriente empleados"), el descuento de empleado del 20 % y la lista de personal se leen de la API pública de Fudo (Plan Pro). Al confirmar la liquidación, sueldos y adelantos se registran como gastos en Fudo. Los fichajes no pasan por Fudo. Detalle: [integración con Fudo](../../architecture/integracion-fudo.md).
 
 ## 8c. Decisiones de la reunión con Mirana (2026-10-26)
 - **Prioridad máxima pendiente:** validar la conexión con la API de Fudo (consumos, liquidación y descuentos) con una cuenta real. Ver [integración con Fudo](../../architecture/integracion-fudo.md).
 - **QR cada 15 segundos.**
-- **Solo el administrador aprueba consumos extra y descuentos.** Descuento de empleado: **20 %, sin límite en el mes** (distinto del cupón familiar: 15 %, 2 por mes).
+- **Solo el administrador aprueba consumos extra y descuentos.** Descuento de empleado: **20 %, sin límite en el mes**. **Cupones familiares eliminados** (solo queda el descuento de empleado). **El encargado ve los adelantos disponibles y los pedidos de su local, pero solo el administrador los aprueba.**
 - **Liquidación quincenal** (1–15 y 16–fin de mes), separada de **vacaciones y aguinaldo** (tabla propia con casilla del índice del INDEC, aprobada por el administrador).
 - **Adelantos**: tope = % de lo devengado por las jornadas realmente trabajadas; se puede adjuntar la captura de la transferencia.
 - **Archivo** que guarda la información de hasta **36 meses** hacia atrás.
@@ -82,7 +82,7 @@ POS, stock, compras, facturación, aportes y retenciones legales, app nativa, re
 - **Fichajes:** el panel marca en rojo el retraso o ingreso fuera de la tolerancia (10 min) y en verde el ingreso en horario.
 
 ## 10. Preguntas abiertas
-1. **Descuento de empleado 20 %** vs **cupón familiar 15 %, 2 por mes**: se entendieron como dos cosas distintas (consumos propios sin límite / consumos de familiares). Confirmar.
+1. **Descuento de empleado 20 %**: ¿se aplica en Fudo (el ticket ya sale con descuento) o lo calcula nuestro sistema sobre el monto del ticket?
 2. **Adelantos**: ¿qué porcentaje de lo devengado por las jornadas trabajadas? (el boceto usa 50 %).
 3. **Atrasos**: ¿se descuentan en bloques de 15 min redondeando hacia arriba, con 10 min de tolerancia? ¿Y la salida anticipada?
 4. **Horas extra**: ¿se mantiene el recargo de 1,5 (y 2,0 en domingos/feriados) o se pagan al valor hora simple?

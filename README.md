@@ -1,6 +1,6 @@
-# ERP Gastronómico — Módulo RRHH
+# Sistema de fichajes
 
-PWA SaaS multi-local para registrar el ingreso y egreso del personal (fichaje por QR rotativo + geolocalización), mantener legajos y liquidar sueldos con descuentos por ausencias y cupones de consumo de empleados. Estilo y funcionalidad de referencia: Naaloo.
+PWA SaaS multi-local para registrar el ingreso y egreso del personal (fichaje por QR rotativo + geolocalización), mantener legajos y liquidar sueldos por quincena (adelantos, atrasos, horas extra y consumos con descuento de empleado del 20 %). Estilo y funcionalidad de referencia: Naaloo.
 
 > **Estado:** fase de diseño. No hay código de producto todavía; el spec está pendiente de aprobación.
 
@@ -11,10 +11,10 @@ PWA SaaS multi-local para registrar el ingreso y egreso del personal (fichaje po
 | [Spec de diseño](docs/superpowers/specs/2026-10-15-rrhh-fichaje-liquidacion-design.md) | Alcance, arquitectura, componentes, decisiones |
 | [Modelo de datos](docs/architecture/data-model.md) | Tablas, relaciones y RLS multi-tenant |
 | [Fichaje QR + geocerca](docs/architecture/qr-geofence.md) | Protocolo del QR rotativo y validación de ubicación |
-| [Reglas de liquidación](docs/product/payroll-rules.md) | Cálculo de sueldo, ausencias, cupones |
+| [Reglas de liquidación](docs/product/payroll-rules.md) | Cálculo quincenal, adelantos, consumos, vacaciones y aguinaldo |
 | [Roles y pantallas](docs/product/roles-and-screens.md) | Administrador, encargado, empleado |
 | [Roadmap](docs/roadmap.md) | Fases de construcción |
-| [Integración con Fudo](docs/architecture/integracion-fudo.md) | API de Fudo: consumos, cupones, personal y gastos |
+| [Integración con Fudo](docs/architecture/integracion-fudo.md) | API de Fudo: consumos, descuentos, personal y gastos |
 | [Prueba de fichaje](apps/fichaje-demo/README.md) | App funcional de QR rotativo + GPS para la muestra (Cloudflare Workers) |
 
 ## Estructura prevista

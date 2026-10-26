@@ -36,7 +36,6 @@ Ejemplo: sueldo $988.000 → jornada $38.000 → hora $4.750 → 15 min $1.187,5
 | `recargo_extra` | 1,5 (domingos/feriados: 2,0), **a confirmar** |
 | `descuento_empleado_pct` | 20 % en consumos propios, sin límite mensual |
 | `tope_adelanto_pct` | 50 % de lo devengado, **a confirmar** |
-| `cupones_familiares_mes` / `porcentaje_cupon` | 2 / 15 % (ver más abajo) |
 
 ## Definiciones
 - **Jornada**: ingreso válido más su egreso, en un mismo día. Media jornada y jornada corta según las horas fichadas (≥ 8 h − tolerancia = 1; ≥ 4 h − tolerancia = 0,5; menos: lo decide el administrador).
@@ -60,7 +59,7 @@ neto        = haberes - atrasos - adelantos - consumos
 Las horas extra, los adelantos y los consumos quedan `pendientes` hasta que **el administrador** los aprueba. **Solo el administrador aprueba consumos extra y descuentos.** El encargado no aprueba nada de sueldos.
 
 ## Adelantos
-- El empleado los pide desde su celular o el administrador los carga.
+- El empleado los pide desde su celular o el administrador los carga. **El encargado del local puede ver** los adelantos disponibles y los pedidos de su equipo, pero **solo el administrador los aprueba**.
 - **Tope**: un porcentaje (propuesta: 50 %) de lo **devengado por las jornadas realmente trabajadas** en la quincena. El sistema no deja aprobar ni cargar un adelanto que supere lo disponible. *Ejemplo: 11,5 jornadas × $38.000 = $437.000 → tope $218.500.*
 - Cada adelanto admite adjuntar la **captura del comprobante de la transferencia** realizada.
 - Se descuenta del neto de la quincena en que se otorga.
@@ -71,11 +70,8 @@ Las horas extra, los adelantos y los consumos quedan `pendientes` hasta que **el
 - Los consumos extra y los descuentos los aprueba **solo el administrador**.
 - Se cargan desde el celular (quedan pendientes), o llegan solos desde Fudo (ver [integración con Fudo](../architecture/integracion-fudo.md)).
 
-## Cupón familiar (no es un descuento del sueldo)
-- 2 cupones por persona por mes (incluido el encargado), **15 %** en consumos de familiares. **No se descuentan del sueldo**: se aplican en el ticket de Fudo.
-- Activación con **código**: el empleado lo pide al encargado → el encargado genera el código (inactivo) → el **administrador** lo autoriza → se usa en la caja y se marca como usado con el n° de ticket.
-- Después del segundo cupón del mes no se puede generar otro; la cuenta se reinicia el **día 1** de cada mes. Un cupón rechazado libera el lugar.
-- No confundir con el **descuento de empleado del 20 %** (consumos propios, sin límite).
+## Cupones familiares: eliminados
+En la reunión del 2026-10-26 se decidió **eliminar los cupones familiares**. El único descuento es el **descuento de empleado del 20 %** sobre los consumos propios, sin límite en el mes.
 
 ## Vacaciones y aguinaldo (tabla separada)
 Se calculan por separado de la quincena, con datos del legajo, y **los aprueba el administrador**. Incluye una casilla con el **índice del INDEC (IPC) actualizado** y el mes al que corresponde.
