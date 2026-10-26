@@ -47,6 +47,7 @@ video{width:100%;border-radius:12px;background:var(--surface2)}
         <li id="s3"><b>3</b><span>Validación en el servidor</span></li>
       </ul>
       <button class="btn primary big" id="fichar" type="button">Fichar ahora</button>
+      <p class="meta">El código vence en pocos segundos: se ficha solo al abrir esta página. Si falla, volvé a escanear el QR.</p>
     </div>
 
     <div id="resultado"></div>
@@ -63,7 +64,7 @@ async function elegir() {
   $("#elegir").hidden = false; $("#main").hidden = true;
   const d = await api("/estado").catch(() => ({ error: "Sin conexión" }));
   $("#lista").innerHTML = d.error ? `<p class="err">${esc(d.error)}</p>` : d.empleados.map((e) => `<button class="btn" data-id="${esc(e.id)}" data-n="${esc(e.nombre)}" type="button">${esc(e.nombre)} · ${esc(e.puesto)}</button>`).join("");
-  $$("#lista button").forEach((b) => (b.onclick = () => { yo = { id: b.dataset.id, nombre: b.dataset.n }; store.set("empleado", JSON.stringify(yo)); principal(); }));
+  $$("#lista button").forEach((b) => (b.onclick = () => { yo = { id: b.dataset.id, nombre: b.dataset.n }; store.set("empleado", JSON.stringify(yo)); principal(); if (token) fichar(); }));
 }
 function principal() {
   $("#elegir").hidden = true; $("#main").hidden = false; $("#yo").textContent = yo.nombre;
@@ -134,7 +135,7 @@ $("#scanBtn").onclick = async () => {
   } catch { toast("No se pudo abrir la cámara. Usá la cámara del teléfono."); }
 };
 
-yo ? principal() : elegir();
+yo ? (principal(), token && fichar()) : elegir();
 </script>
 </body>
 </html>

@@ -3,11 +3,11 @@
 Fecha: 2026-10-15 · Estado: **listo para revisión**
 
 ## 1. Objetivo
-PWA SaaS multi-local donde el personal registra ingreso y egreso de su jornada mediante un QR que cambia cada 2 minutos y validación de ubicación, con legajos de empleado y liquidación mensual automática de sueldos (descuentos por ausencias y por consumos/cupones de empleados). Estilo y funcionalidad de referencia: Naaloo.
+PWA SaaS multi-local donde el personal registra ingreso y egreso de su jornada mediante un QR que cambia cada 15 segundos y validación de ubicación, con legajos de empleado y liquidación quincenal automática de sueldos (adelantos, consumos con descuento de empleado, atrasos y horas extra en bloques de 15 minutos), vacaciones y aguinaldo por separado, y archivo de 36 meses. Estilo y funcionalidad de referencia: Naaloo.
 
 ## 2. Decisiones acordadas con el usuario
 - **Administrador:** ve todos los locales, crea nuevos y asigna empleados a cada sucursal.
-- **Fichaje:** QR que se renueva cada 2 minutos + geolocalización del dispositivo.
+- **Fichaje:** QR que se renueva cada **15 segundos** (cambio de la reunión del 2026-10-26) + geolocalización del dispositivo.
 - **Legajos:** se arman previamente con el alta del empleado. Los turnos se derivan del ingreso y egreso fichados.
 - **Liquidación:** se paga por **jornada trabajada**, no por un divisor de días fijo. El monto por jornada se define al crear la ficha del empleado. Las ausencias y la liquidación se calculan automáticamente desde el perfil.
 - **Cupones:** el empleado selecciona sus consumos; el administrador aprueba y confirma la sumatoria al calcular la liquidación. El catálogo de productos y descuentos se define más adelante.
@@ -45,7 +45,7 @@ Se descartó un monorepo con API separada: agrega complejidad sin beneficio hoy 
 Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architecture/data-model.md), [liquidación](../../product/payroll-rules.md), [roles y pantallas](../../product/roles-and-screens.md).
 
 ## 6. Flujo de datos del fichaje
-1. La pantalla del local pide un QR firmado al servidor cada 120 s.
+1. La pantalla del local genera el QR firmado cada 15 s, sin internet.
 2. El empleado escanea, el celular lee su ubicación y envía token + coordenadas.
 3. El servidor valida usuario, QR, geocerca y alternancia ingreso/egreso, y guarda la marca (válida o rechazada con motivo).
 4. Al cerrar el período, la liquidación lee marcas, ausencias y consumos aprobados.
@@ -63,6 +63,17 @@ Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architectur
 
 ## 8b. Integración con Fudo
 Los consumos de empleados (cobrados en Fudo con el medio de pago "Cuenta corriente empleados"), el uso de cupones familiares (descuento "Cupón familiar 15%" + código en el comentario de la venta) y la lista de personal se leen de la API pública de Fudo (Plan Pro). Al confirmar la liquidación, sueldos y adelantos se registran como gastos en Fudo. Los fichajes no pasan por Fudo. Detalle: [integración con Fudo](../../architecture/integracion-fudo.md).
+
+## 8c. Decisiones de la reunión con Mirana (2026-10-26)
+- **Prioridad máxima pendiente:** validar la conexión con la API de Fudo (consumos, liquidación y descuentos) con una cuenta real. Ver [integración con Fudo](../../architecture/integracion-fudo.md).
+- **QR cada 15 segundos.**
+- **Solo el administrador aprueba consumos extra y descuentos.** Descuento de empleado: **20 %, sin límite en el mes** (distinto del cupón familiar: 15 %, 2 por mes).
+- **Liquidación quincenal** (1–15 y 16–fin de mes), separada de **vacaciones y aguinaldo** (tabla propia con casilla del índice del INDEC, aprobada por el administrador).
+- **Adelantos**: tope = % de lo devengado por las jornadas realmente trabajadas; se puede adjuntar la captura de la transferencia.
+- **Archivo** que guarda la información de hasta **36 meses** hacia atrás.
+- **Sucursales reales de Mirana Burger** (Villa Crespo, Belgrano, Almagro "Turbo") y un **centro de producción en Villa Crespo**. El centro de costos no desvincula al empleado de su sucursal.
+- **Legajo**: fecha de ingreso y sueldo total. Valor hora = sueldo ÷ 26 ÷ 8; pagos y descuentos adicionales en bloques de 15 min (valor hora ÷ 4).
+Reglas completas: [reglas de liquidación](../../product/payroll-rules.md).
 
 ## 9. Fuera de alcance
 POS, stock, compras, facturación, aportes y retenciones legales, app nativa, reconocimiento facial, catálogo de productos y descuentos.

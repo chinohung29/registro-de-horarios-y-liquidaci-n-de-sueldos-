@@ -1,90 +1,105 @@
 # Reglas de liquidación
 
+Actualizado: 2026-10-26, a partir de la reunión con Mirana Burger.
+
 > **Pendiente de validación con un contador/legislación vigente.** Las reglas son configurables por empresa. No usar para liquidaciones reales hasta validar.
 
-## Base: jornada trabajada
-No hay sueldo mensual ni divisor de días fijo. Al crear la ficha del empleado se define su **monto por jornada** (ARS). La liquidación paga las jornadas efectivamente trabajadas en el período.
+## Estructura: tres cálculos separados
+| Cálculo | Período | Qué incluye |
+|---|---|---|
+| **Liquidación quincenal** | 1ª quincena (días 1 al 15) y 2ª quincena (16 a fin de mes) | Jornadas, ausencias, horas extra, atrasos, adelantos, consumos |
+| **Vacaciones y aguinaldo** | Por evento (vacaciones) y junio/diciembre (aguinaldo) | Tabla propia, con índice INDEC, aprobada por el administrador |
+| **Archivo histórico** | 36 meses hacia atrás | Resúmenes, recibos, fichajes y adjuntos de cada período cerrado |
 
-## Entradas (automáticas desde el perfil del empleado)
-- `monto_jornada` de la ficha.
-- Marcas válidas de ingreso/egreso del período (las horas fichadas definen jornada, media jornada y extras).
-- Turnos previstos (para detectar ausencias y medir el retraso del ingreso).
-- Consumos aprobados.
+Adelantos y consumos se imputan a la **quincena de su fecha**.
+
+## Legajo del empleado (datos que alimentan el cálculo)
+- **Fecha de ingreso** (obligatoria): define antigüedad, vacaciones y proporción del aguinaldo.
+- **Sueldo total mensual**: es la base del cálculo. Todo lo demás se deriva de acá.
+- **Sucursal** (donde ficha) y **centro de costos** (a qué costo se imputa el sueldo; por defecto es la misma sucursal).
+
+## Valor jornada, valor hora y bloque de 15 minutos
+```
+valor_jornada = sueldo_total / 26
+valor_hora    = valor_jornada / 8
+valor_15min   = valor_hora / 4          (base de cálculo para pagos y descuentos)
+```
+Ejemplo: sueldo $988.000 → jornada $38.000 → hora $4.750 → 15 min $1.187,50.
 
 ## Parámetros de la empresa (configurables)
-| Parámetro | Valor inicial propuesto |
+| Parámetro | Valor inicial |
 |---|---|
-| `horas_jornada` (horas de una jornada completa) | 8 |
-| `horas_media_jornada` (mínimo para contar media jornada) | 4 |
-| `tolerancia_min` (minutos sin penalizar al borde de un umbral) | 10 |
-| `recargo_extra` (multiplicador de hora extra normal) | 1.5 |
-| `recargo_extra_especial` (domingos/feriados) | 2.0 |
-| Aprobación de horas extra | requerida por el administrador |
-
-Cada empleado puede tener un override de `horas_jornada` en su ficha (p. ej. cocina 9 h, salón 6 h).
+| `divisor_dias` | 26 |
+| `horas_jornada` | 8 (override por empleado, p. ej. cocina 9 h, salón 6 h) |
+| `bloque_min` | 15 |
+| `tolerancia_min` (atrasos) | 10 |
+| `recargo_extra` | 1,5 (domingos/feriados: 2,0), **a confirmar** |
+| `descuento_empleado_pct` | 20 % en consumos propios, sin límite mensual |
+| `tope_adelanto_pct` | 50 % de lo devengado, **a confirmar** |
+| `cupones_familiares_mes` / `porcentaje_cupon` | 2 / 15 % (ver más abajo) |
 
 ## Definiciones
-- **Jornada**: ingreso válido más su egreso, en un mismo día.
-- **Fracción de jornada** según las horas fichadas (`h`):
-  - `h >= horas_jornada - tolerancia` → **1 jornada**.
-  - `horas_media_jornada - tolerancia <= h < horas_jornada - tolerancia` → **0,5 jornada**.
-  - `h < horas_media_jornada - tolerancia` → **jornada corta**: no se paga automáticamente; el administrador decide (0,5, 1 o 0) al liquidar.
-- **Horas extra**: horas fichadas por encima de `horas_jornada` (solo si la fracción es 1). Se redondean a bloques de 15 min.
-- **Ajuste manual**: el administrador puede forzar la fracción de una jornada o las horas extra de un día, con motivo; queda auditado.
-- **Jornada incompleta**: ingreso sin egreso. No se paga hasta que el administrador la resuelva (corrige la marca o la descarta) antes de confirmar.
-- **Ausencia**: día con turno previsto y sin jornada trabajada. Tiene un tipo:
-  - **Autorizada**: el administrador la autoriza. **Se paga la jornada** (no se descuenta).
-  - **Injustificada**: **no se paga la jornada** (se descuenta). Es el tipo por defecto cuando no hay marca ni autorización.
-  - **Franco / día libre**: no es una ausencia. No se descuenta ni cuenta como ausente.
-  No hay penalización adicional en ningún caso. El recibo muestra cada tipo por separado.
+- **Jornada**: ingreso válido más su egreso, en un mismo día. Media jornada y jornada corta según las horas fichadas (≥ 8 h − tolerancia = 1; ≥ 4 h − tolerancia = 0,5; menos: lo decide el administrador).
+- **Ausencia autorizada**: se **paga** la jornada. **Injustificada**: **no se paga**. **Franco / día libre**: no es ausencia.
+- **Jornada incompleta** (ingreso sin egreso): no se paga hasta que el administrador la resuelve antes de confirmar.
 
-## Cálculo
+### Atrasos y horas extra en bloques de 15 minutos
+- **Atraso** (llegada tarde o salida anticipada): si supera la tolerancia de 10 min, se descuenta en bloques de 15 min, redondeando hacia arriba: `bloques = ceil(minutos / 15)`. Hasta 10 min no se descuenta. *Ejemplo: 14 min → 1 bloque; 30 min → 2 bloques.*
+- **Horas extra**: se pagan por bloques de 15 min completos sobre la jornada: `bloques x valor_15min x recargo`. El administrador las aprueba.
+- Regla del atraso (redondeo hacia arriba y tolerancia) y recargo: **a confirmar** con Mirana.
+
+## Cálculo de la quincena
 ```
-jornadas_pagas   = suma de fracciones de jornada trabajadas + ausencias autorizadas
-valor_hora_extra = monto_jornada / horas_jornada x recargo
-haberes          = jornadas_pagas x monto_jornada + horas_extra_aprobadas x valor_hora_extra
-desc_adelantos   = suma de adelantos APROBADOS del período
-desc_consumos    = suma de consumos APROBADOS del período (monto completo del ticket)
-neto             = haberes - desc_adelantos - desc_consumos
+haberes     = (jornadas trabajadas + ausencias autorizadas) x valor_jornada
+              + bloques_extra_aprobados x valor_15min x recargo
+atrasos     = bloques_atraso x valor_15min
+adelantos   = suma de adelantos APROBADOS de la quincena
+consumos    = suma de consumos APROBADOS de la quincena (con descuento de empleado del 20 %)
+neto        = haberes - atrasos - adelantos - consumos
 ```
-La ausencia injustificada no genera un descuento aparte: esa jornada simplemente no se paga. La ausencia autorizada se paga como una jornada completa.
-
-Las horas extra, los adelantos y los consumos quedan en estado `pendiente` hasta que el administrador los aprueba o rechaza en el detalle de cada empleado. Solo los aprobados se liquidan.
-
-Si el monto por jornada cambia, el nuevo valor rige desde su fecha de vigencia; las liquidaciones cerradas no se recalculan.
+Las horas extra, los adelantos y los consumos quedan `pendientes` hasta que **el administrador** los aprueba. **Solo el administrador aprueba consumos extra y descuentos.** El encargado no aprueba nada de sueldos.
 
 ## Adelantos
-- El empleado solicita un adelanto (monto y motivo) o el administrador lo carga.
-- El administrador lo aprueba en el detalle de la liquidación; el aprobado se descuenta del neto del período.
+- El empleado los pide desde su celular o el administrador los carga.
+- **Tope**: un porcentaje (propuesta: 50 %) de lo **devengado por las jornadas realmente trabajadas** en la quincena. El sistema no deja aprobar ni cargar un adelanto que supere lo disponible. *Ejemplo: 11,5 jornadas × $38.000 = $437.000 → tope $218.500.*
+- Cada adelanto admite adjuntar la **captura del comprobante de la transferencia** realizada.
+- Se descuenta del neto de la quincena en que se otorga.
 
 ## Consumos del empleado
-- Cada consumo es un ítem individual (no una suma global) y va **contra el ticket emitido por el sistema de facturación externo**: se registra el número de ticket, la fecha y el monto, y se descuenta completo del sueldo.
-- Se puede **adjuntar una foto del ticket** como respaldo.
-- El número de ticket no puede repetirse.
-- El empleado puede cargar sus consumos desde el celular (quedan pendientes); el administrador los aprueba al liquidar.
+- Cada consumo es un ítem individual que va **contra el ticket del sistema de facturación externo (Fudo)**: número de ticket, fecha, monto y foto opcional. El número de ticket no puede repetirse.
+- **Descuento de empleado: 20 %**, **sin límite** de consumos en el mes. Se descuenta del sueldo el monto con el descuento (`monto x 0,80`); el administrador puede quitar el descuento de un consumo.
+- Los consumos extra y los descuentos los aprueba **solo el administrador**.
+- Se cargan desde el celular (quedan pendientes), o llegan solos desde Fudo (ver [integración con Fudo](../architecture/integracion-fudo.md)).
 
-## Cupón familiar
-- Cada empleado tiene **2 cupones por mes** con **15% de descuento** en consumos de sus familiares.
-- **No se descuentan del sueldo**: el descuento se aplica en el ticket del sistema de facturación y no pasa por la liquidación.
-- Activación con **código**:
-  1. El empleado pide el cupón al **encargado** de su local (desde el celular o en persona). Estado: `pedido`.
-  2. El encargado **genera el código** en su interfaz (ej.: `FAM-3KT7`). El código nace **inactivo**. Estado: `pendiente`.
-  3. El **administrador** lo autoriza (se activa) o lo rechaza.
-  4. El empleado ve el código activo en su celular y lo usa en la caja; el administrador puede marcarlo como **usado** con el número de ticket.
-- **Mismas condiciones para todos, incluido el encargado**: 2 por persona por mes. Después del segundo cupón no se puede pedir, generar ni autorizar otro (un cupón rechazado libera el lugar).
-- La cuenta es por **mes calendario** y **se reinicia el día 1 de cada mes**. Lo que no se usa no se acumula.
-- El recibo informa cuántos cupones se autorizaron, solo como dato.
+## Cupón familiar (no es un descuento del sueldo)
+- 2 cupones por persona por mes (incluido el encargado), **15 %** en consumos de familiares. **No se descuentan del sueldo**: se aplican en el ticket de Fudo.
+- Activación con **código**: el empleado lo pide al encargado → el encargado genera el código (inactivo) → el **administrador** lo autoriza → se usa en la caja y se marca como usado con el n° de ticket.
+- Después del segundo cupón del mes no se puede generar otro; la cuenta se reinicia el **día 1** de cada mes. Un cupón rechazado libera el lugar.
+- No confundir con el **descuento de empleado del 20 %** (consumos propios, sin límite).
+
+## Vacaciones y aguinaldo (tabla separada)
+Se calculan por separado de la quincena, con datos del legajo, y **los aprueba el administrador**. Incluye una casilla con el **índice del INDEC (IPC) actualizado** y el mes al que corresponde.
+```
+base_actualizada = mejor_remuneración_mensual x (1 + indice_INDEC / 100)
+vacaciones       = días_de_vacaciones x (base_actualizada / 25)
+aguinaldo        = 50 % x base_actualizada x proporción_del_semestre_trabajado
+```
+- **Días de vacaciones** según antigüedad a la fecha de corte: hasta 5 años 14 días; hasta 10 años 21; hasta 20 años 28; más de 20 años 35. Si en el año trabajó menos de 6 meses: 1 día cada 20 días trabajados.
+- **Mejor remuneración mensual**: por defecto el sueldo del legajo, editable por fila.
+- **Aguinaldo**: 50 % de la mejor remuneración mensual del semestre, proporcional al tiempo trabajado en el semestre.
+- Cómo se aplica el índice INDEC y la base de cálculo son **criterios a validar con el contador**; el índice cargado en el boceto es un valor de ejemplo.
 
 ## Recibo de haberes
-Uno por empleado, con:
-- Logo de la empresa centrado arriba, nombre de la empresa y período.
-- **Nombre y apellido** del empleado, legajo, DNI, puesto, local y monto por jornada.
-- Detalle: jornadas trabajadas, ausencias autorizadas, horas extra, total haberes; cada adelanto y cada consumo (con número de ticket), total descuentos y **neto a cobrar**.
-- Dato informativo: ausencias injustificadas y cupones familiares autorizados (no se descuentan).
-- Renglón **"Recibí conforme"** con espacios para firma, aclaración y fecha.
+Uno por empleado y por quincena, con el **logo centrado arriba**, nombre y apellido, legajo, DNI, puesto, fecha de ingreso, sucursal, centro de costos y valor hora. Detalle de haberes (jornadas, ausencias autorizadas, horas extra), descuentos (atrasos, cada adelanto con su comprobante, cada consumo con ticket y descuento del 20 %), neto a cobrar, dato informativo de ausencias injustificadas y el renglón **"Recibí conforme"** con firma, aclaración y fecha.
 
 ## PDF para el administrador
-Un único PDF por liquidación: primera hoja con el **resumen igual al listado** (todos los empleados y totales) y, a continuación, **todos los recibos**, uno por hoja. El empleado ve su propio recibo desde el celular.
+Un PDF por liquidación: primera hoja con el **resumen igual al listado** (empleados, centro de costos, haberes, adelantos, consumos, neto, totales y **subtotal por centro de costos**) y a continuación **todos los recibos**, uno por hoja.
 
-## Estados de una liquidación
-`borrador` → `confirmada` (inmutable, genera recibo). Los errores posteriores se corrigen con un ajuste en el período siguiente.
+## Centros de costos
+La empresa tiene sucursales (Villa Crespo, Belgrano, Almagro "Turbo") y un **centro de producción en Villa Crespo**. Un empleado puede fichar en su sucursal y pertenecer al **centro de costos** de producción: sigue ligado a su sucursal para fichar, pero su sueldo se imputa a producción. El resumen muestra el costo por centro de costos.
+
+## Archivo histórico (36 meses)
+Cada período cerrado guarda su resumen, recibos, fichajes y adjuntos (fotos de tickets y comprobantes). Se conservan **36 meses** hacia atrás y se pueden filtrar por año y tipo. Lo anterior pasa a un archivo de largo plazo y **no se borra sin autorización**. **A validar con el contador**: el plazo legal de conservación de la documentación laboral podría ser mayor que 36 meses.
+
+## Estados
+`borrador` → `confirmada` (inmutable; los errores posteriores se corrigen con un ajuste en la quincena siguiente). Vacaciones y aguinaldo: `borrador` → `confirmado` por fila aprobada.

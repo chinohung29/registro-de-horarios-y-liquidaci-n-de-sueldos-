@@ -3,7 +3,8 @@
 // El resto de las rutas lo sirve Cloudflare desde /public.
 import { DurableObject } from "cloudflare:workers";
 
-const SLOT_SEG = 120;            // el QR cambia cada 2 minutos
+const SLOT_SEG = 15;             // el QR cambia cada 15 segundos (reunión con Mirana, 2026-10-26)
+const SLOTS_ATRAS = 2, SLOTS_ADELANTE = 1; // se acepta hasta ~45 s de antigüedad: el empleado escanea, el GPS tarda y recién ahí se valida
 const PRECISION_MAX_M = 150;     // con peor precisión se pide reintentar
 const DUPLICADA_SEG = 60;        // dos marcas en menos de 60 s son la misma
 const RADIOS = [50, 100, 150, 200, 300];
@@ -175,7 +176,7 @@ export class Store extends DurableObject {
     base.empleadoId = emp.id; base.empleado = emp.nombre; base.localId = localId || ""; base.local = local ? local.nombre : "";
     if (!local || !slotStr || !sig) return rechazar("QR inválido: no corresponde a ningún local.");
     const slot = Number(slotStr), slotAhora = Math.floor(ahora / 1000 / SLOT_SEG);
-    if (!(Number.isInteger(slot) && Math.abs(slotAhora - slot) <= 1)) return rechazar("QR vencido: escaneá el código que está en pantalla ahora.");
+    if (!(Number.isInteger(slot) && slotAhora - slot <= SLOTS_ATRAS && slot - slotAhora <= SLOTS_ADELANTE)) return rechazar("QR vencido: escaneá el código que está en pantalla ahora.");
     if ((await firma(local.secreto, local.id, slot)) !== sig) return rechazar("QR inválido: la firma no coincide.");
     senales.push("QR vigente");
 

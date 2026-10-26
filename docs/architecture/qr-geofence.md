@@ -14,7 +14,7 @@ Combinados, engañar al sistema requiere un cómplice en el local **y** una app 
 ## Pantalla del local (tablet)
 - Tablet económica fija, en modo kiosco (Android: modo kiosco / app de kiosco; iPad: Acceso guiado), con hora automática.
 - **Vinculación**: el administrador la vincula una vez; la tablet recibe la clave del local (`secreto`, 20 bytes) y la guarda.
-- **El QR se genera en la tablet, sin internet**: `token = localId.slot.firma`, con `slot = floor(unix / 120)` y `firma = HMAC-SHA256(secreto, "localId.slot")` (primeros 8 bytes en hex). Mismo principio que los códigos de seguridad bancarios (TOTP).
+- **El QR se genera en la tablet, sin internet**: `token = localId.slot.firma`, con `slot = floor(unix / 15)` (el código cambia **cada 15 segundos**; antes 2 minutos, cambio pedido en la reunión del 2026-10-26) y `firma = HMAC-SHA256(secreto, "localId.slot")` (primeros 8 bytes en hex). Mismo principio que los códigos de seguridad bancarios (TOTP).
 - El QR contiene un enlace: `https://<app>/fichar?t=<token>`. Se escanea con la **cámara normal del teléfono**, que abre la app lista para fichar (funciona en iPhone y Android).
 - La app de la tablet queda guardada (service worker): si se corta internet sigue mostrando el QR; los empleados fichan con los datos de su celular.
 - Botón **Fichar con PIN** (respaldo cuando el celular no tiene señal): PIN del empleado + foto opcional con la cámara de la tablet. La marca queda siempre "a revisar".
@@ -24,7 +24,7 @@ Combinados, engañar al sistema requiere un cómplice en el local **y** una app 
 - Envía `token`, empleado, identificador del dispositivo y `lat`, `lng`, `precision`.
 
 ## Validación en el servidor (nunca en el celular)
-1. **QR**: local existente, firma correcta y slot actual ± 1 (tolera demoras y desfasaje de reloj de la tablet). Si no → rechazada ("QR vencido" / "QR inválido").
+1. **QR**: local existente, firma correcta y slot actual y hasta 2 anteriores (≈ 45 s de antigüedad) y 1 posterior (desfasaje de reloj). Con 15 s hace falta la ventana: el empleado escanea, el GPS tarda y recién ahí se valida. Si no → rechazada ("QR vencido" / "QR inválido").
 2. **Asignación**: el empleado está asignado al local o tiene una habilitación vigente. Si no → rechazada.
 3. **Duplicada**: otra marca no rechazada en menos de 60 s → se devuelve la existente.
 4. **Ubicación** (con margen de error):

@@ -6,11 +6,11 @@ App web instalable (PWA) que corre en **Cloudflare Workers**. Sirve para mostrar
 |---|---|---|
 | Inicio | `/` | Accesos y guía de la muestra |
 | Administrador | `/admin` | Ubicación del local, radio, red del local, vincular la tablet, empleados, marcas y revisión |
-| Pantalla del local | `/kiosco` | Tablet: QR que cambia cada 2 minutos, **funciona sin internet**; fichaje de respaldo con PIN y foto |
+| Pantalla del local | `/kiosco` | Tablet: QR que cambia cada 15 segundos, **funciona sin internet**; fichaje de respaldo con PIN y foto |
 | Empleado | `/fichar?t=…` | Se abre al escanear el QR con la cámara del celular; pide la ubicación y ficha |
 
 ## Qué valida el servidor (`src/worker.js`)
-1. QR auténtico (firma HMAC con la clave del local) y vigente (ventana de 2 min, se acepta la anterior y la siguiente por desfasajes de reloj).
+1. QR auténtico (firma HMAC con la clave del local) y vigente (el código cambia cada 15 s; se acepta hasta ~45 s de antigüedad porque el empleado escanea y el GPS tarda, y 15 s hacia adelante por desfasaje de reloj).
 2. Empleado asignado a ese local.
 3. Marca duplicada (menos de 60 s): devuelve la marca existente.
 4. Ubicación: precisión mayor a 150 m → se pide reintentar; dentro del radio (descontando el margen de error del GPS) → válida; hasta 1,5 × radio → "a revisar"; más lejos → rechazada.
