@@ -34,7 +34,7 @@ Ejemplo: sueldo $988.000 → jornada $38.000 → hora $4.750 → 15 min $1.187,5
 | `bloque_min` | 15 |
 | `tolerancia_min` (atrasos) | 10 |
 | `recargo_extra` | 1,5 (domingos/feriados: 2,0), **a confirmar** |
-| `descuento_empleado_pct` | 20 % en consumos propios, sin límite mensual |
+| `descuento_empleado_pct` | 20 %, **aplicado por Fudo en el ticket** (informativo: el sistema no lo vuelve a aplicar). Sin límite mensual |
 | `tope_adelanto_pct` | 50 % de lo devengado, **a confirmar** |
 
 ## Definiciones
@@ -53,7 +53,7 @@ haberes     = (jornadas trabajadas + ausencias autorizadas) x valor_jornada
               + bloques_extra_aprobados x valor_15min x recargo
 atrasos     = bloques_atraso x valor_15min
 adelantos   = suma de adelantos APROBADOS de la quincena
-consumos    = suma de consumos APROBADOS de la quincena (con descuento de empleado del 20 %)
+consumos    = suma de consumos APROBADOS de la quincena (monto del ticket de Fudo, ya con el 20 % de descuento)
 neto        = haberes - atrasos - adelantos - consumos
 ```
 Las horas extra, los adelantos y los consumos quedan `pendientes` hasta que **el administrador** los aprueba. **Solo el administrador aprueba consumos extra y descuentos.** El encargado no aprueba nada de sueldos.
@@ -66,12 +66,12 @@ Las horas extra, los adelantos y los consumos quedan `pendientes` hasta que **el
 
 ## Consumos del empleado
 - Cada consumo es un ítem individual que va **contra el ticket del sistema de facturación externo (Fudo)**: número de ticket, fecha, monto y foto opcional. El número de ticket no puede repetirse.
-- **Descuento de empleado: 20 %**, **sin límite** de consumos en el mes. Se descuenta del sueldo el monto con el descuento (`monto x 0,80`); el administrador puede quitar el descuento de un consumo.
+- **Descuento de empleado: 20 %**, **sin límite** de consumos en el mes. **El 20 % ya viene aplicado en el ticket de Fudo**: el monto del consumo es el total del ticket tal como lo informa Fudo y **se descuenta del sueldo sin restarle otro 20 %**.
 - Los consumos extra y los descuentos los aprueba **solo el administrador**.
 - Se cargan desde el celular (quedan pendientes), o llegan solos desde Fudo (ver [integración con Fudo](../architecture/integracion-fudo.md)).
 
 ## Cupones familiares: eliminados
-En la reunión del 2026-10-26 se decidió **eliminar los cupones familiares**. El único descuento es el **descuento de empleado del 20 %** sobre los consumos propios, sin límite en el mes.
+En la reunión del 2026-10-26 se decidió **eliminar los cupones familiares**. El único descuento es el **descuento de empleado del 20 %** sobre los consumos propios, sin límite en el mes, y **lo aplica Fudo en el ticket**.
 
 ## Vacaciones y aguinaldo (tabla separada)
 Se calculan por separado de la quincena, con datos del legajo, y **los aprueba el administrador**. Incluye una casilla con el **índice del INDEC (IPC) actualizado** y el mes al que corresponde.
@@ -86,7 +86,7 @@ aguinaldo        = 50 % x base_actualizada x proporción_del_semestre_trabajado
 - Cómo se aplica el índice INDEC y la base de cálculo son **criterios a validar con el contador**; el índice cargado en el boceto es un valor de ejemplo.
 
 ## Recibo de haberes
-Uno por empleado y por quincena, con el **logo centrado arriba**, nombre y apellido, legajo, DNI, puesto, fecha de ingreso, sucursal, centro de costos y valor hora. Detalle de haberes (jornadas, ausencias autorizadas, horas extra), descuentos (atrasos, cada adelanto con su comprobante, cada consumo con ticket y descuento del 20 %), neto a cobrar, dato informativo de ausencias injustificadas y el renglón **"Recibí conforme"** con firma, aclaración y fecha.
+Uno por empleado y por quincena, con el **logo centrado arriba**, nombre y apellido, legajo, DNI, puesto, fecha de ingreso, sucursal, centro de costos y valor hora. Detalle de haberes (jornadas, ausencias autorizadas, horas extra), descuentos (atrasos, cada adelanto con su comprobante, cada consumo con ticket; el monto ya incluye el 20 %), neto a cobrar, dato informativo de ausencias injustificadas y el renglón **"Recibí conforme"** con firma, aclaración y fecha.
 
 ## PDF para el administrador
 Un PDF por liquidación: primera hoja con el **resumen igual al listado** (empleados, centro de costos, haberes, adelantos, consumos, neto, totales y **subtotal por centro de costos**) y a continuación **todos los recibos**, uno por hoja.

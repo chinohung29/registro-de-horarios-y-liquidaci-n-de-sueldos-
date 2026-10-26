@@ -55,7 +55,7 @@ Cada venta se carga como **consumo** pendiente de aprobación, con fecha, total,
 
 ### 1b. Descuento de empleado 20 % (sin límite mensual)
 **En Fudo:** plantilla de descuento **"Descuento empleados 20%"** para las ventas cobradas con "Cuenta corriente empleados".
-**Sincronización:** de cada venta se leen `total` y `discounts`. El sistema carga el consumo con su monto y su descuento; **solo el administrador** aprueba los consumos extra y los descuentos antes de descontarlos en la quincena que corresponda por fecha. A confirmar con una cuenta real: si el 20 % se aplica en Fudo (el ticket ya queda con descuento) o lo aplica nuestro sistema sobre el monto del ticket.
+**Regla (confirmada 2026-10-26):** el 20 % **ya viene aplicado en el ticket de Fudo** y está asociado a lo que informa Fudo. De cada venta se lee el `total` (ya con descuento) y se carga como monto del consumo; **nuestro sistema no calcula ni resta otro 20 %**. `discounts` se guarda solo como respaldo para verificar que la venta lleva la plantilla "Descuento empleados 20%". **Solo el administrador** aprueba los consumos extra y los descuentos antes de descontarlos en la quincena que corresponda por fecha. A confirmar con una cuenta real: que `total` sea el importe final con descuento.
 
 ### 2. Empleados
 `GET /users` trae el personal cargado en Fudo (nombre, correo, teléfono, activo, rol). Sirve para **precargar el alta** y para vincular cada usuario de Fudo con el **correo de acceso** del empleado en nuestro sistema (`fudo_user_id`).
