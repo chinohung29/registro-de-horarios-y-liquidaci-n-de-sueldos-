@@ -82,8 +82,13 @@ POS, stock, compras, facturación, aportes y retenciones legales, app nativa, re
 - **Fichajes:** el panel marca en rojo el retraso o ingreso fuera de la tolerancia (10 min) y en verde el ingreso en horario.
 
 ## 10. Preguntas abiertas
-1. ¿Validamos las reglas de liquidación con un contador antes de la fase 4? (recomendado)
-2. ¿Los feriados se cargan en un calendario por empresa? (propuesta: sí, lo carga el administrador)
-3. ¿Hace falta el rol encargado en la primera versión? (propuesta: no; hoy "administrador del local" se resuelve con el rol administrador)
-4. Capturas o referencias de Naaloo para ajustar el estilo, si están disponibles.
-5. ¿El franco o día libre se paga? Hoy el modelo no lo paga ni lo descuenta (se paga solo lo trabajado y lo autorizado).
+1. **Descuento de empleado 20 %** vs **cupón familiar 15 %, 2 por mes**: se entendieron como dos cosas distintas (consumos propios sin límite / consumos de familiares). Confirmar.
+2. **Adelantos**: ¿qué porcentaje de lo devengado por las jornadas trabajadas? (el boceto usa 50 %).
+3. **Atrasos**: ¿se descuentan en bloques de 15 min redondeando hacia arriba, con 10 min de tolerancia? ¿Y la salida anticipada?
+4. **Horas extra**: ¿se mantiene el recargo de 1,5 (y 2,0 en domingos/feriados) o se pagan al valor hora simple?
+5. **Consumos y adelantos por quincena**: se imputan a la quincena de su fecha (propuesta). Confirmar.
+6. **Vacaciones y aguinaldo**: cómo se aplica el índice del INDEC y qué base se usa (mejor remuneración). Validar con el contador. ¿El índice es el IPC mensual o el acumulado?
+7. **Archivo de 36 meses**: validar con el contador el plazo legal de conservación.
+8. **Centro de producción**: dirección y ubicación para el fichaje; ¿los empleados de producción también ficham ahí con QR?
+9. **Fudo**: confirmar Plan Pro, crear el medio de pago y los descuentos, y probar la API con una cuenta real.
+10. ¿Los feriados se cargan en un calendario por empresa? (propuesta: sí).

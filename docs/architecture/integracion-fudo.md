@@ -1,6 +1,8 @@
 # Integración con Fudo
 
-Fecha: 2026-10-23 · Estado: **propuesta, pendiente de validar con una cuenta real**
+Fecha: 2026-10-23 (actualizado 2026-10-26) · Estado: **propuesta, pendiente de validar con una cuenta real**
+
+> **PENDIENTE E IMPORTANTE** (reunión con Mirana, 2026-10-26): ver la funcionalidad y la conexión para enlazar ambas aplicaciones con **consumos, liquidación y descuentos**. Es la prioridad más alta de lo pendiente: lo primero es probar la API con una cuenta real de Fudo (Plan Pro) en modo solo lectura.
 
 ## Objetivo
 Conectar el Sistema de fichajes con Fudo (sistema de gestión gastronómica del local) para que los **consumos de empleados**, el **uso de cupones familiares** y los **datos del personal** se carguen solos, y para que los **sueldos y adelantos** queden registrados como gastos en Fudo. Los **fichajes** no pasan por Fudo: los genera nuestro sistema.
@@ -41,7 +43,7 @@ Conectar el Sistema de fichajes con Fudo (sistema de gestión gastronómica del 
 **Configuración en Fudo:** medio de pago **"Cuenta corriente empleados"**.
 **Alta:** al dar de alta un empleado, nuestro sistema crea un **cliente** en Fudo (`POST /customers`) con nombre, correo, teléfono, DNI (`vatNumber`) y `houseAccountEnabled = true`. Guardamos el `fudo_customer_id`.
 **Operación:** el cajero carga la venta en Fudo a nombre del empleado y la cobra con "Cuenta corriente empleados".
-**Sincronización:** cada 15 min y antes de calcular la liquidación:
+**Sincronización:** cada 15 min y antes de cerrar cada quincena:
 ```
 GET /sales?filter[closedAt]=and(gte.<desde>,lt.<hasta>)
           &filter[paymentMethodId]=eq.<id cuenta corriente empleados>
@@ -50,6 +52,10 @@ GET /sales?filter[closedAt]=and(gte.<desde>,lt.<hasta>)
 Cada venta se carga como **consumo** pendiente de aprobación, con fecha, total, detalle de ítems y número de comprobante. Clave de idempotencia: `fudo_sale_id` (no se duplica).
 **Conciliación:** se compara la suma liquidada con `houseAccountBalance` del cliente.
 **Efecto:** ya no se tipea el número de ticket ni se saca foto (queda como respaldo opcional para cargas manuales).
+
+### 1b. Descuento de empleado 20 % (sin límite mensual)
+**En Fudo:** plantilla de descuento **"Descuento empleados 20%"** para las ventas cobradas con "Cuenta corriente empleados".
+**Sincronización:** de cada venta se leen `total` y `discounts`. El sistema carga el consumo con su monto y su descuento; **solo el administrador** aprueba los consumos extra y los descuentos antes de descontarlos en la quincena que corresponda por fecha. A confirmar con una cuenta real: si el 20 % se aplica en Fudo (el ticket ya queda con descuento) o lo aplica nuestro sistema sobre el monto del ticket.
 
 ### 2. Cupón familiar 15% (control automático de uso)
 **Configuración en Fudo:** plantilla de descuento **"Cupón familiar 15%"**.
@@ -66,7 +72,7 @@ Cada venta se carga como **consumo** pendiente de aprobación, con fecha, total,
 - **Propinas:** las ventas incluyen `tips` por mozo; a futuro se pueden repartir en la liquidación (por mozo o por horas trabajadas). Requiere definir la regla de reparto.
 
 ### 5. Sueldos y adelantos como gastos en Fudo
-Al **confirmar** una liquidación, se crea en Fudo un gasto por empleado (`POST /expenses`) en la categoría "Sueldos" y, para cada adelanto aprobado, un gasto en "Adelantos". Así los reportes de Fudo reflejan el costo del personal sin carga doble. Requiere permiso de escritura de gastos para el usuario de API.
+Al **confirmar** una liquidación quincenal, se crea en Fudo un gasto por empleado (`POST /expenses`) en la categoría "Sueldos" y, para cada adelanto aprobado, un gasto en "Adelantos" (con la captura de la transferencia como respaldo). El gasto puede imputarse al **centro de costos** del empleado (por ejemplo, producción). Así los reportes de Fudo reflejan el costo del personal sin carga doble. Requiere permiso de escritura de gastos para el usuario de API.
 
 ## Arquitectura
 - **Módulo aislado** `integraciones/fudo` (por ser una API alfa): cliente HTTP, renovación del token, mapeo de datos y registro de cada sincronización.
