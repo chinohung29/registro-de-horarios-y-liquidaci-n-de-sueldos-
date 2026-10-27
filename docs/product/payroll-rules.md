@@ -68,7 +68,7 @@ Las horas extra, los adelantos y los consumos quedan `pendientes` hasta que **el
 - Cada consumo es un ítem individual que va **contra el ticket del sistema de facturación externo (Fudo)**: número de ticket, fecha, monto y foto opcional. El número de ticket no puede repetirse.
 - **Descuento de empleado: 20 %**, **sin límite** de consumos en el mes. **El 20 % ya viene aplicado en el ticket de Fudo**: el monto del consumo es el total del ticket tal como lo informa Fudo y **se descuenta del sueldo sin restarle otro 20 %**.
 - Los consumos extra y los descuentos los aprueba **solo el administrador**.
-- Se cargan desde el celular (quedan pendientes), o llegan solos desde Fudo (ver [integración con Fudo](../architecture/integracion-fudo.md)).
+- Los **carga el encargado del local** (el empleado solo los consulta) y quedan pendientes hasta que los aprueba el administrador, o llegan solos desde Fudo (ver [integración con Fudo](../architecture/integracion-fudo.md)).
 
 ## Cupones familiares: eliminados
 En la reunión del 2026-10-26 se decidió **eliminar los cupones familiares**. El único descuento es el **descuento de empleado del 20 %** sobre los consumos propios, sin límite en el mes, y **lo aplica Fudo en el ticket**.

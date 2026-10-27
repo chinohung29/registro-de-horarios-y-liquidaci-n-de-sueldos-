@@ -10,15 +10,16 @@
 - **Liquidación quincenal** (1ª y 2ª quincena): listado por empleado (jornadas, ausencias, valor jornada, horas extra, atrasos, haberes, adelantos, consumos, neto) y costo por centro de costos. **Detalle** por empleado: horas extra, adelantos con tope y captura de la transferencia, consumos con el monto del ticket de Fudo, que ya incluye el 20 % (n° de ticket y foto). Solo el administrador aprueba consumos extra y descuentos. **Ver comprobantes y PDF**: un PDF con el resumen igual al listado y todos los comprobantes internos (solo administrador). Confirmar y cerrar.
 
 ## Encargado
-Interfaz propia (vista "Encargado"), **solo lectura**:
+Interfaz propia (vista "Encargado"). Ve los adelantos y **carga los consumos de su equipo**; no aprueba nada:
 - **Adelantos disponibles** de su local en la quincena: por empleado, jornadas trabajadas, devengado, tope, ya aprobado y disponible.
 - **Pedidos de adelanto de su equipo** con su estado (pendiente o aprobado). **Solo el administrador aprueba los adelantos**; el encargado no aprueba ni modifica nada.
-- Sin acceso a sueldos ni a consumos. (Fase posterior: ver y corregir fichajes de su local.)
+- **Consumos del equipo**: carga el ticket de cada empleado de su local (n° de ticket, monto y foto opcional) y ve su estado. Quedan pendientes hasta que **el administrador** los aprueba.
+- Sin acceso a sueldos. (Fase posterior: ver y corregir fichajes de su local.)
 
 ## Empleado
 - **Fichar**: botón Ingreso/Egreso que abre la cámara, lee el QR y envía la ubicación.
 - **Mis marcas**: historial y turnos del mes.
-- **Mis consumos**: carga consumos con número de ticket, monto y foto (el total del ticket ya trae el 20 % de descuento de empleado); quedan pendientes hasta que los apruebe el administrador.
+- **Mis consumos**: **solo consulta**. Los consumos los carga el encargado del local (el total del ticket ya trae el 20 % de descuento de empleado) y los aprueba el administrador.
 - **Mis adelantos**: ve cuánto puede pedir (tope sobre las jornadas ya trabajadas en la quincena) y pide el adelanto; lo aprueba el administrador.
 - El empleado **no ve el comprobante de liquidación**: es un documento interno del administrador y el recibo oficial se gestiona de forma externa.
 

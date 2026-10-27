@@ -39,7 +39,7 @@ Se descartó un monorepo con API separada: agrega complejidad sin beneficio hoy 
 | Pantalla QR del local | Muestra QR vigente con cuenta regresiva | Locales |
 | Fichaje | Escaneo, geolocalización, validación, marcas | QR, Locales, Empleados |
 | Ausencias | Detección automática y justificación | Marcas, Turnos |
-| Consumos | Carga del empleado, aprobación del admin | Empleados |
+| Consumos | Carga del encargado, aprobación del admin | Encargado (carga) · Empleado (consulta) |
 | Liquidación | Cálculo, revisión, cierre, comprobante interno (solo administrador) | Todo lo anterior |
 
 Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architecture/data-model.md), [liquidación](../../product/payroll-rules.md), [roles y pantallas](../../product/roles-and-screens.md).
