@@ -23,4 +23,4 @@ La prueba de fichaje ya tiene el fichaje con PIN, pero **solo funciona con conex
 3. Aviso en pantalla de "marca guardada en esta PC, pendiente de envío".
 4. Control de la hora de la PC (se guarda también la hora de envío para detectar desvíos).
 
-Estimación: 8 a 12 horas.
+Estimación interna: 8 a 12 horas. **Está incluido en el precio acordado (US$ 2.000): no se cobra aparte.**
