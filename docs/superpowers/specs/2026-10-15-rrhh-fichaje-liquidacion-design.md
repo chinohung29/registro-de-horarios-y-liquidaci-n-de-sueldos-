@@ -40,7 +40,7 @@ Se descartó un monorepo con API separada: agrega complejidad sin beneficio hoy 
 | Fichaje | Escaneo, geolocalización, validación, marcas | QR, Locales, Empleados |
 | Ausencias | Detección automática y justificación | Marcas, Turnos |
 | Consumos | Carga del empleado, aprobación del admin | Empleados |
-| Liquidación | Cálculo, revisión, cierre, recibo | Todo lo anterior |
+| Liquidación | Cálculo, revisión, cierre, comprobante interno (solo administrador) | Todo lo anterior |
 
 Detalle: [fichaje](../../architecture/qr-geofence.md), [datos](../../architecture/data-model.md), [liquidación](../../product/payroll-rules.md), [roles y pantallas](../../product/roles-and-screens.md).
 

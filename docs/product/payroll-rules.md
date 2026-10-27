@@ -9,7 +9,7 @@ Actualizado: 2026-10-26, a partir de la reunión con Mirana Burger.
 |---|---|---|
 | **Liquidación quincenal** | 1ª quincena (días 1 al 15) y 2ª quincena (16 a fin de mes) | Jornadas, ausencias, horas extra, atrasos, adelantos, consumos |
 | **Vacaciones y aguinaldo** | Por evento (vacaciones) y junio/diciembre (aguinaldo) | Tabla propia, con índice INDEC, aprobada por el administrador |
-| **Archivo histórico** | 36 meses hacia atrás | Resúmenes, recibos, fichajes y adjuntos de cada período cerrado |
+| **Archivo histórico** | 36 meses hacia atrás | Resúmenes, comprobantes, fichajes y adjuntos de cada período cerrado |
 
 Adelantos y consumos se imputan a la **quincena de su fecha**.
 
@@ -85,17 +85,17 @@ aguinaldo        = 50 % x base_actualizada x proporción_del_semestre_trabajado
 - **Aguinaldo**: 50 % de la mejor remuneración mensual del semestre, proporcional al tiempo trabajado en el semestre.
 - Cómo se aplica el índice INDEC y la base de cálculo son **criterios a validar con el contador**; el índice cargado en el boceto es un valor de ejemplo.
 
-## Recibo de haberes
-Uno por empleado y por quincena, con el **logo centrado arriba**, nombre y apellido, legajo, DNI, puesto, fecha de ingreso, sucursal, centro de costos y valor hora. Detalle de haberes (jornadas, ausencias autorizadas, horas extra), descuentos (atrasos, cada adelanto con su comprobante, cada consumo con ticket; el monto ya incluye el 20 %), neto a cobrar, dato informativo de ausencias injustificadas y el renglón **"Recibí conforme"** con firma, aclaración y fecha.
+## Comprobante interno de liquidación (no es un recibo oficial)
+**Solo lo genera y lo ve el administrador.** El recibo oficial de sueldo se gestiona **de forma externa** al sistema; el empleado no recibe ni ve este comprobante. Es un documento de control, uno por empleado y por quincena, con el **logo centrado arriba**, nombre y apellido, legajo, DNI, puesto, fecha de ingreso, sucursal, centro de costos y valor hora. Detalle de haberes (jornadas, ausencias autorizadas, horas extra), descuentos (atrasos, cada adelanto con su comprobante, cada consumo con ticket; el monto ya incluye el 20 %), neto a cobrar, dato informativo de ausencias injustificadas y una leyenda que aclara que es un documento interno. **No lleva renglón de firma.**
 
 ## PDF para el administrador
-Un PDF por liquidación: primera hoja con el **resumen igual al listado** (empleados, centro de costos, haberes, adelantos, consumos, neto, totales y **subtotal por centro de costos**) y a continuación **todos los recibos**, uno por hoja.
+Un PDF por liquidación: primera hoja con el **resumen igual al listado** (empleados, centro de costos, haberes, adelantos, consumos, neto, totales y **subtotal por centro de costos**) y a continuación **todos los comprobantes internos**, uno por hoja.
 
 ## Centros de costos
 La empresa tiene sucursales (Villa Crespo, Belgrano, Almagro "Turbo") y un **centro de producción en Villa Crespo**. Un empleado puede fichar en su sucursal y pertenecer al **centro de costos** de producción: sigue ligado a su sucursal para fichar, pero su sueldo se imputa a producción. El resumen muestra el costo por centro de costos.
 
 ## Archivo histórico (36 meses)
-Cada período cerrado guarda su resumen, recibos, fichajes y adjuntos (fotos de tickets y comprobantes). Se conservan **36 meses** hacia atrás y se pueden filtrar por año y tipo. Lo anterior pasa a un archivo de largo plazo y **no se borra sin autorización**. **A validar con el contador**: el plazo legal de conservación de la documentación laboral podría ser mayor que 36 meses.
+Cada período cerrado guarda su resumen, comprobantes, fichajes y adjuntos (fotos de tickets y comprobantes). Se conservan **36 meses** hacia atrás y se pueden filtrar por año y tipo. Lo anterior pasa a un archivo de largo plazo y **no se borra sin autorización**. **A validar con el contador**: el plazo legal de conservación de la documentación laboral podría ser mayor que 36 meses.
 
 ## Estados
 `borrador` → `confirmada` (inmutable; los errores posteriores se corrigen con un ajuste en la quincena siguiente). Vacaciones y aguinaldo: `borrador` → `confirmado` por fila aprobada.

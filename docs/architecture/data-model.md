@@ -18,9 +18,9 @@ Multi-tenant por `empresa_id` en todas las tablas, aislado con Row Level Securit
 | `adelantos` | id, empleado_id, fecha, quincena, monto, motivo, **comprobante_transferencia_url**, estado (`pendiente`/`aprobado`/`rechazado`/`liquidado`), solicitado_por, aprobado_por. Tope validado en servidor: % de lo devengado por las jornadas trabajadas de la quincena |
 | `consumos` | id, empleado_id, fecha, ticket_numero (único por empresa, del sistema de facturación externo), monto (total del ticket de Fudo, **ya con el 20 % de descuento de empleado**; es lo que se descuenta del sueldo), foto_ticket_url, origen (`fudo` / `manual`), estado (`pendiente`/`aprobado`/`rechazado`/`liquidado`), cargado_por, **aprobado_por (solo administrador)** |
 | `liquidaciones` | id, empresa_id, periodo (`2026-10`), **quincena (1 o 2)**, estado, creada_por |
-| `liquidacion_items` | id, liquidacion_id, empleado_id, jornadas_pagas, monto_jornada, jornadas_autorizadas, jornadas_injustificadas, horas_extra_bloques, atraso_min, atraso_bloques, haberes, desc_atrasos, desc_adelantos, desc_consumos, neto, centro_costos_id, recibo_pdf_url |
+| `liquidacion_items` | id, liquidacion_id, empleado_id, jornadas_pagas, monto_jornada, jornadas_autorizadas, jornadas_injustificadas, horas_extra_bloques, atraso_min, atraso_bloques, haberes, desc_atrasos, desc_adelantos, desc_consumos, neto, centro_costos_id, comprobante_pdf_url |
 | `vacaciones_aguinaldo` | id, empresa_id, empleado_id, tipo (`vacaciones` / `aguinaldo`), fecha_corte, mejor_remuneracion, indice_indec_pct, indice_indec_mes, base_actualizada, dias_vacaciones, proporcion_semestre, monto, estado (`borrador`/`aprobado`/`confirmado`), aprobado_por (administrador) |
-| `archivo_periodos` | id, empresa_id, periodo, tipo (`quincena` / `aguinaldo`), cerrado_en, resumen_pdf_url, recibos_zip_url, fichajes_url, adjuntos (tickets y comprobantes), tamano_bytes, archivado_largo_plazo (bool; pasa a `true` a los 36 meses, sin borrar) |
+| `archivo_periodos` | id, empresa_id, periodo, tipo (`quincena` / `aguinaldo`), cerrado_en, resumen_pdf_url, comprobantes_zip_url, fichajes_url, adjuntos (tickets y comprobantes), tamano_bytes, archivado_largo_plazo (bool; pasa a `true` a los 36 meses, sin borrar) |
 | `liquidacion_lineas` | id, item_id, concepto, monto (extensible a aportes) |
 
 ## RLS
