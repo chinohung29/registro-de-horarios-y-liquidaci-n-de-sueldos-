@@ -523,7 +523,7 @@ table.mini th,table.mini td{padding:7px 10px}
                 <div id="t-cons" class="list">
           <h3>Consumos de octubre</h3>
           <section id="phCons"></section>
-          <button class="btn primary" id="phAdd" type="button" style="margin-top:8px">+ Cargar consumo</button>
+          <p class="meta" style="margin:6px 0 0">Los consumos los carga el encargado de tu local y los aprueba el administrador.</p>
           <h3 style="margin-top:16px">Adelantos</h3>
           <p class="meta" id="phAdelInfo" style="margin:0"></p>
           <button class="btn" id="phAdel" type="button" style="margin-top:6px">Pedir adelanto</button>
@@ -536,11 +536,15 @@ table.mini th,table.mini td{padding:7px 10px}
   <section id="v-enc" class="hide">
     <div class="encp">
       <div class="enchead"><div><span class="meta">Mirana Burger · Encargado/a</span><h2 id="encName">Encargado/a</h2></div><label class="encloc" for="encLoc"><span class="meta">Local</span><select id="encLoc"></select></label></div>
-      <p class="hint">Acá ves cuánto se puede adelantar a cada persona de tu local y los pedidos de la quincena. <b>Solo el administrador aprueba los adelantos.</b></p>
+      <p class="hint">Acá ves cuánto se puede adelantar a cada persona de tu local y los pedidos de la quincena, y cargás los consumos de tu equipo. <b>Solo el administrador aprueba adelantos y consumos.</b></p>
       <h3>Adelantos disponibles · <span id="encQ"></span></h3>
       <div class="tw"><table class="mini"><thead><tr><th>Empleado</th><th class="n">Jornadas trabajadas</th><th class="n">Devengado</th><th class="n">Tope (50 %)</th><th class="n">Ya aprobado</th><th class="n">Disponible</th></tr></thead><tbody id="encDisp"></tbody></table></div>
       <h3>Pedidos de tu equipo</h3>
       <div class="tw"><table class="mini"><thead><tr><th>Fecha</th><th>Empleado</th><th class="n">Monto</th><th>Motivo</th><th>Estado</th></tr></thead><tbody id="encPed"></tbody></table></div>
+      <h3>Consumos del equipo</h3>
+      <p class="hint">Cargá el ticket del consumo de cada empleado (el total ya trae el 20 % de descuento). <b>Solo el administrador aprueba los consumos.</b></p>
+      <div class="tw"><table class="mini"><thead><tr><th>Fecha</th><th>Empleado</th><th>N° de ticket</th><th class="n">Monto del ticket</th><th>Estado</th></tr></thead><tbody id="encCons"></tbody></table></div>
+      <button class="btn primary" id="encAddCons" type="button" style="margin-top:10px">+ Cargar consumo de un empleado</button>
     </div>
   </section>
 
@@ -878,10 +882,23 @@ table.mini th,table.mini td{padding:7px 10px}
     $('#encQ').textContent=QS[liqQ].n+' ('+QS[liqQ].r+') · '+(LQ[liqQ].closed?'cerrada':'en curso');
     $('#encDisp').innerHTML=eq.map(function(e){var c=calc(e,liqQ),disp=Math.max(0,c.cap-c.ad);
       return '<tr><td>'+esc(full(e))+'<div class="meta">'+esc(e.p||'Sin puesto')+'</div></td><td class="n">'+num(c.d.j+c.d.au)+'</td><td class="n">'+fmt(c.dev)+'</td><td class="n">'+fmt(c.cap)+'</td><td class="n">'+(c.ad?fmt(c.ad):'—')+'</td><td class="n"><b>'+fmt(disp)+'</b></td></tr>'}).join('')||'<tr><td colspan="6" class="meta">No hay empleados asignados a este local.</td></tr>';
+    var cons=[];eq.forEach(function(e){e.cons.forEach(function(x){if(qOf(x.f)===liqQ)cons.push({e:e,x:x})})});
+    $('#encCons').innerHTML=cons.map(function(r){return '<tr><td class="mono">'+r.x.f+'</td><td>'+esc(full(r.e))+'</td><td class="mono">'+esc(r.x.t)+'</td><td class="n">'+fmt(r.x.m)+'</td><td><span class="pill '+(r.x.ok?'ok':'warn')+'">'+(r.x.ok?'Aprobado por el administrador':'Pendiente de aprobación del administrador')+'</span></td></tr>'}).join('')||'<tr><td colspan="5" class="meta">No hay consumos cargados en esta quincena.</td></tr>';
     var ped=[];eq.forEach(function(e){e.adel.forEach(function(a){if(qOf(a.f)===liqQ)ped.push({e:e,a:a})})});
     $('#encPed').innerHTML=ped.map(function(x){return '<tr><td class="mono">'+x.a.f+'</td><td>'+esc(full(x.e))+'</td><td class="n">'+fmt(x.a.m)+'</td><td>'+esc(x.a.mot||'—')+'</td><td><span class="pill '+(x.a.ok?'ok':'warn')+'">'+(x.a.ok?'Aprobado por el administrador':'Pendiente de aprobación del administrador')+'</span></td></tr>'}).join('')||'<tr><td colspan="5" class="meta">No hay pedidos de adelanto en esta quincena.</td></tr>';
   }
   $('#encLoc').onchange=drawEnc;
+  $('#encAddCons').onclick=function(){var locId=+$('#encLoc').value,eq=byLoc(locId);
+    if(!eq.length){toast('No hay empleados asignados a este local');return}
+    openModal('Cargar consumo',
+      '<div class="field wide"><label for="cEmp">Empleado</label><select id="cEmp">'+eq.map(function(x){return '<option value="'+emps.indexOf(x)+'">'+esc(full(x))+'</option>'}).join('')+'</select><span class="err"></span></div>'+
+      fld('cTicE','N° de ticket del sistema de facturación','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'})+fld('cMonE','Monto del ticket','','number',{attrs:'min="0" step="100"'})+
+      '<div class="field"><label for="cFotoE">Foto del ticket (opcional)</label><input type="file" accept="image/*" id="cFotoE"></div><p class="hint">Monto total del ticket de Fudo (ya trae el '+P.DESC_EMP+'% de descuento de empleado). Queda pendiente hasta que el administrador lo apruebe.</p>','Cargar consumo',function(){
+      var t=val('cTicE'),m=+val('cMonE'),ok=setErr('cTicE',t?'':'Ingresá el número de ticket.');ok=setErr('cMonE',m>0?'':'Ingresá el monto.')&&ok;if(!ok)return false;
+      var e=emps[+$('#cEmp').value];
+      var push=function(src){e.cons.push({f:HOY,t:t,m:m,desc:true,foto:src||null,ok:false});drawLiq();drawEnc();toast('Consumo cargado · pendiente de aprobación del administrador')};
+      var f=$('#cFotoE').files[0];if(f)readImg(f,push);else push(null);
+    })};
 
   // recibos y PDF
   function logoHtml(){return logoSrc?'<img class="rlogo" src="'+logoSrc+'" alt="Logo">':'<div class="rlogo ph">TU LOGO</div>'}
@@ -926,13 +943,6 @@ table.mini th,table.mini td{padding:7px 10px}
     $('#phAdelInfo').textContent='Podés pedir hasta '+fmt(disp)+' ('+P.ADEL+'% de lo que ya trabajaste en la '+QS[liqQ].n.toLowerCase()+').';
     $('#phAdel').disabled=LQ[liqQ].closed||disp<=0;
   }
-  $('#phAdd').onclick=function(){var e=emps[0];
-    openModal('Cargar consumo',fld('pTic','N° de ticket del sistema de facturación','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'})+fld('pMon','Monto del ticket','','number',{attrs:'min="0" step="100"'})+
-      '<div class="field"><label for="pFoto">Foto del ticket</label><input type="file" accept="image/*" id="pFoto"></div><p class="hint">Monto total del ticket de Fudo (ya trae el '+P.DESC_EMP+'% de descuento de empleado). Queda pendiente hasta que el administrador lo apruebe.</p>','Cargar consumo',function(){
-      var t=val('pTic'),m=+val('pMon'),ok=setErr('pTic',t?'':'Ingresá el número de ticket.');ok=setErr('pMon',m>0?'':'Ingresá el monto.')&&ok;if(!ok)return false;
-      var push=function(src){e.cons.push({f:HOY,t:t,m:m,desc:true,foto:src||null,ok:false});drawLiq();toast('Consumo cargado · pendiente de aprobación')};
-      var f=$('#pFoto').files[0];if(f)readImg(f,push);else push(null);
-    })};
   $('#phAdel').onclick=function(){var e=emps[0],c=calc(e,liqQ),disp=Math.max(0,c.cap-c.ad);
     openModal('Pedir adelanto',fld('pAMon','Monto a pedir','','number',{attrs:'min="0" step="1000" placeholder="Hasta '+Math.floor(disp)+'"'})+fld('pAMot','Motivo (opcional)','','text',{wide:true})+
       '<p class="hint">Máximo disponible: <b>'+fmt(disp)+'</b> ('+P.ADEL+'% de lo devengado por tus jornadas trabajadas). El administrador lo aprueba y adjunta el comprobante de la transferencia.</p>','Pedir adelanto',function(){
