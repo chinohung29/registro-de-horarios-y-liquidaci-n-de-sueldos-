@@ -464,7 +464,7 @@ table.mini th,table.mini td{padding:7px 10px}
           <div><span class="meta">Adelantos</span><br><b id="liqAdel">$0</b></div>
           <div><span class="meta">Consumos</span><br><b id="liqCons">$0</b></div>
           <div><span class="meta">Neto a pagar</span><br><b id="liqTotal">$0</b></div>
-          <div class="totact"><button class="btn" id="pdfBtn" type="button">Ver recibos y PDF</button><button class="btn primary" id="confirmLiq" type="button">Confirmar liquidación</button></div>
+          <div class="totact"><button class="btn" id="pdfBtn" type="button">Ver comprobantes y PDF</button><button class="btn primary" id="confirmLiq" type="button">Confirmar liquidación</button></div>
         </div>
         <div class="tbar"><span class="meta">Costo por centro de costos:</span><span class="chips" id="ccSum"></span></div>
       </div>
@@ -492,10 +492,10 @@ table.mini th,table.mini td{padding:7px 10px}
       <!-- archivo -->
       <div id="s-arch" class="sec hide">
         <div class="head"><h2>Archivo (36 meses)</h2><span class="pill info" id="arSum"></span></div>
-        <div class="hint" style="margin-top:10px">Se guarda la información de los últimos <b>36 meses</b>: resúmenes, recibos, fichajes y adjuntos (fotos de tickets y comprobantes de transferencia). Lo anterior pasa a un archivo de largo plazo y no se borra sin autorización; el plazo legal de conservación hay que validarlo con el contador. Datos de ejemplo.</div>
+        <div class="hint" style="margin-top:10px">Se guarda la información de los últimos <b>36 meses</b>: resúmenes, comprobantes, fichajes y adjuntos (fotos de tickets y comprobantes de transferencia). Lo anterior pasa a un archivo de largo plazo y no se borra sin autorización; el plazo legal de conservación hay que validarlo con el contador. Datos de ejemplo.</div>
         <div class="tbar"><label for="arY" class="meta">Año</label><select id="arY"><option value="">Todos</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option></select><label for="arT" class="meta">Tipo</label><select id="arT"><option value="">Todos</option><option value="q">Quincenas</option><option value="a">Aguinaldos</option></select></div>
         <div class="tw" style="margin-top:12px"><table style="min-width:860px">
-          <thead><tr><th>Período</th><th>Tipo</th><th>Estado</th><th class="n">Recibos</th><th class="n">Fichajes</th><th class="n">Adjuntos</th><th class="n">Tamaño</th><th></th></tr></thead>
+          <thead><tr><th>Período</th><th>Tipo</th><th>Estado</th><th class="n">Comprobantes</th><th class="n">Fichajes</th><th class="n">Adjuntos</th><th class="n">Tamaño</th><th></th></tr></thead>
           <tbody id="arRows"></tbody></table></div>
         <div style="margin-top:10px"><button class="btn" id="arMore" type="button">Mostrar más</button></div>
       </div>
@@ -520,23 +520,13 @@ table.mini th,table.mini td{padding:7px 10px}
         </div>
       </div>
       <div class="phone" aria-label="Pantalla de consumos">
-        <div class="tabs" id="etabs"><button aria-selected="true" data-t="cons">Mis consumos</button><button aria-selected="false" data-t="rec">Mi recibo</button></div>
-        <div id="t-cons" class="list">
+                <div id="t-cons" class="list">
           <h3>Consumos de octubre</h3>
           <section id="phCons"></section>
           <button class="btn primary" id="phAdd" type="button" style="margin-top:8px">+ Cargar consumo</button>
           <h3 style="margin-top:16px">Adelantos</h3>
           <p class="meta" id="phAdelInfo" style="margin:0"></p>
           <button class="btn" id="phAdel" type="button" style="margin-top:6px">Pedir adelanto</button>
-        </div>
-        <div id="t-rec" class="prec hide">
-          <h3>Recibo · agosto</h3>
-          <div><span>Jornadas pagas</span><span class="mono">22,5</span></div>
-          <div><span>Monto por jornada</span><span class="mono">$38.000</span></div>
-          <div><span>Horas extra aprobadas</span><span class="mono">+ $7.125</span></div>
-          <div><span>Ausencias injustificadas (no pagas)</span><span class="mono">1 día</span></div>
-          <div><span>Consumos aprobados</span><span class="mono">− $9.400</span></div>
-          <div><b>Neto</b><b class="mono">$852.725</b></div>
         </div>
       </div>
     </div>
@@ -810,7 +800,7 @@ table.mini th,table.mini td{padding:7px 10px}
     drawQ();var cl=LQ[liqQ].closed;
     $('#liqTitle').textContent='Liquidación quincenal · '+QS[liqQ].n+' de octubre 2026';
     var st=$('#liqState');st.textContent=cl?'Confirmada':'Borrador';st.className='pill '+(cl?'ok':'warn');
-    var cb=$('#confirmLiq');cb.disabled=cl;cb.textContent=cl?'Confirmada · recibos generados':'Confirmar liquidación';
+    var cb=$('#confirmLiq');cb.disabled=cl;cb.textContent=cl?'Confirmada · comprobantes generados':'Confirmar liquidación';
     var T={bruto:0,da:0,ad:0,co:0,neto:0},CC={};
     $('#liqRows').innerHTML=emps.map(function(e,i){var c=calc(e),d=c.d,pend=pendQ(e,liqQ);
       T.bruto+=c.bruto;T.da+=c.da;T.ad+=c.ad;T.co+=c.co;T.neto+=c.neto;CC[ccId(e)]=(CC[ccId(e)]||0)+c.neto;
@@ -904,13 +894,13 @@ table.mini th,table.mini td{padding:7px 10px}
     e.adel.filter(function(a){return qOf(a.f)===q&&a.ok}).forEach(function(a){desc.push(['Adelanto '+a.f+(a.mot?' · '+esc(a.mot):'')+(a.comp?' · transferencia adjunta':''),'','−'+fmt(a.m)])});
     e.cons.filter(function(x){return qOf(x.f)===q&&x.ok}).forEach(function(x){desc.push(['Consumo ticket '+esc(x.t)+' · '+x.f+' · ticket con desc. empleado '+P.DESC_EMP+'% incluido','','−'+fmt(consNeto(x))])});
     var tr=function(r,cl){return '<tr'+(cl?' class="'+cl+'"':'')+'><td>'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>'};
-    return '<div class="rcpt">'+logoHtml()+'<div class="rhead"><b>'+EMPRESA+'</b><span>Recibo de haberes · '+QS[q].n+' de octubre 2026 ('+QS[q].r+')</span></div>'+
+    return '<div class="rcpt">'+logoHtml()+'<div class="rhead"><b>'+EMPRESA+'</b><span>Comprobante de liquidación · uso interno, no es un recibo oficial · '+QS[q].n+' de octubre 2026 ('+QS[q].r+')</span></div>'+
       '<div class="rname">'+esc(full(e))+'</div>'+
       '<div class="rdata"><span>Legajo <b>'+e.l+'</b></span><span>DNI <b>'+esc(e.doc)+'</b></span><span>Puesto <b>'+esc(e.p||'—')+'</b></span><span>Ingreso <b>'+fdate(e.ing)+'</b></span><span>Sucursal <b>'+(e.loc?esc(locName(e.loc)):'—')+'</b></span><span>Centro de costos <b>'+esc(ccName(e))+'</b></span><span>Valor hora <b>'+fmt(vh(e))+'</b></span></div>'+
       '<table class="rtab"><thead><tr><th>Concepto</th><th class="n">Cant.</th><th class="n">Importe</th></tr></thead><tbody>'+rows.map(function(r){return tr(r)}).join('')+tr(['Total haberes','',fmt(c.bruto)],'sub')+
       (desc.length?desc.map(function(r){return tr(r)}).join('')+tr(['Total descuentos','','−'+fmt(c.da+c.ad+c.co)],'sub'):'')+tr(['NETO A COBRAR','',fmt(c.neto)],'net')+'</tbody></table>'+
       '<p class="rinfo">Ausencias injustificadas (no pagas): '+d.a+'.</p>'+
-      '<div class="rsign"><p>Recibí conforme el importe neto detallado en este recibo.</p><div class="lines"><div><span></span>Firma</div><div><span></span>Aclaración</div><div><span></span>Fecha</div></div></div></div>';
+      '<p class="rinfo">Documento interno para el administrador. El recibo oficial de sueldo se gestiona de forma externa.</p></div>';
   }
   function renderPDF(){
     var T={b:0,a:0,c:0,da:0,n:0},CC={};
@@ -920,22 +910,21 @@ table.mini th,table.mini td{padding:7px 10px}
     var resumen='<section class="sheet">'+logoHtml()+'<div class="rhead"><b>'+EMPRESA+'</b><span>Liquidación quincenal · '+QS[liqQ].n+' de octubre 2026 · '+(LQ[liqQ].closed?'Confirmada':'Borrador')+'</span></div>'+
       '<div class="tw"><table class="rtab wide"><thead><tr><th>Empleado</th><th>C. costos</th><th class="n">Jornadas</th><th class="n">Hs extra</th><th class="n">Atraso</th><th class="n">Haberes</th><th class="n">Adelantos</th><th class="n">Consumos</th><th class="n">Neto</th></tr></thead><tbody>'+rows+
       '<tr class="net"><td colspan="5">Totales ('+emps.length+' empleados) · atrasos descontados '+fmt(T.da)+'</td><td class="n">'+fmt(T.b)+'</td><td class="n">−'+fmt(T.a)+'</td><td class="n">−'+fmt(T.c)+'</td><td class="n">'+fmt(T.n)+'</td></tr>'+ccRows+'</tbody></table></div>'+
-      '<p class="rinfo">Valor jornada = sueldo ÷ '+P.DIV+' · valor hora = jornada ÷ '+P.HS+' · bloques de 15 min = valor hora ÷ 4. Siguen '+emps.length+' recibos, uno por hoja.</p></section>';
+      '<p class="rinfo">Valor jornada = sueldo ÷ '+P.DIV+' · valor hora = jornada ÷ '+P.HS+' · bloques de 15 min = valor hora ÷ 4. Siguen '+emps.length+' comprobantes, uno por hoja.</p></section>';
     $('#sheets').innerHTML=resumen+emps.map(function(e){return '<section class="sheet">'+receipt(e,liqQ)+'</section>'}).join('');
-    $('#pdfCount').textContent=(emps.length+1)+' hojas: resumen + '+emps.length+' recibos';
+    $('#pdfCount').textContent=(emps.length+1)+' hojas: resumen + '+emps.length+' comprobantes';
   }
   $('#pdfBtn').onclick=function(){renderPDF();$('#pdfv').hidden=false;$('#pdfv').scrollTop=0;$('#pdfClose').focus()};
   $('#pdfClose').onclick=function(){$('#pdfv').hidden=true;$('#pdfBtn').focus()};
   $('#pdfDl').onclick=function(){toast('En la app real este botón descarga el PDF. El boceto muestra la vista previa.')};
   document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){if(!$('#fotoV').hidden)$('#fotoV').hidden=true;else if(!$('#pdfv').hidden&&$('#modal').hidden)$('#pdfv').hidden=true}});
 
-  // celular del empleado (Lucía): consumos, adelantos y recibo
+  // celular del empleado (Lucía): consumos y adelantos (el comprobante de liquidación lo ve solo el administrador)
   function drawPhone(){var e=emps[0];if(!e)return;var q=LQ[1].closed?1:0;
     $('#phCons').innerHTML=e.cons.map(function(x){return '<div><span>Ticket '+esc(x.t)+' · '+x.f+'<br><span class="meta">'+fmt(x.m)+' (ya con '+P.DESC_EMP+'% de desc.)'+(x.foto?' · con foto':'')+'</span></span><span class="pill '+(x.ok?'ok':'warn')+'">'+(x.ok?'Aprobado':'Pendiente')+'</span></div>'}).join('')||'<div><span class="meta">Sin consumos este mes.</span></div>';
     var c2=calc(e,liqQ),disp=Math.max(0,c2.cap-c2.ad);
     $('#phAdelInfo').textContent='Podés pedir hasta '+fmt(disp)+' ('+P.ADEL+'% de lo que ya trabajaste en la '+QS[liqQ].n.toLowerCase()+').';
     $('#phAdel').disabled=LQ[liqQ].closed||disp<=0;
-    $('#t-rec').innerHTML=receipt(e,q);
   }
   $('#phAdd').onclick=function(){var e=emps[0];
     openModal('Cargar consumo',fld('pTic','N° de ticket del sistema de facturación','','text',{wide:true,attrs:'placeholder="Ej.: 0003-00012345"'})+fld('pMon','Monto del ticket','','number',{attrs:'min="0" step="100"'})+
@@ -998,7 +987,7 @@ table.mini th,table.mini td{padding:7px 10px}
     $('#arRows').innerHTML=list.slice(0,archShown).map(function(a){return '<tr><td>'+esc(a.lbl)+'</td><td><span class="pill info">'+(a.t==='q'?'Quincena':'Aguinaldo')+'</span></td><td><span class="pill ok">Cerrada</span></td><td class="n">'+a.rec+'</td><td class="n">'+(a.mar||'—')+'</td><td class="n">'+(a.adj||'—')+'</td><td class="n">'+a.mb.toFixed(1).replace('.',',')+' MB</td><td style="white-space:nowrap"><button class="btn sm" data-ar="ver" type="button">Ver</button> <button class="btn sm" data-ar="zip" type="button">Descargar ZIP</button></td></tr>'}).join('')||'<tr><td colspan="8" class="meta">No hay períodos con ese filtro.</td></tr>';
     $('#arMore').hidden=list.length<=archShown;$('#arMore').textContent='Mostrar más ('+(list.length-archShown)+')';
   }
-  $('#arRows').addEventListener('click',function(ev){var b=ev.target.closest('button[data-ar]');if(!b)return;toast(b.dataset.ar==='zip'?'En la app real se descarga un ZIP con el resumen, los recibos, los fichajes y los adjuntos del período.':'En la app real se abre el resumen y los recibos del período.')});
+  $('#arRows').addEventListener('click',function(ev){var b=ev.target.closest('button[data-ar]');if(!b)return;toast(b.dataset.ar==='zip'?'En la app real se descarga un ZIP con el resumen, los comprobantes, los fichajes y los adjuntos del período.':'En la app real se abre el resumen y los comprobantes del período.')});
   $('#arY').onchange=$('#arT').onchange=function(){archShown=12;drawArch()};
   $('#arMore').onclick=function(){archShown+=12;drawArch()};
 
@@ -1017,10 +1006,6 @@ table.mini th,table.mini td{padding:7px 10px}
       ing=!ing;b.textContent='Escanear QR · '+(ing?'Ingreso':'Egreso');
     },1600);
   };
-  $$('#etabs button').forEach(function(b){b.onclick=function(){
-    $$('#etabs button').forEach(function(x){x.setAttribute('aria-selected',x===b)});
-    $('#t-cons').classList.toggle('hide',b.dataset.t!=='cons');$('#t-rec').classList.toggle('hide',b.dataset.t!=='rec');
-  }});
 
   // ausentes hoy
   var aus=[
